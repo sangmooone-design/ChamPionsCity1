@@ -500,7 +500,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
         <button onClick="{{ openSite }}" style="height:32px;border:none;border-radius:9999px;padding:0 12px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;font-weight:700;cursor:pointer">전체화면 ⤢</button>
       </div>
       <div style="position:relative;transform:{{ spTf }};transform-origin:0 0">
-      <img src="assets/site-plan.jpg" alt="단지배치도" draggable="false" style="display:block;width:100%;height:auto;user-select:none">
+      <img src="assets/site-plan.jpg" alt="챔피언스시티 1차 단지배치도" draggable="false" style="display:block;width:100%;height:auto;user-select:none">
       <sc-for list="{{ commSpots }}" as="h">
         <button onClick="{{ h.go }}" title="{{ h.title }}" style="position:absolute;left:{{ h.x }}%;top:{{ h.y }}%;width:{{ h.w }}%;height:{{ h.h }}%;border:2px dashed #f5c400;background:transparent;border-radius:12px;cursor:zoom-in;padding:0" style-hover="background:rgba(245,196,0,.18)">
           <span style="position:absolute;right:-6px;top:-10px;background:#f5c400;color:#1d1d1f;border-radius:9999px;font-size:11px;font-weight:700;padding:3px 8px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25)">{{ h.badge }}</span>
@@ -654,7 +654,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
           </div>
           <sc-if value="{{ p.hasPlan }}" hint-placeholder-val="{{ false }}">
             <button onClick="{{ p.openPlan }}" title="클릭하여 확대" style="position:relative;display:block;width:100%;border:1px solid #e5e5ea;border-radius:12px;padding:0;background:#fff;cursor:zoom-in;overflow:hidden">
-              <span role="img" aria-label="평면도" style="display:block;width:100%;aspect-ratio:{{ p.planRatio }};background:#fff url({{ p.planSrc }}) center / contain no-repeat"></span>
+              <span role="img" aria-label="챔피언스시티 1차 {{ altType }} 평면도" style="display:block;width:100%;aspect-ratio:{{ p.planRatio }};background:#fff url({{ p.planSrc }}) center / contain no-repeat"></span>
               <span style="position:absolute;right:8px;bottom:8px;background:rgba(29,29,31,.8);color:#fff;border-radius:9999px;padding:3px 9px;font-size:11px;font-weight:600">확대 ⤢</span>
             </button>
           </sc-if>
@@ -1868,7 +1868,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
   </div>
 
   <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch">
-    <button onClick="{{ openPv }}" title="크게 보기" aria-label="투시도 크게 보기" style="flex:1 1 680px;min-width:0;position:relative;border:none;padding:0;cursor:zoom-in;border-radius:18px;overflow:hidden;background:#1d1d1f;aspect-ratio:4.2 / 1"><img src="assets/perspective.jpg?v=2" alt="단지 투시도" style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top"><img src="assets/wm_logo.png" alt="" style="position:absolute;left:50%;top:50%;height:60%;width:auto;transform:translate(-50%,-50%);opacity:.07;pointer-events:none"><span style="position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;border-radius:9999px;padding:5px 11px">크게 보기 ⤢</span></button>
+    <button onClick="{{ openPv }}" title="크게 보기" aria-label="투시도 크게 보기" style="flex:1 1 680px;min-width:0;position:relative;border:none;padding:0;cursor:zoom-in;border-radius:18px;overflow:hidden;background:#1d1d1f;aspect-ratio:4.2 / 1"><img src="assets/perspective.jpg?v=2" alt="챔피언스시티 1차 단지 투시도" style="display:block;width:100%;height:100%;object-fit:cover;object-position:center top"><img src="assets/wm_logo.png" alt="" style="position:absolute;left:50%;top:50%;height:60%;width:auto;transform:translate(-50%,-50%);opacity:.07;pointer-events:none"><span style="position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;border-radius:9999px;padding:5px 11px">크게 보기 ⤢</span></button>
     <div style="flex:1 1 300px;min-width:0;box-sizing:border-box;background:#fff;border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;justify-content:center">
         <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="font-size:15px;font-weight:700">사업개요</span><span style="font-size:15px;font-weight:800;color:#0066cc">챔피언스시티 1차</span></div>
         <div data-m="biz" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;font-size:13px;line-height:1.4">
@@ -1893,7 +1893,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
       </div>
     </div>
     <div style="min-width:0;background:#fff;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px">
-      <button onClick="{{ city.openEnv3 }}" title="크게 보기" aria-label="단지 배치 일러스트 크게 보기" style="flex-shrink:0;border:none;padding:0;border-radius:10px;overflow:hidden;cursor:zoom-in;background:#fff"><img src="assets/city/env3.jpg" alt="단지 배치 일러스트" style="display:block;width:100%;height:auto"></button>
+      <button onClick="{{ city.openEnv3 }}" title="크게 보기" aria-label="단지 배치 일러스트 크게 보기" style="flex-shrink:0;border:none;padding:0;border-radius:10px;overflow:hidden;cursor:zoom-in;background:#fff"><img src="assets/city/env3.jpg" alt="챔피언스시티 1차 단지 배치 일러스트" style="display:block;width:100%;height:auto"></button>
       <button onClick="{{ city.openEnv4 }}" title="크게 보기" aria-label="복합용도개발 비교표 크게 보기" style="flex-shrink:0;border:none;padding:0;border-radius:10px;overflow:hidden;cursor:zoom-in;background:#fff"><img src="assets/city/env4.jpg" alt="복합용도개발 비교표" style="display:block;width:100%;height:auto"></button>
     </div>
   </div>
@@ -2242,7 +2242,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     <div style="display:flex;border-top:1px solid #f0f0f2;flex-shrink:0">
     <div data-zk="ppZoom" style="flex:1;min-width:0;aspect-ratio:1 / 1;overflow:auto;background:#fff;cursor:grab;touch-action:none">
       <div style="position:relative;width:{{ pp.zw }};aspect-ratio:1 / 1">
-        <span role="img" aria-label="평면도" style="position:absolute;left:50%;top:50%;width:{{ pp.pw }};aspect-ratio:{{ pp.par }};transform:{{ pp.tf }};background-image:url({{ pp.src }});background-size:{{ pp.bsize }};background-position:{{ pp.bpos }};background-repeat:no-repeat"></span>
+        <span role="img" aria-label="챔피언스시티 1차 {{ altType }} 평면도" style="position:absolute;left:50%;top:50%;width:{{ pp.pw }};aspect-ratio:{{ pp.par }};transform:{{ pp.tf }};background-image:url({{ pp.src }});background-size:{{ pp.bsize }};background-position:{{ pp.bpos }};background-repeat:no-repeat"></span>
       </div>
     </div>
     <sc-if value="{{ mh.has }}" hint-placeholder-val="{{ false }}"><div style="width:200px;flex-shrink:0;box-sizing:border-box;border-left:1px solid #f0f0f2;padding:10px;display:flex;flex-direction:column;justify-content:center;gap:6px;min-height:0"><sc-for list="{{ mh.land }}" as="m" hint-placeholder-count="5"><button onClick="{{ m.open }}" title="{{ m.name }}" aria-label="{{ m.name }}" style="flex-shrink:0;width:100%;aspect-ratio:1272 / 844;border:none;padding:0;border-radius:8px;cursor:zoom-in;background:#f5f5f7 url({{ m.src }}) center / cover no-repeat"></button></sc-for></div></sc-if>
@@ -2268,7 +2268,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     <div data-zk="upZoom" style="width:100%;flex-shrink:0;aspect-ratio:681 / 688;overflow:auto;scrollbar-width:none;background:#17191c;cursor:grab;touch-action:none;display:block;line-height:0">
       <div style="position:relative;width:{{ up.zw }};aspect-ratio:681 / 688">
         <sc-if value="{{ up.ovOff }}">
-        <span role="img" aria-label="동 유니트 배치" style="position:absolute;inset:0;background-image:url({{ up.src }});background-size:100% 100%;background-repeat:no-repeat;pointer-events:none"></span>
+        <span role="img" aria-label="챔피언스시티 1차 동 유니트 배치도" style="position:absolute;inset:0;background-image:url({{ up.src }});background-size:100% 100%;background-repeat:no-repeat;pointer-events:none"></span>
         <sc-for list="{{ up.spots }}" as="s">
           <div onClick="{{ s.go }}" title="{{ s.title }}" style="position:absolute;left:{{ s.l }};top:{{ s.t }};width:{{ s.w }};height:{{ s.h }};transform:translate(-50%,-50%) rotate({{ s.rot }});cursor:pointer;border-radius:4px;box-shadow:{{ s.ring }}" style-hover="background:rgba(255,255,255,.18);box-shadow:0 0 0 2px #fff">
             <sc-if value="{{ s.showPlan }}"><div style="position:absolute;inset:0;background:{{ s.bg }};border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden"><span style="display:block;mix-blend-mode:multiply;width:{{ s.pw }};aspect-ratio:{{ s.par }};background-image:url({{ s.src }});background-size:{{ s.bsize }};background-position:{{ s.bpos }};background-repeat:no-repeat;transform:{{ s.flip }}"></span></div></sc-if>
@@ -2280,7 +2280,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
         </sc-if>
         <sc-if value="{{ up.ovOn }}">
           <div style="position:absolute;inset:0;background:#fff;display:flex;align-items:center;justify-content:center">
-            <span role="img" aria-label="평면도" style="display:block;width:{{ up.ovPw }};aspect-ratio:{{ up.ovPar }};background-image:url({{ up.ovSrc }});background-size:{{ up.ovBsize }};background-position:{{ up.ovBpos }};background-repeat:no-repeat;pointer-events:none"></span>
+            <span role="img" aria-label="챔피언스시티 1차 {{ altType }} 평면도" style="display:block;width:{{ up.ovPw }};aspect-ratio:{{ up.ovPar }};background-image:url({{ up.ovSrc }});background-size:{{ up.ovBsize }};background-position:{{ up.ovBpos }};background-repeat:no-repeat;pointer-events:none"></span>
           </div>
         </sc-if>
       </div>
@@ -2335,7 +2335,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
 <div onClick="{{ closePlan }}" style="position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.78);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;cursor:zoom-out">
   <div style="display:flex;flex-direction:column;gap:10px;width:{{ planOpenCW }};max-width:100%">
   <div style="display:flex;gap:10px;align-items:stretch">
-  <span role="img" aria-label="평면도 확대" style="display:block;flex:1;min-width:0;aspect-ratio:{{ planOpenRatio }};border-radius:12px;background:#fff url({{ planOpenSrc }}) center / contain no-repeat"></span>
+  <span role="img" aria-label="챔피언스시티 1차 {{ altType }} 평면도 확대" style="display:block;flex:1;min-width:0;aspect-ratio:{{ planOpenRatio }};border-radius:12px;background:#fff url({{ planOpenSrc }}) center / contain no-repeat"></span>
   <sc-if value="{{ mh.has }}" hint-placeholder-val="{{ false }}"><div style="width:200px;flex-shrink:0;box-sizing:border-box;border-radius:12px;padding:8px;display:flex;flex-direction:column;justify-content:center;gap:6px;min-height:0;background:#fff"><sc-for list="{{ mh.land }}" as="m" hint-placeholder-count="5"><button onClick="{{ m.open }}" title="{{ m.name }}" aria-label="{{ m.name }}" style="flex-shrink:0;width:100%;aspect-ratio:1272 / 844;border:none;padding:0;border-radius:8px;cursor:zoom-in;background:#f5f5f7 url({{ m.src }}) center / cover no-repeat"></button></sc-for></div></sc-if>
   </div>
   <sc-if value="{{ mh.has }}" hint-placeholder-val="{{ false }}"><div style="border-radius:12px;padding:8px;overflow-x:auto;background:#fff"><div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px"><sc-for list="{{ mh.port }}" as="m" hint-placeholder-count="8"><button onClick="{{ m.open }}" title="{{ m.name }}" aria-label="{{ m.name }}" style="border:none;padding:0;border-radius:8px;cursor:zoom-in;aspect-ratio:604 / 844;background:#f5f5f7 url({{ m.src }}) center / cover no-repeat"></button></sc-for></div></div></sc-if>
@@ -2676,7 +2676,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     <button onClick="{{ pvClose }}" aria-label="닫기" style="width:36px;height:36px;border:none;border-radius:9999px;background:rgba(255,255,255,.14);color:#fff;font-size:18px;cursor:pointer">×</button>
   </div>
   <div ref="{{ pvRef }}" style="flex:1;min-height:0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;touch-action:none;cursor:{{ pvCur }}">
-    <div onClick="{{ stop }}" style="position:relative;transform:{{ pvTf }};transform-origin:center center"><img src="{{ pvSrc }}" alt="단지 투시도" draggable="false" style="display:block;max-width:calc(100vw - 140px);max-height:calc(100vh - 190px);user-select:none"><sc-if value="{{ pvWm }}" hint-placeholder-val="{{ true }}"><img src="assets/wm_logo.png" alt="" draggable="false" style="position:absolute;left:50%;top:50%;height:60%;width:auto;transform:translate(-50%,-50%);opacity:.07;pointer-events:none"></sc-if><sc-if value="{{ pvSite }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ zComm }}" as="h"><button onClick="{{ h.go }}" title="{{ h.title }}" style="position:absolute;left:{{ h.x }}%;top:{{ h.y }}%;width:{{ h.w }}%;height:{{ h.h }}%;border:2px dashed #f5c400;background:transparent;border-radius:12px;cursor:pointer;padding:0" style-hover="background:rgba(245,196,0,.18)"><span style="position:absolute;right:-6px;top:-10px;background:#f5c400;color:#1d1d1f;border-radius:9999px;font-size:11px;font-weight:700;padding:3px 8px;white-space:nowrap">{{ h.badge }}</span></button></sc-for><sc-for list="{{ zHot }}" as="h"><button onClick="{{ h.go }}" title="{{ h.title }}" style="position:absolute;left:{{ h.x }}%;top:{{ h.y }}%;width:{{ h.w }}%;height:{{ h.h }}%;border:none;background:transparent;border-radius:12px;cursor:pointer;padding:0" style-hover="background:rgba(255,255,255,.18)"></button></sc-for></sc-if></div>
+    <div onClick="{{ stop }}" style="position:relative;transform:{{ pvTf }};transform-origin:center center"><img src="{{ pvSrc }}" alt="챔피언스시티 1차 단지 투시도" draggable="false" style="display:block;max-width:calc(100vw - 140px);max-height:calc(100vh - 190px);user-select:none"><sc-if value="{{ pvWm }}" hint-placeholder-val="{{ true }}"><img src="assets/wm_logo.png" alt="" draggable="false" style="position:absolute;left:50%;top:50%;height:60%;width:auto;transform:translate(-50%,-50%);opacity:.07;pointer-events:none"></sc-if><sc-if value="{{ pvSite }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ zComm }}" as="h"><button onClick="{{ h.go }}" title="{{ h.title }}" style="position:absolute;left:{{ h.x }}%;top:{{ h.y }}%;width:{{ h.w }}%;height:{{ h.h }}%;border:2px dashed #f5c400;background:transparent;border-radius:12px;cursor:pointer;padding:0" style-hover="background:rgba(245,196,0,.18)"><span style="position:absolute;right:-6px;top:-10px;background:#f5c400;color:#1d1d1f;border-radius:9999px;font-size:11px;font-weight:700;padding:3px 8px;white-space:nowrap">{{ h.badge }}</span></button></sc-for><sc-for list="{{ zHot }}" as="h"><button onClick="{{ h.go }}" title="{{ h.title }}" style="position:absolute;left:{{ h.x }}%;top:{{ h.y }}%;width:{{ h.w }}%;height:{{ h.h }}%;border:none;background:transparent;border-radius:12px;cursor:pointer;padding:0" style-hover="background:rgba(255,255,255,.18)"></button></sc-for></sc-if></div>
     <sc-if value="{{ pvMulti }}" hint-placeholder-val="{{ true }}">
     <button onClick="{{ pvPrev }}" aria-label="이전 사진" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:none;border-radius:9999px;background:rgba(255,255,255,.18);color:#fff;font-size:22px;cursor:pointer">‹</button>
     <button onClick="{{ pvNext }}" aria-label="다음 사진" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:none;border-radius:9999px;background:rgba(255,255,255,.18);color:#fff;font-size:22px;cursor:pointer">›</button>
@@ -4045,6 +4045,7 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
       hotspots, groupLegend, groupCards, typeList,
       groupChips, colorModes, togglePrice: () => this.setState({ showPrice: !S.showPrice }), priceChip, filterChips, axis, bldgs, legend,
       noSelText: isGB ? '배치표에서 호실을 누르면 타입 개요 · 공급안내 · 평면이 표시됩니다' : '배치표에서 호실을 누르면 타입 개요 · 분양가 · 확장비 · 옵션 · 프리미엄 · 납부현황이 표시됩니다', boardStaff: !isGB, showGuestNav: guestOnly && vis.length > 1,
+      altType: (S.upPlan && S.upPlan.code) || (S.pp && S.pp.code) || (S.sel && D.byId[S.sel] ? D.byId[S.sel].type : '') || '',
       noSel: !p, hasSel: !!p, p: p || {}, presaleOn: !!mods.presale, optionOn: !!mods.option, tradeOn: !!(mods.sale || mods.jeonse || mods.wolse),
       supplyOpts: ['미확인','일반공급','특별공급(신혼부부)','특별공급(생애최초)','특별공급(다자녀)','특별공급(노부모)','특별공급(기관추천)','무순위'],
       o, f, callOpts: ['통화','부재','문자','종료'], wantDongOpts: ['무관','101~103동','104~106동','107~109동','110~112동'].concat(Object.keys(D.bmap).map(n => n + '동')),
