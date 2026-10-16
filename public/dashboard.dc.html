@@ -23,7 +23,17 @@ br[data-mbr]{display:none}
 [data-mo=permtitle]{display:block!important}
 [data-m=permtbl][data-open="0"]{display:none!important}
 [data-m=permtbl] [data-rc=ph0]{font-size:0!important}
+[data-m=poprow]>:nth-child(2){grid-column:1;grid-row:2}
+[data-m=poprow]>:nth-child(3){grid-column:2;grid-row:1 / 3;align-self:center}
+[data-m=poprow] input[type=date]{width:auto!important;flex:1}
 @media (max-width:767px){
+[data-m=popcols]{grid-template-columns:minmax(0,1fr)!important}
+[data-m=poprow]{grid-template-columns:minmax(0,1fr) auto!important}
+[data-m=poprow]>:nth-child(1){grid-column:1;grid-row:1}
+[data-m=poprow]>:nth-child(3){grid-column:2;grid-row:1 / 3;align-self:center}
+[data-m=poprow]>:nth-child(2){grid-column:1;grid-row:2}
+[data-m=poprow] input[type=date]{width:auto!important;flex:1}
+
 [style*="position: fixed"][style*="inset: 0px"] [data-m=gsgrid] [data-mo=gdesc]{display:none!important}
 [style*="position: fixed"][style*="inset: 0px"] [data-m=gsgrid] [data-mo=ginfo]{display:inline!important}
 [style*="position: fixed"][style*="inset: 0px"] [data-m=gsgrid] [data-mo=gtip]{display:block!important;grid-column:1 / -1}
@@ -400,13 +410,14 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
 
 <div data-cc-head="1" style="position:sticky;top:0;z-index:30;background:rgba(245,245,247,.94);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid #e5e5ea">
   <div data-m="hd1" style="max-width:1720px;margin:0 auto;padding:12px 20px 0;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:8px">
+    <div onClick="{{ goHome }}" title="첫 화면으로" style="display:flex;align-items:center;gap:8px;cursor:pointer">
     <img src="assets/logo_full.svg" alt="ALL NEW CHAMPIONS CITY" style="display:block;width:138px;height:auto;flex-shrink:0">
     <div style="display:flex;flex-direction:column;gap:2px">
       <div data-m="ttl" style="font-size:18px;font-weight:700;letter-spacing:-.02em">올 뉴 챔피언스시티 1차</div>
       <div style="font-size:12px;color:#6e6e73">{{ subtitle }}</div>
     </div>
     </div>
+
     <sc-if value="{{ showGuestNav }}" hint-placeholder-val="{{ false }}">
     <nav data-m="nav" style="display:flex;gap:4px;flex-wrap:wrap">
       <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
@@ -415,7 +426,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     </nav>
     </sc-if>
     <sc-if value="{{ showGuestCta }}" hint-placeholder-val="{{ false }}">
-    <div data-m="telcta" style="margin-left:auto;display:flex;gap:8px;align-items:center">
+    <div data-m="telcta" style="margin-left:auto;display:flex;gap:8px;align-items:center"><sc-if value="{{ ntChip }}" hint-placeholder-val="{{ false }}"><button onClick="{{ openNt }}" style="height:40px;border:1px solid #c8381e;background:#fdecea;color:#c8381e;border-radius:9999px;padding:0 14px;font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap">무순위 공고</button></sc-if>
       <a href="tel:18007240" style="display:flex;align-items:center;gap:8px;height:40px;border:1px solid #d2d2d7;border-radius:9999px;padding:0 16px;background:#fff;color:#1d1d1f;text-decoration:none"><span style="font-size:12px;color:#6e6e73;font-weight:600">상담문의</span><span style="font-size:16px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:#0066cc">1800.7240</span></a>
     </div>
     </sc-if>
@@ -2005,7 +2016,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
   <div onClick="{{ stop }}" ref="{{ setRef }}" style="width:100%;max-width:min(1080px,94vw);max-height:calc(100vh - 40px);overflow:auto;background:#f7f7f9;border-radius:20px;padding:0;display:flex;flex-direction:column;gap:0;box-shadow:0 20px 60px rgba(0,0,0,.2)">
     <div style="position:sticky;top:0;z-index:2;background:#fff;display:flex;align-items:center;padding:16px 22px;border-bottom:1px solid #ececf0"><span style="font-size:19px;font-weight:700">설정 · 거래모듈</span><button onClick="{{ closeSettings }}" style="margin-left:auto;border:none;background:#f5f5f7;border-radius:9999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer">닫기</button></div>
     <div data-m="setbody" style="display:grid;grid-template-columns:180px minmax(0,1fr);gap:18px;padding:18px 22px 22px">
-      <nav data-m="setnav" style="position:sticky;top:69px;align-self:start;display:flex;flex-direction:column;gap:2px;padding:4px"><button onClick="{{ setNav.mod }}" style="text-align:left;border:none;background:{{ setNavBg.mod }};color:{{ setNavFg.mod }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">거래 모듈</button><button onClick="{{ setNav.menu }}" style="text-align:left;border:none;background:{{ setNavBg.menu }};color:{{ setNavFg.menu }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">메뉴 표시</button><button onClick="{{ setNav.role }}" style="text-align:left;border:none;background:{{ setNavBg.role }};color:{{ setNavFg.role }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">담당자·권한</button><button onClick="{{ setNav.bk }}" style="text-align:left;border:none;background:{{ setNavBg.bk }};color:{{ setNavFg.bk }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">부동산 목록</button><button onClick="{{ setNav.media }}" style="text-align:left;border:none;background:{{ setNavBg.media }};color:{{ setNavFg.media }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">광고매체</button><button onClick="{{ setNav.car }}" style="text-align:left;border:none;background:{{ setNavBg.car }};color:{{ setNavFg.car }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">통신사</button><button onClick="{{ setNav.inflow }}" style="text-align:left;border:none;background:{{ setNavBg.inflow }};color:{{ setNavFg.inflow }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">유입매체</button><button onClick="{{ setNav.guest }}" style="text-align:left;border:none;background:{{ setNavBg.guest }};color:{{ setNavFg.guest }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">게스트</button><button onClick="{{ setNav.gas }}" style="text-align:left;border:none;background:{{ setNavBg.gas }};color:{{ setNavFg.gas }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">구글시트·알림</button></nav>
+      <nav data-m="setnav" style="position:sticky;top:69px;align-self:start;display:flex;flex-direction:column;gap:2px;padding:4px"><button onClick="{{ setNav.mod }}" style="text-align:left;border:none;background:{{ setNavBg.mod }};color:{{ setNavFg.mod }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">거래 모듈</button><button onClick="{{ setNav.menu }}" style="text-align:left;border:none;background:{{ setNavBg.menu }};color:{{ setNavFg.menu }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">메뉴 표시</button><button onClick="{{ setNav.role }}" style="text-align:left;border:none;background:{{ setNavBg.role }};color:{{ setNavFg.role }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">담당자·권한</button><button onClick="{{ setNav.bk }}" style="text-align:left;border:none;background:{{ setNavBg.bk }};color:{{ setNavFg.bk }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">부동산 목록</button><button onClick="{{ setNav.media }}" style="text-align:left;border:none;background:{{ setNavBg.media }};color:{{ setNavFg.media }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">광고매체</button><button onClick="{{ setNav.car }}" style="text-align:left;border:none;background:{{ setNavBg.car }};color:{{ setNavFg.car }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">통신사</button><button onClick="{{ setNav.inflow }}" style="text-align:left;border:none;background:{{ setNavBg.inflow }};color:{{ setNavFg.inflow }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">유입매체</button><button onClick="{{ setNav.guest }}" style="text-align:left;border:none;background:{{ setNavBg.guest }};color:{{ setNavFg.guest }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">게스트</button><button onClick="{{ setNav.popg }}" style="text-align:left;border:none;background:{{ setNavBg.popg }};color:{{ setNavFg.popg }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">공개 팝업관리</button><button onClick="{{ setNav.pops }}" style="text-align:left;border:none;background:{{ setNavBg.pops }};color:{{ setNavFg.pops }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">직원 팝업관리</button><button onClick="{{ setNav.gas }}" style="text-align:left;border:none;background:{{ setNavBg.gas }};color:{{ setNavFg.gas }};border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap">구글시트·알림</button></nav>
       <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
         <div data-sec="mod" data-open="{{ setOpen.mod }}" style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0">
       <div onClick="{{ setTog.mod }}" style="display:flex;align-items:baseline;gap:6px;cursor:pointer"><span style="font-size:15px;font-weight:800;color:#1d1d1f">거래 모듈 활성화</span><span style="font-size:12px;font-weight:600;color:#8e8e93;margin-left:4px">{{ setSum.mod }}</span><span style="margin-left:auto;font-size:12px;color:#0066cc;font-weight:700">{{ setArr.mod }}</span></div>
@@ -2132,7 +2143,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
       </sc-if>
     </div></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px;align-items:start"><div data-sec="guest" data-open="{{ setOpen.guest }}" style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0">
-      <div onClick="{{ setTog.guest }}" style="display:flex;align-items:baseline;gap:6px;cursor:pointer"><span style="font-size:15px;font-weight:800;color:#1d1d1f">게스트 (외부 공개용)</span><span style="font-size:12px;font-weight:600;color:#8e8e93;margin-left:4px">{{ setSum.guest }}</span><span style="margin-left:auto;font-size:12px;color:#0066cc;font-weight:700">{{ setArr.guest }}</span></div>
+      <div onClick="{{ setTog.guest }}" style="display:flex;align-items:baseline;gap:6px;cursor:pointer"><span style="font-size:15px;font-weight:800;color:#1d1d1f">게스트 (공개용)</span><span style="font-size:12px;font-weight:600;color:#8e8e93;margin-left:4px">{{ setSum.guest }}</span><span style="margin-left:auto;font-size:12px;color:#0066cc;font-weight:700">{{ setArr.guest }}</span></div>
       <div style="font-size:12px;color:#6e6e73;margin-top:-4px">종합뷰와 같은 화면에서 총세대 · 타입칩 · 배치도 · 유니트배치 · 커뮤니티만 보여줍니다. 매물 · 계약 · 상담 정보는 표시하지 않습니다.</div>
       <div data-m="gsgrid" style="display:contents"><sc-for list="{{ guestRows }}" as="m">
         <button title="{{ m.desc }}" onClick="{{ m.onClick }}" style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;text-align:left;border:1px solid #e5e5ea;background:#fff;border-radius:14px;padding:11px 14px;cursor:pointer">
@@ -2157,7 +2168,34 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
         <button onClick="{{ syncExport }}" style="height:36px;border:1px solid #d2d2d7;border-radius:10px;background:#fff;color:#1d1d1f;padding:0 14px;font-size:13px;font-weight:700;cursor:pointer">기존 자료 전체 내보내기</button>
         <span style="font-size:12px;color:#6e6e73">{{ syncStatus }}</span>
       </div>
-    </div></div>
+    </div>
+      <div data-sec="popg" data-open="{{ setOpen.popg }}" style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0">
+      <div onClick="{{ setTog.popg }}" style="display:flex;align-items:baseline;gap:6px;cursor:pointer"><span style="font-size:15px;font-weight:800;color:#1d1d1f">공개 팝업관리</span><span style="font-size:12px;font-weight:600;color:#8e8e93;margin-left:4px">{{ setSum.popg }}</span><span style="margin-left:auto;font-size:12px;color:#0066cc;font-weight:700">{{ setArr.popg }}</span></div>
+      <div style="font-size:12px;color:#6e6e73;margin-top:-4px">스위치가 켜져 있고 기간 안일 때만 뜹니다. 스위치를 끄면 기간과 상관없이 바로 내려갑니다. 기간을 비우면 제한 없음.</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:12px;color:#6e6e73">게스트(외부 공개) 화면에 뜨는 팝업</span><sc-if value="{{ popAdmin }}"><button onClick="{{ popAddG }}" style="margin-left:auto;height:28px;border:1px dashed #0066cc;background:#fff;color:#0066cc;border-radius:9px;padding:0 10px;font-size:12px;font-weight:700;cursor:pointer">+ 팝업 추가</button></sc-if></div>
+        <sc-for list="{{ popRowsG }}" as="r"><div data-m="poprow" style="border:1px solid #e5e5ea;border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 10px;align-items:center;background:#fff">
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:0"><sc-if value="{{ r.builtin }}"><b style="font-size:13.5px">{{ r.title }}</b></sc-if><sc-if value="{{ r.custom }}"><input value="{{ r.title }}" onChange="{{ r.onTitle }}" disabled="{{ r.ro }}" placeholder="팝업 제목" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;font-weight:700"></sc-if><input value="{{ r.desc }}" onChange="{{ r.onDesc }}" disabled="{{ r.ro }}" placeholder="안내설명 (어떤 팝업인지 한 줄)" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;font-size:12px;color:#6e6e73;height:28px"></div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#6e6e73;white-space:nowrap"><input type="date" value="{{ r.from }}" onChange="{{ r.onFrom }}" disabled="{{ r.ro }}" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;width:132px"><span>~</span><input type="date" value="{{ r.to }}" onChange="{{ r.onTo }}" disabled="{{ r.ro }}" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;width:132px"></div>
+            <div style="display:flex;align-items:center;gap:8px;justify-self:end"><span style="font-size:11.5px;font-weight:700;color:{{ r.stFg }};background:{{ r.stBg }};border-radius:9999px;padding:2px 8px;white-space:nowrap">{{ r.state }}</span><button onClick="{{ r.toggle }}" title="일정과 상관없이 켜고 끕니다" style="position:relative;width:44px;height:26px;border:none;border-radius:9999px;background:{{ r.swBg }};cursor:pointer;flex-shrink:0"><span style="position:absolute;top:3px;left:{{ r.knob }};width:20px;height:20px;border-radius:9999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)"></span></button><sc-if value="{{ r.canDel }}"><button onClick="{{ r.del }}" title="삭제" style="width:26px;height:26px;border:none;background:#f2f2f5;color:#6e6e73;border-radius:9999px;cursor:pointer;font-size:11px">✕</button></sc-if></div>
+            <sc-if value="{{ r.custom }}"><div style="grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:6px"><textarea value="{{ r.body }}" onChange="{{ r.onBody }}" disabled="{{ r.ro }}" placeholder="팝업 내용 (여러 줄)" rows="2" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;height:auto;padding:6px 8px;resize:vertical;font-family:inherit"></textarea><input value="{{ r.link }}" onChange="{{ r.onLink }}" disabled="{{ r.ro }}" placeholder="링크 (선택) https://…" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f"></div></sc-if>
+          </div></sc-for>
+      </div>
+      </div>
+      <div data-sec="pops" data-open="{{ setOpen.pops }}" style="background:#fff;border:1px solid #ececf0;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0">
+      <div onClick="{{ setTog.pops }}" style="display:flex;align-items:baseline;gap:6px;cursor:pointer"><span style="font-size:15px;font-weight:800;color:#1d1d1f">직원 팝업관리</span><span style="font-size:12px;font-weight:600;color:#8e8e93;margin-left:4px">{{ setSum.pops }}</span><span style="margin-left:auto;font-size:12px;color:#0066cc;font-weight:700">{{ setArr.pops }}</span></div>
+      <div style="font-size:12px;color:#6e6e73;margin-top:-4px">스위치가 켜져 있고 기간 안일 때만 뜹니다. 스위치를 끄면 기간과 상관없이 바로 내려갑니다. 기간을 비우면 제한 없음.</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:12px;color:#6e6e73">직원 로그인 후 첫 화면에 뜨는 팝업</span><sc-if value="{{ popAdmin }}"><button onClick="{{ popAddS }}" style="margin-left:auto;height:28px;border:1px dashed #0066cc;background:#fff;color:#0066cc;border-radius:9px;padding:0 10px;font-size:12px;font-weight:700;cursor:pointer">+ 팝업 추가</button></sc-if></div>
+        <sc-if value="{{ popNoneS }}"><div style="font-size:12px;color:#8e8e93;background:#f5f5f7;border-radius:10px;padding:10px 12px">등록된 직원 팝업이 없습니다</div></sc-if>
+        <sc-for list="{{ popRowsS }}" as="r"><div data-m="poprow" style="border:1px solid #e5e5ea;border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 10px;align-items:center;background:#fff">
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:0"><sc-if value="{{ r.builtin }}"><b style="font-size:13.5px">{{ r.title }}</b></sc-if><sc-if value="{{ r.custom }}"><input value="{{ r.title }}" onChange="{{ r.onTitle }}" disabled="{{ r.ro }}" placeholder="팝업 제목" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;font-weight:700"></sc-if><input value="{{ r.desc }}" onChange="{{ r.onDesc }}" disabled="{{ r.ro }}" placeholder="안내설명 (어떤 팝업인지 한 줄)" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;font-size:12px;color:#6e6e73;height:28px"></div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#6e6e73;white-space:nowrap"><input type="date" value="{{ r.from }}" onChange="{{ r.onFrom }}" disabled="{{ r.ro }}" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;width:132px"><span>~</span><input type="date" value="{{ r.to }}" onChange="{{ r.onTo }}" disabled="{{ r.ro }}" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;width:132px"></div>
+            <div style="display:flex;align-items:center;gap:8px;justify-self:end"><span style="font-size:11.5px;font-weight:700;color:{{ r.stFg }};background:{{ r.stBg }};border-radius:9999px;padding:2px 8px;white-space:nowrap">{{ r.state }}</span><button onClick="{{ r.toggle }}" title="일정과 상관없이 켜고 끕니다" style="position:relative;width:44px;height:26px;border:none;border-radius:9999px;background:{{ r.swBg }};cursor:pointer;flex-shrink:0"><span style="position:absolute;top:3px;left:{{ r.knob }};width:20px;height:20px;border-radius:9999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)"></span></button><sc-if value="{{ r.canDel }}"><button onClick="{{ r.del }}" title="삭제" style="width:26px;height:26px;border:none;background:#f2f2f5;color:#6e6e73;border-radius:9999px;cursor:pointer;font-size:11px">✕</button></sc-if></div>
+            <sc-if value="{{ r.custom }}"><div style="grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:6px"><textarea value="{{ r.body }}" onChange="{{ r.onBody }}" disabled="{{ r.ro }}" placeholder="팝업 내용 (여러 줄)" rows="2" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f;height:auto;padding:6px 8px;resize:vertical;font-family:inherit"></textarea><input value="{{ r.link }}" onChange="{{ r.onLink }}" disabled="{{ r.ro }}" placeholder="링크 (선택) https://…" style="box-sizing:border-box;min-width:0;height:32px;border:1px solid #d2d2d7;border-radius:8px;padding:0 8px;font-size:13px;background:#fff;color:#1d1d1f"></div></sc-if>
+          </div></sc-for>
+      </div>
+      </div></div>
         <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#6e6e73;background:#f5f5f7;border-radius:14px;padding:12px 14px;line-height:1.6">
       <div><b style="color:#1d1d1f">일정</b> 당첨자 발표 2026-09-22 · 정당계약 10/5~9 · 전매가능 2027-03-22 · 입주 2030-11 예정</div>
       <div><b style="color:#1d1d1f">그룹</b> 1그룹 101~103 · 2그룹 104~106 · 3그룹 107~109 · 4그룹 110~112 (동 번호순)</div>
@@ -2706,6 +2744,96 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
 </div>
 </sc-if>
 </div>
+
+    <sc-if value="{{ ntShow }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeNt }}" style="position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box">
+      <div onClick="{{ stop }}" style="width:100%;max-width:760px;max-height:calc(100vh - 32px);background:#f5f5f7;border-radius:20px;display:flex;flex-direction:column;overflow:hidden">
+        <div style="background:#c8381e;color:#fff;padding:16px 20px;display:flex;align-items:center;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:12px;font-weight:700;opacity:.85">무순위(사후) 입주자모집공고 · 주택관리번호 2026910261</span><span style="font-size:20px;font-weight:800;letter-spacing:-.02em">올 뉴 챔피언스시티 1차 잔여 729세대</span><span style="font-size:12.5px;opacity:.9">공고일 2026.10.15(목) · 분양문의 1599-0199</span></div>
+          <a href="tel:18007240" style="margin-left:auto;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:0;background:#fff;color:#c8381e;border-radius:14px;padding:6px 14px;text-decoration:none;line-height:1.15"><span style="font-size:11px;font-weight:700;color:#6e6e73">📞 상담문의</span><span style="font-size:22px;font-weight:900;letter-spacing:-.01em;font-variant-numeric:tabular-nums">1800-7240</span></a>
+          <button onClick="{{ closeNt }}" aria-label="닫기" style="flex-shrink:0;width:32px;height:32px;border:none;border-radius:9999px;background:rgba(255,255,255,.2);color:#fff;font-size:16px;cursor:pointer">✕</button>
+        </div>
+        <div style="flex:1;min-height:0;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px">
+          <section style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:800;color:#1d1d1f;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:#c8381e;color:#fff;font-size:11px;font-weight:800;flex-shrink:0">1</span>단지 주요정보</h3>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;font-size:12.5px">
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 10px"><div style="color:#6e6e73;font-size:11px">주택유형 · 규제</div><b>민영 · 비규제지역</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 10px"><div style="color:#6e6e73;font-size:11px">자격요건</div><b>전국 무주택세대구성원</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 10px"><div style="color:#6e6e73;font-size:11px">전매제한</div><b>최초 발표일(26.09.22)부터 6개월</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 10px"><div style="color:#6e6e73;font-size:11px">재당첨 · 거주의무 · 상한제</div><b>없음 · 없음 · 미적용</b></div>
+            </div>
+          </section>
+          <section style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:800;color:#1d1d1f;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:#c8381e;color:#fff;font-size:11px;font-weight:800;flex-shrink:0">2</span>주요 일정</h3>
+            <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;text-align:center;font-size:12px">
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 4px"><div style="color:#6e6e73;font-size:11px">공고</div><b>10.15(목)</b></div>
+              <div style="background:#fdecea;border-radius:10px;padding:8px 4px;color:#c8381e"><div style="font-size:11px;font-weight:700">청약 접수</div><b>10.20(화)</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 4px"><div style="color:#6e6e73;font-size:11px">당첨 발표</div><b>10.23(금)</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 4px"><div style="color:#6e6e73;font-size:11px">서류 접수</div><b>10.27(화)</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 4px"><div style="color:#6e6e73;font-size:11px">계약</div><b>10.28(수)</b></div>
+            </div>
+            <div style="font-size:12px;color:#6e6e73">접수: 청약홈 PC·모바일 09:00~17:30 (현장접수 불가) · 서류·계약: 견본주택 (북구 경양로 9)</div>
+          </section>
+          <section style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:800;color:#1d1d1f;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:#c8381e;color:#fff;font-size:11px;font-weight:800;flex-shrink:0">3</span>공통 유의사항</h3>
+            <ul style="margin:0;padding-left:16px;display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.5;color:#3a3a3c">
+              <li>청약홈 인터넷 청약만 가능하며, 공동인증서 또는 금융인증서로 로그인해야 합니다.</li>
+              <li>1인 1건만 신청할 수 있으며, 2건 이상 신청하면 모두 무효입니다.</li>
+              <li>해외에 계속 90일을 초과해 체류한 경우 신청할 수 없습니다. 부적격·부정 당첨은 계약 후에도 해약됩니다.</li>
+            </ul>
+          </section>
+          <section style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:800;color:#1d1d1f;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:#c8381e;color:#fff;font-size:11px;font-weight:800;flex-shrink:0">4</span>공급대상 · 잔여세대</h3>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center;font-size:12px">
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 2px"><div style="color:#6e6e73;font-size:11px">84A</div><b>189</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 2px"><div style="color:#6e6e73;font-size:11px">84B</div><b>256</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 2px"><div style="color:#6e6e73;font-size:11px">103A</div><b>117</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 2px"><div style="color:#6e6e73;font-size:11px">112A</div><b>89</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 2px"><div style="color:#6e6e73;font-size:11px">128A</div><b>77</b></div>
+              <div style="background:#f5f5f7;border-radius:10px;padding:8px 2px"><div style="color:#6e6e73;font-size:11px">214D</div><b>1</b></div>
+              <div style="background:#1d1d1f;color:#fff;border-radius:10px;padding:8px 2px"><div style="font-size:11px;opacity:.8">합계</div><b>729</b></div>
+            </div>
+            <div style="font-size:12px;color:#6e6e73">입주 2030년 11월 예정 · 계약금 5% (계약시 1,000만원, 30일 이내 잔액)</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-if value="{{ ntCanPrice }}"><button onClick="{{ ntGoPrice }}" style="height:38px;border:1px solid #d2d2d7;background:#fff;color:#1d1d1f;border-radius:10px;padding:0 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;border-color:#c8381e;color:#c8381e">분양가표 보기 →</button></sc-if><sc-if value="{{ ntCanOpt }}"><button onClick="{{ ntGoOpt }}" style="height:38px;border:1px solid #d2d2d7;background:#fff;color:#1d1d1f;border-radius:10px;padding:0 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;border-color:#0066cc;color:#0066cc">옵션계산기 →</button></sc-if></div>
+          </section>
+          <section style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:800;color:#1d1d1f;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:#c8381e;color:#fff;font-size:11px;font-weight:800;flex-shrink:0">5</span>청약자격 · 당첨자 선정</h3>
+            <ul style="margin:0;padding-left:16px;display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.5;color:#3a3a3c">
+              <li>공고일 현재 전국 거주 무주택세대구성원 · 청약통장 불필요 · 외국인 불가</li>
+              <li>이 단지 기존 당첨·계약자, 당첨 후 미계약자, 부적격·공급질서교란 제한기간 중인 분은 신청 불가</li>
+              <li>한국부동산원이 주택형별 무작위 추첨으로 당첨자 선정 · 동호 배정 (예비입주자 900%)</li>
+            </ul>
+          </section>
+          <section style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:800;color:#1d1d1f;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:#c8381e;color:#fff;font-size:11px;font-weight:800;flex-shrink:0">6</span>당첨자 발표</h3>
+            <ul style="margin:0;padding-left:16px;display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.5;color:#3a3a3c">
+              <li>청약홈 조회: 2026.10.23(금) ~ 11.01(일)</li>
+              <li>문자 안내: 2026.10.23(금) 08:00</li>
+            </ul>
+          </section>
+          <section style="background:#fff;border:1px solid #ececf0;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:800;color:#1d1d1f;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:#c8381e;color:#fff;font-size:11px;font-weight:800;flex-shrink:0">7</span>제출서류</h3>
+            <div style="font-size:13px;color:#3a3a3c">공고문 참조 · 서류 접수 10.27(화) 10:00~17:00 · 계약 10.28(수) 10:00~14:00</div>
+          </section>
+        </div>
+        <div style="background:#fff;border-top:1px solid #ececf0;padding:10px 14px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <a href="assets/notice/notice-mujunwi.pdf" download="챔피언스시티1차_무순위_입주자모집공고.pdf" target="_blank" rel="noopener" style="height:38px;display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:0 14px;background:#c8381e;color:#fff;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap">📄 모집공고 PDF 다운로드</a>
+          <button onClick="{{ ntHideToday }}" style="height:38px;border:1px solid #d2d2d7;background:#fff;color:#1d1d1f;border-radius:10px;padding:0 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;margin-left:auto;border:none;background:transparent;color:#6e6e73;padding:0 6px">오늘 하루 보지 않기</button>
+          <button onClick="{{ closeNt }}" style="height:38px;border:1px solid #d2d2d7;background:#fff;color:#1d1d1f;border-radius:10px;padding:0 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">닫기</button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ cpShow }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cpClose }}" style="position:fixed;inset:0;z-index:94;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box">
+      <div onClick="{{ stop }}" style="width:100%;max-width:480px;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="padding:18px 20px 6px;display:flex;align-items:center;gap:10px"><span style="font-size:11px;font-weight:800;color:#fff;background:{{ cpBadgeBg }};border-radius:9999px;padding:2px 8px">{{ cpBadge }}</span><b style="font-size:17px;min-width:0">{{ cpTitle }}</b><button onClick="{{ cpClose }}" aria-label="닫기" style="margin-left:auto;flex-shrink:0;width:32px;height:32px;border:none;border-radius:9999px;background:#f5f5f7;color:#1d1d1f;font-size:16px;cursor:pointer">✕</button></div>
+        <div style="padding:6px 20px 16px;font-size:14px;line-height:1.6;color:#3a3a3c;white-space:pre-wrap;max-height:55vh;overflow-y:auto">{{ cpBody }}</div>
+        <div style="border-top:1px solid #ececf0;padding:10px 14px;display:flex;gap:6px;align-items:center"><sc-if value="{{ cpHasLink }}"><a href="{{ cpLink }}" target="_blank" rel="noopener" style="height:36px;display:inline-flex;align-items:center;border-radius:10px;padding:0 14px;background:#0066cc;color:#fff;font-size:13px;font-weight:700;text-decoration:none">자세히 보기</a></sc-if><button onClick="{{ cpHide }}" style="margin-left:auto;height:36px;border:none;background:transparent;color:#6e6e73;font-size:13px;font-weight:700;cursor:pointer">오늘 하루 보지 않기</button><button onClick="{{ cpClose }}" style="height:36px;border:1px solid #d2d2d7;background:#fff;border-radius:10px;padding:0 14px;font-size:13px;font-weight:700;cursor:pointer">닫기</button></div>
+      </div>
+    </div>
+    </sc-if>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;hotspotOutline&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;종합뷰&quot;},&quot;defaultTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;overview&quot;,&quot;board&quot;,&quot;option&quot;,&quot;card&quot;,&quot;log&quot;,&quot;price&quot;],&quot;default&quot;:&quot;overview&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;시작 화면&quot;}}">
 class Component extends DCLogic {
@@ -3086,8 +3214,8 @@ class Component extends DCLogic {
     return {
       tab: this.props.defaultTab || 'overview', group: 0, sel: null, filter: null, colorMode: 'type', showPrice: false, focusB: null,
       u, cards: go ? [] : saved && saved.cards ? saved.cards : this.seedCards(u),
-      sync: Object.assign({ url: '', notifyStaff: true, notifyGuest: true }, saved && saved.sync), pins: (saved && saved.pins) || {}, menuOrder: (saved && saved.menuOrder) || [], tels: (saved && saved.tels) || {}, listResetAt: (saved && saved.listResetAt) || {}, mails: Object.fromEntries(Object.entries((saved && saved.mails) || {}).filter(([k]) => !saved || !saved.roles || saved.roles[k])), newMail: '',
-      guest: Object.assign({ enabled: false, public: true, hideStaff: false, visit: true }, saved && saved.guest),
+      sync: Object.assign({ url: '', notifyStaff: true, notifyGuest: true }, saved && saved.sync), pins: (saved && saved.pins) || {}, menuOrder: (saved && saved.menuOrder) || [], tels: (saved && saved.tels) || {}, listResetAt: (saved && saved.listResetAt) || {}, popups: (saved && saved.popups) || [], mails: Object.fromEntries(Object.entries((saved && saved.mails) || {}).filter(([k]) => !saved || !saved.roles || saved.roles[k])), newMail: '',
+      guest: Object.assign({ enabled: false, public: true, hideStaff: false, visit: true, notice: true, ntFrom: '2026-10-15', ntTo: '2026-10-28' }, saved && saved.guest),
       modules: Object.assign({ presale: true, sale: false, jeonse: false, wolse: false, option: true }, saved && saved.modules),
       menus: Object.assign({ overview: true, board: true, option: true, card: true, log: true, price: true }, saved && saved.menus),
       roles: Object.assign({ 황후권: '관리자', 김민지: '직원', 이서준: '직원', 박하은: '직원' }, saved && saved.roles),
@@ -3234,7 +3362,7 @@ class Component extends DCLogic {
     if (!lk && S.lmH) { this._lmHs = null; this.setState({ lmH: null }); }
     else if ((lk === 'lm' || lk === 'sg') && !S.lmH) { const el = document.querySelector('[data-lmpop]'); if (el) { const hs = Object.assign({}, this._lmHs); hs[lk] = el.offsetHeight; this._lmHs = hs; const o = lk === 'lm' ? 'sg' : 'lm'; if (hs[o] == null) { this._lmBack = this._lmBack || lk; this.setState({ lmOpen: o }); } else { const b = this._lmBack || lk; this._lmBack = null; this.setState({ lmH: Math.max(hs.lm, hs.sg), lmOpen: b }); } } }
     if (S.commPop) this.bindZoomBox(); else this._zb = null; if (S.unitPop || S.upPlan) this.bindZK(); const ps = this._prev || {};
-    const K = ['u', 'cards', 'modules', 'menus', 'me', 'guest', 'roles', 'perms', 'impLog', 'lastUndo', 'brokers', 'media', 'carriers', 'inflow', 'sync', 'pins', 'mails', 'menuOrder', 'tels', 'listResetAt'];
+    const K = ['u', 'cards', 'modules', 'menus', 'me', 'guest', 'roles', 'perms', 'impLog', 'lastUndo', 'brokers', 'media', 'carriers', 'inflow', 'sync', 'pins', 'mails', 'popups', 'menuOrder', 'tels', 'listResetAt'];
     this._prev = {}; K.forEach(k => this._prev[k] = S[k]);
     if (this.props.guestOnly) return;
     this.syncDiff(ps, S);
@@ -3470,7 +3598,19 @@ class Component extends DCLogic {
     const vis = guestOnly ? gTabs('단지배치') : TABS.filter(([k]) => menus[k] !== false && (k !== 'option' || mods.option) && (k !== 'db' || can('view'))).concat(GS.enabled && !GS.hideStaff ? gTabs('게스트') : []);
     let tab = S.tab; if (!vis.find(v => v[0] === tab)) tab = vis.length ? vis[0][0] : '';
     const tabs = vis.map(([k, l]) => ({ label: l, go: () => this.setState({ tab: k }), bg: tab === k ? '#c8381e' : 'transparent', fg: tab === k ? '#fff' : '#1d1d1f' }));
-    const isGuest = tab === 'guest'; const isGB = tab === 'gboard'; const isGO = tab === 'goption'; const isGP = tab === 'gprice'; const isGC = tab === 'gcity'; this._tab = tab; const gx = isGuest || isGB || isGO || isGP || isGC; this._gm = gx; const UU = this._gm ? (S.gu || {}) : S.u;
+    const isGuest = tab === 'guest'; const isGB = tab === 'gboard'; const isGO = tab === 'goption'; const isGP = tab === 'gprice'; const isGC = tab === 'gcity'; this._tab = tab; const gx = isGuest || isGB || isGO || isGP || isGC;
+    const pTd = (() => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); })();
+    const pAct = p => !!p.on && (!p.from || pTd >= p.from) && (!p.to || pTd <= p.to);
+    const pNt = { id: 'notice', aud: 'guest', builtin: true, title: '무순위 공고 팝업', desc: GS.ntDesc != null ? GS.ntDesc : '게스트 접속 시 무순위 모집공고 요약과 PDF 다운로드', from: GS.ntFrom || '', to: GS.ntTo || '', on: !!GS.notice };
+    const pAll = [pNt].concat(S.popups || []); const popOnN = pAll.filter(pAct).length; const popAdmin = role === '관리자';
+    const pSet = (id, o) => { if (!popAdmin) return this.flash('관리자만 변경할 수 있습니다'); if (id === 'notice') { const m = {}; if ('on' in o) m.notice = o.on; if ('from' in o) m.ntFrom = o.from; if ('to' in o) m.ntTo = o.to; if ('desc' in o) m.ntDesc = o.desc; this.setState(ss => ({ guest: Object.assign({}, ss.guest, m) })); } else this.setState(ss => ({ popups: (ss.popups || []).map(x => x.id === id ? Object.assign({}, x, o) : x) })); };
+    const pRow = p => { const a = pAct(p); const st = !p.on ? ['꺼짐', '#8e8e93', '#f2f2f5'] : a ? ['표시 중', '#157a3f', '#e9f7ee'] : (p.from && pTd < p.from) ? ['기간 전', '#8a6100', '#fff8e1'] : ['기간 종료', '#8e8e93', '#f2f2f5']; const fv = k => e => pSet(p.id, { [k]: e.target.value });
+      return { title: p.title || '', desc: p.desc || '', from: p.from || '', to: p.to || '', body: p.body || '', link: p.link || '', builtin: !!p.builtin, custom: !p.builtin, ro: !popAdmin, canDel: !p.builtin && popAdmin, state: st[0], stFg: st[1], stBg: st[2], swBg: p.on ? '#34c759' : '#e5e5ea', knob: p.on ? '21px' : '3px',
+        toggle: () => pSet(p.id, { on: !p.on }), onTitle: fv('title'), onDesc: fv('desc'), onFrom: fv('from'), onTo: fv('to'), onBody: fv('body'), onLink: fv('link'),
+        del: () => { if (!popAdmin) return; if (!window.confirm('이 팝업을 삭제할까요?')) return; this.setState(ss => ({ popups: (ss.popups || []).filter(x => x.id !== p.id) })); } }; };
+    const pAdd = aud => () => { if (!popAdmin) return this.flash('관리자만 변경할 수 있습니다'); this.setState(ss => ({ popups: (ss.popups || []).concat({ id: 'p' + Date.now(), aud, title: '새 팝업', desc: '', body: '', link: '', from: pTd, to: '', on: false }) })); };
+    let pHid = {}; try { pHid = JSON.parse(localStorage.getItem('cc-pop-hide') || '{}'); } catch (x) {}
+    const pAud = guestOnly ? 'guest' : (S.me ? 'staff' : null); const pCur = pAud ? (S.popups || []).filter(p => p.aud === pAud && pAct(p) && pHid[p.id] !== pTd && !(S.popSeen || {})[p.id])[0] : null; this._gm = gx; const UU = this._gm ? (S.gu || {}) : S.u;
     const F = gx ? null : S.filter;
     const st = id => UU[id] || { status: '미확인' };
     const match = u => { if (!F) return true; const s = st(u.id); const t = D.types[u.type];
@@ -4027,13 +4167,13 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
         return [k, { can: adm, open: S.rstAsk === k, msg: k === 'bk' ? '부동산 목록 ' + L.length + '곳을 모두 지웁니다. 직접입력 횟수 기록도 초기화됩니다.' : '직접 추가한 항목 ' + added + '개를 지우고 기본 항목으로 되돌립니다' + (miss ? ' (기본 ' + miss + '개 복원)' : '') + '. 직접입력 횟수 기록도 초기화됩니다.',
           ask: e => { if (e && e.stopPropagation) e.stopPropagation(); this.setState(ss => ({ rstAsk: k, setOpenM: Object.assign({}, ss.setOpenM, { [k]: true }) })); }, cancel: () => this.setState({ rstAsk: null }),
           go: () => { if (!adm) return this.flash('관리자만 초기화할 수 있습니다'); this.setState(ss => ({ [K[k]]: D0[k].slice(), listResetAt: Object.assign({}, ss.listResetAt, { [k]: new Date().toISOString() }), rstAsk: null })); this.flash('초기화했습니다'); } }]; })); })(),
-      openSettings: () => this.setState({ settingsOpen: true }), setRef: el => { this._setEl = el; }, setNav: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','gas'].map(k => [k, () => { this.setState(ss => ({ setSec: k, setOpenM: { [k]: true } }), () => setTimeout(() => { const c = this._setEl; const t = c && c.querySelector('[data-sec="' + k + '"]'); if (!c || !t) return; const hd = c.firstElementChild; const off = hd ? hd.offsetHeight : 0; c.scrollTop = t.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - off - 8; }, 30)); }])),
-      setOpen: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','gas'].map(k => [k, (S.setOpenM || {})[k] ? '1' : '0'])),
-      setArr: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','gas'].map(k => [k, (S.setOpenM || {})[k] ? '▲' : '▼'])),
-      setTog: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','gas'].map(k => [k, e => { if (e && e.target && e.target.closest && e.target.closest('button,input,select') && e.target.closest('button,input,select') !== e.currentTarget) return; const was = !!(this.state.setOpenM || {})[k]; this.setState({ setSec: k, setOpenM: was ? {} : { [k]: true } }, () => { if (was) return; setTimeout(() => { const c = this._setEl; const t = c && c.querySelector('[data-sec="' + k + '"]'); if (!c || !t) return; const hd = c.firstElementChild; const off = hd && getComputedStyle(hd).position === 'sticky' ? hd.offsetHeight : 0; const top = t.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - off - 8; if (t.getBoundingClientRect().top - c.getBoundingClientRect().top < off) c.scrollTop = top; else if (top < c.scrollTop) c.scrollTop = top; }, 30); }); }])),
+      openSettings: () => this.setState({ settingsOpen: true }), setRef: el => { this._setEl = el; }, setNav: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, () => { this.setState(ss => ({ setSec: k, setOpenM: { [k]: true } }), () => setTimeout(() => { const c = this._setEl; const t = c && c.querySelector('[data-sec="' + k + '"]'); if (!c || !t) return; const hd = c.firstElementChild; const off = hd ? hd.offsetHeight : 0; c.scrollTop = t.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - off - 8; }, 30)); }])),
+      setOpen: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setOpenM || {})[k] ? '1' : '0'])),
+      setArr: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setOpenM || {})[k] ? '▲' : '▼'])),
+      setTog: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, e => { if (e && e.target && e.target.closest && e.target.closest('button,input,select') && e.target.closest('button,input,select') !== e.currentTarget) return; const was = !!(this.state.setOpenM || {})[k]; this.setState({ setSec: k, setOpenM: was ? {} : { [k]: true } }, () => { if (was) return; setTimeout(() => { const c = this._setEl; const t = c && c.querySelector('[data-sec="' + k + '"]'); if (!c || !t) return; const hd = c.firstElementChild; const off = hd && getComputedStyle(hd).position === 'sticky' ? hd.offsetHeight : 0; const top = t.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - off - 8; if (t.getBoundingClientRect().top - c.getBoundingClientRect().top < off) c.scrollTop = top; else if (top < c.scrollTop) c.scrollTop = top; }, 30); }); }])),
       permOpen: S.permOpen ? '1' : '0', permArr: S.permOpen ? '▲' : '▼', permTog: () => this.setState({ permOpen: !S.permOpen }),
-      setSum: (() => { const md = S.modules || {}; const on = [['presale', '분양권'], ['sale', '매매'], ['jeonse', '전세'], ['wolse', '월세']].filter(([x]) => md[x]).map(([, l]) => l); const miss = Object.keys(S.roles).filter(n => !(S.mails || {})[n]).length; return { mod: on.length ? on.join(' · ') + ' 켜짐' : '모두 꺼짐', menu: menuSum, role: Object.keys(S.roles).length + '명', bk: '', media: '', car: '', inflow: '', guest: (S.guest || {}).enabled ? '켜짐' : '꺼짐', gas: (S.sync || {}).url ? '연결됨' : '미연결' }; })(),
-      setNavBg: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','gas'].map(k => [k, (S.setSec || 'mod') === k ? '#e8f0fb' : 'transparent'])), setNavFg: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','gas'].map(k => [k, (S.setSec || 'mod') === k ? '#0066cc' : '#3a3a3c'])),
+      setSum: (() => { const md = S.modules || {}; const on = [['presale', '분양권'], ['sale', '매매'], ['jeonse', '전세'], ['wolse', '월세']].filter(([x]) => md[x]).map(([, l]) => l); const miss = Object.keys(S.roles).filter(n => !(S.mails || {})[n]).length; return { mod: on.length ? on.join(' · ') + ' 켜짐' : '모두 꺼짐', menu: menuSum, role: Object.keys(S.roles).length + '명', bk: '', media: '', car: '', inflow: '', guest: (S.guest || {}).enabled ? '켜짐' : '꺼짐', popg: pAll.filter(p => p.aud === 'guest' && pAct(p)).length + '개 표시 중', pops: pAll.filter(p => p.aud === 'staff' && pAct(p)).length + '개 표시 중', gas: (S.sync || {}).url ? '연결됨' : '미연결' }; })(),
+      setNavBg: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setSec || 'mod') === k ? '#e8f0fb' : 'transparent'])), setNavFg: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setSec || 'mod') === k ? '#0066cc' : '#3a3a3c'])),
       closeSettings: () => this.setState({ settingsOpen: false, setOpenM: {}, setSec: 'mod', permOpen: false, gTip: null }), stop: e => e.stopPropagation(), settingsOpen: S.settingsOpen,
       kpis, famChips,
       showStaffUI: !guestOnly, guestClosed: guestOnly && (this.props.isPublic === false), guestOpen: !(guestOnly && this.props.isPublic === false),
@@ -4046,6 +4186,17 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
       groupChips, colorModes, togglePrice: () => this.setState({ showPrice: !S.showPrice }), priceChip, filterChips, axis, bldgs, legend,
       noSelText: isGB ? '배치표에서 호실을 누르면 타입 개요 · 공급안내 · 평면이 표시됩니다' : '배치표에서 호실을 누르면 타입 개요 · 분양가 · 확장비 · 옵션 · 프리미엄 · 납부현황이 표시됩니다', boardStaff: !isGB, showGuestNav: guestOnly && vis.length > 1,
       altType: (S.upPlan && S.upPlan.code) || (S.pp && S.pp.code) || (S.sel && D.byId[S.sel] ? D.byId[S.sel].type : '') || '',
+      ...(() => { const d = new Date(); const td = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); const on = !!GS.notice && (!GS.ntFrom || td >= GS.ntFrom) && (!GS.ntTo || td <= GS.ntTo); let hid = false; try { hid = localStorage.getItem('cc-nt-hide') === td; } catch (x) {} const auto = guestOnly && on && !hid && !S.ntClosed; const vk = vis.map(v => v[0]); const setG = o => this.setState(ss => ({ guest: Object.assign({}, ss.guest, o) }));
+        return { ntShow: on && (S.ntOpen || auto), ntChip: on && gx, openNt: () => this.setState({ ntOpen: true }), closeNt: () => this.setState({ ntOpen: false, ntClosed: true }),
+          ntHideToday: () => { try { localStorage.setItem('cc-nt-hide', td); } catch (x) {} this.setState({ ntOpen: false, ntClosed: true }); },
+          ntCanPrice: vk.includes('gprice') || vk.includes('price'), ntCanOpt: vk.includes('goption') || vk.includes('option'),
+          ntGoPrice: () => this.setState({ ntOpen: false, ntClosed: true, tab: vk.includes('gprice') ? 'gprice' : 'price' }), ntGoOpt: () => this.setState({ ntOpen: false, ntClosed: true, tab: vk.includes('goption') ? 'goption' : 'option' }),
+          ntFrom: GS.ntFrom || '', ntTo: GS.ntTo || '', onNtFrom: e => setG({ ntFrom: e.target.value }), onNtTo: e => setG({ ntTo: e.target.value }),
+          ntState: !GS.notice ? '팝업 꺼짐' : on ? '오늘 표시 중' : '기간 밖 (표시 안 함)' }; })(),
+      popAdmin, popRowsG: pAll.filter(p => p.aud === 'guest').map(pRow), popRowsS: pAll.filter(p => p.aud === 'staff').map(pRow), popNoneS: !pAll.some(p => p.aud === 'staff'), popAddG: pAdd('guest'), popAddS: pAdd('staff'),
+      cpShow: !!pCur && !(S.ntOpen || (guestOnly && pAct(pNt) && !S.ntClosed)), cpTitle: pCur ? pCur.title : '', cpBody: pCur ? pCur.body : '', cpLink: pCur ? pCur.link : '', cpHasLink: !!(pCur && pCur.link), cpBadge: pAud === 'staff' ? '직원 공지' : '안내', cpBadgeBg: pAud === 'staff' ? '#1d1d1f' : '#c8381e',
+      cpClose: () => pCur && this.setState(ss => ({ popSeen: Object.assign({}, ss.popSeen, { [pCur.id]: true }) })), cpHide: () => { if (!pCur) return; try { const o = JSON.parse(localStorage.getItem('cc-pop-hide') || '{}'); o[pCur.id] = pTd; localStorage.setItem('cc-pop-hide', JSON.stringify(o)); } catch (x) {} this.setState(ss => ({ popSeen: Object.assign({}, ss.popSeen, { [pCur.id]: true }) })); },
+      goHome: () => { if (vis.length) this.setState({ tab: vis[0][0], sel: null }); try { window.scrollTo(0, 0); } catch (x) {} },
       noSel: !p, hasSel: !!p, p: p || {}, presaleOn: !!mods.presale, optionOn: !!mods.option, tradeOn: !!(mods.sale || mods.jeonse || mods.wolse),
       supplyOpts: ['미확인','일반공급','특별공급(신혼부부)','특별공급(생애최초)','특별공급(다자녀)','특별공급(노부모)','특별공급(기관추천)','무순위'],
       o, f, callOpts: ['통화','부재','문자','종료'], wantDongOpts: ['무관','101~103동','104~106동','107~109동','110~112동'].concat(Object.keys(D.bmap).map(n => n + '동')),
