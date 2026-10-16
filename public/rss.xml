@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>챔피언스시티 소식</title>
+<link>https://championscity1.sangmooone.workers.dev/</link>
+<description>챔피언스시티 광주 북구 임동 49층 12개동 3,216세대. 평면·분양가표·홍보관 방문예약 1800-7240</description>
+<language>ko</language>
+<lastBuildDate>Sat, 17 Oct 2026 04:45:00 +0900</lastBuildDate>
+<atom:link href="https://championscity1.sangmooone.workers.dev/rss.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>챔피언스시티 무순위(사후) 공고 · 10.20(화) 청약홈 접수</title>
+<link>https://championscity1.sangmooone.workers.dev/?notice=mujunwi</link>
+<guid isPermaLink="false">championscity1-notice-mujunwi-20261015</guid>
+<description>전국 무주택세대구성원 대상 잔여 729세대 무순위 공급. 접수 10.20(화) 청약홈, 발표 10.23(금), 계약 10.28(수). 공고문 PDF는 사이트에서 내려받을 수 있습니다.</description>
+<pubDate>Thu, 15 Oct 2026 09:00:00 +0900</pubDate>
+</item>
+<item>
+<title>챔피언스시티 1차 단지 안내 · 평면 · 분양가표 · 홍보관</title>
+<link>https://championscity1.sangmooone.workers.dev/</link>
+<guid isPermaLink="false">championscity1-site-20261017</guid>
+<description>광주 북구 임동 100-1번지 일원, 지하 3층 ~ 지상 49층 12개동 3,216세대. 84㎡ · 103㎡ · 112㎡ · 128㎡ · 펜트하우스 24개 타입 평면과 분양가표, 동호배치표, 옵션계산기, 홍보관(북구 경양로 9) 방문예약. 상담 1800-7240.</description>
+<pubDate>Sat, 17 Oct 2026 04:45:00 +0900</pubDate>
+</item>
+</channel>
+</rss>
