@@ -26,7 +26,7 @@ br[data-mbr]{display:none}
 [data-m=poprow]>:nth-child(2){grid-column:1;grid-row:2}
 [data-m=poprow]>:nth-child(3){grid-column:2;grid-row:1 / 3;align-self:center}
 [data-m=poprow] input[type=date]{width:auto!important;flex:1}
-@media (max-width:767px){
+@media (max-width:1099px){
 [data-m=nthd]{padding:12px 10px!important;gap:6px!important}
 [data-m=nthd]>div:first-child{flex:1 1 auto;min-width:0;overflow:hidden}
 [data-m=nthd]>div:first-child>span{white-space:nowrap;letter-spacing:-.04em}
@@ -424,13 +424,16 @@ ul:has([data-li=nw2])>li:nth-child(6){margin-top:-8px}
 }
 br[data-mbr2]{display:none}
 [data-mol]{display:none}
-@media (max-width:767px){
+@media (max-width:1099px){
 div:has(>ul[data-hl=RESORT]),div:has(>ul[data-hl=PREMIUM]){flex-wrap:nowrap!important;align-items:center!important;gap:6px!important;padding:12px 10px!important}
 [data-m=hlsec]{padding:16px 10px!important}
 ul[data-hl=RESORT],ul[data-hl=PREMIUM]{flex:1 1 auto!important;min-width:0;container-type:inline-size}
 ul[data-hl=RESORT]>li,ul[data-hl=PREMIUM]>li{font-size:clamp(8.5px,6.2cqw,13px)!important;white-space:nowrap;letter-spacing:-.03em}
 div:has(>ul[data-hl=RESORT])>div,div:has(>ul[data-hl=PREMIUM])>div{align-self:center!important;flex-shrink:0}
 div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button{font-size:10px!important;padding:4px 6px!important;height:auto!important;letter-spacing:-.03em}
+
+[data-m=ntov][style]{position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;height:100vh;height:100dvh;padding:12px!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box}
+[data-m=ntov] [data-m=ntpop][style]{margin:auto!important;max-height:calc(100vh - 24px)!important;max-height:calc(100dvh - 24px)!important}
 }
 </style>
 </helmet>
@@ -2774,7 +2777,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
 </div>
 
     <sc-if value="{{ ntShow }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ closeNt }}" style="position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box">
+    <div data-m="ntov" onClick="{{ closeNt }}" style="position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box">
       <div data-m="ntpop" onClick="{{ stop }}" style="width:100%;max-width:760px;max-height:calc(100vh - 32px);background:#f5f5f7;border-radius:20px;display:flex;flex-direction:column;overflow:hidden">
         <div data-m="nthd" style="background:#c8381e;color:#fff;padding:16px 20px;display:flex;align-items:center;gap:12px">
           <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:12px;font-weight:700;opacity:.85">무순위(사후) 입주자모집공고 · 주택관리번호 2026910261</span><span style="font-size:20px;font-weight:800;letter-spacing:-.02em">올 뉴 챔피언스시티 1차 잔여 729세대</span><span style="font-size:12.5px;opacity:.9">공고일 2026.10.15(목) · 분양문의 1599-0199</span></div>
@@ -3258,7 +3261,7 @@ class Component extends DCLogic {
     };
   }
   componentDidMount() {
-    this._hdt = () => { const h = document.querySelector('[data-cc-head]'); if (!h) return; const n = h.querySelector('[data-m=nav]'); if (window.innerWidth < 768 && n && h.querySelector('[data-m=fam]')) h.style.setProperty('--hdt', -n.offsetTop + 'px'); else h.style.removeProperty('--hdt'); };
+    this._hdt = () => { const h = document.querySelector('[data-cc-head]'); if (!h) return; const n = h.querySelector('[data-m=nav]'); if (window.innerWidth < 1100 && n && h.querySelector('[data-m=fam]')) h.style.setProperty('--hdt', -n.offsetTop + 'px'); else h.style.removeProperty('--hdt'); };
     window.addEventListener('resize', this._hdt); setTimeout(this._hdt, 300); setTimeout(this._hdt, 1500);
     this._mhKey = e => { const V = this.state.mhView; if (!V && this.state.sysI != null) { const n = this.SYS.length, i = this.state.sysI; if (e.key === 'Escape') this.setState({ sysI: null }); else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') this.setState({ sysI: (i + (e.key === 'ArrowLeft' ? -1 : 1) + n) % n }); else return; e.stopImmediatePropagation(); e.preventDefault(); return; } if (!V) return; const n = V.comm ? this.COMMPH[V.comm][1].length : this.MH_84A[V.code].length; if (e.key === 'Escape') this.setState({ mhView: null }); else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') this.setState({ mhView: Object.assign({}, V, { i: (V.i + (e.key === 'ArrowLeft' ? -1 : 1) + n) % n }) }); else return; e.stopImmediatePropagation(); e.preventDefault(); };
     this._lmKey = e => { if (e.key === 'Escape' && this.state.scOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ scOpen: false }); return; } if (e.key === 'Escape' && this.state.bbOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ bbOpen: false }); return; } if (e.key === 'Escape' && this.state.cpOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ cpOpen: null }); return; } if (e.key === 'Escape' && this.state.htOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ htOpen: false }); return; } if (e.key === 'Escape' && this.state.mlOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ mlOpen: false }); return; } if (e.key === 'Escape' && this.state.hdOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ hdOpen: false }); return; } if (e.key === 'Escape' && this.state.ucI != null) { e.stopPropagation(); this.setState({ ucI: null }); return; } if (e.key === 'Escape' && this.state.pvOpen) { e.stopPropagation(); this.setState({ pvOpen: false }); return; } if (this.state.pvOpen && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { e.stopPropagation(); this._pvGo && this._pvGo(e.key === 'ArrowLeft' ? -1 : 1); return; } if (e.key === 'Escape' && this.state.lmOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ lmOpen: false }); } }; window.addEventListener('keydown', this._lmKey, true);
@@ -3739,7 +3742,7 @@ class Component extends DCLogic {
         if (f > b.max) return { cells: [blank(6)] };
         const cells = []; for (let l = 1; l <= 6; l++) { const u = D.byId[b.no + '-' + (f * 100 + l)]; cells.push(u ? cellOf(u, 1) : xs()); }
         return { cells }; });
-      const lineTypes = b.lines.map((c, i) => { const k = /^(103|112|128)/.test(c) ? c + '1' : c; return { label: this.typeLabel(k), bg: D.types[k].color, go: () => { if (window.innerWidth < 768) this.setState({ upPlan: { b: b.no, i, code: k }, ppZoom: 1 }); } }; });
+      const lineTypes = b.lines.map((c, i) => { const k = /^(103|112|128)/.test(c) ? c + '1' : c; return { label: this.typeLabel(k), bg: D.types[k].color, go: () => { if (window.innerWidth < 1100) this.setState({ upPlan: { b: b.no, i, code: k }, ppZoom: 1 }); } }; });
       return { name: b.no + '동', stat: isGB ? b.units.length + '세대' : (F ? '해당 ' + (bMatch[b.no] || 0) : '매물 ' + (bSale[b.no] || 0)) + ' / ' + b.units.length, lineTypes, rows, ring: S.focusB === b.no ? '0 0 0 2px #0066cc' : 'none' };
     });
     groupChips = D.GROUPS.map((gg, i) => { const c = this.chip(S.group === i, D.GCOLOR[i]); const n = gg.reduce((a, no) => a + (F ? (bMatch[no] || 0) : (bSale[no] || 0)), 0);
@@ -3829,7 +3832,7 @@ class Component extends DCLogic {
       const dirty = JSON.stringify({ e: dr.expand, s: dr.sel }) !== JSON.stringify({ e: cur.expand, s: cur.sel });
       const dis = !dr.expand; const optView = S.optView || 'paid';
       const cats = []; K.paid.forEach(it => { if (!cats.includes(it.cat)) cats.push(it.cat); });
-      const isMob = typeof window !== 'undefined' && window.innerWidth < 768;
+      const isMob = typeof window !== 'undefined' && window.innerWidth < 1100;
       const optCat = cats.includes(S.optCat) || S.optCat === '전체' ? S.optCat : (cats.includes('시스템에어컨') ? '시스템에어컨' : '전체');
       const paidSel = dr.sel.paid || {}, freeSel = dr.sel.free || {};
       const setPaid = (id, val) => { const np = Object.assign({}, paidSel); if (val) np[id] = val; else delete np[id]; setDr({ sel: { paid: np, free: freeSel } }); };
@@ -4166,7 +4169,7 @@ class Component extends DCLogic {
         .map(c => Object.assign(c, { go: () => this.setState({ commPop: c.k, zoom: 1 }) })),
       commOpen: !!S.commPop, comm: Object.assign({ hdWrap: 'wrap', subShrink: '0' }, commV, commV.hasNav ? { subShrink: '1' } : {}),
       closeComm: () => this.setState({ commPop: null }),
-      zoomPct: Math.round((S.zoom || 1) * 100) + '%', zoomW: commV.b1f ? (window.innerWidth < 768 ? ((S.zoom || 1) * 100) + '%' : 'calc((100vh - 132px) * ' + (S.zoom || 1) + ' * ' + commV.ar + ')') : commV.mhOn ? ((S.zoom || 1) * 100) + '%' : 'min(' + ((S.zoom || 1) * 100) + '%, calc((100vh - 170px) * ' + (S.zoom || 1) + ' * ' + (commV.ar || 1.1667) + '))', zoomAR: String(commV.ar || 1.1667),
+      zoomPct: Math.round((S.zoom || 1) * 100) + '%', zoomW: commV.b1f ? (window.innerWidth < 1100 ? ((S.zoom || 1) * 100) + '%' : 'calc((100vh - 132px) * ' + (S.zoom || 1) + ' * ' + commV.ar + ')') : commV.mhOn ? ((S.zoom || 1) * 100) + '%' : 'min(' + ((S.zoom || 1) * 100) + '%, calc((100vh - 170px) * ' + (S.zoom || 1) + ' * ' + (commV.ar || 1.1667) + '))', zoomAR: String(commV.ar || 1.1667),
       showTypeBoard: gx, showFamChips: !gx, typeBoardCells: [typeBoard[0], typeBoard[1], typeBoard[4], typeBoard[2], typeBoard[3]].map((r, i) => Object.assign({}, r, { bl: i === 0 || i === 3 ? 'none' : '1px solid #f0f0f2', rs: i === 2 ? 'span 2' : 'auto',
         dir: i === 2 ? 'column' : 'row', ai: i === 2 ? 'center' : 'center', gap: i === 2 ? '1px' : '5px', lw: i === 2 ? 'auto' : '38px', nw: i === 2 ? '0' : '42px', cw: i === 2 ? '48px' : '0',
         chipRows: i === 2 ? [{ chips: r.chips.slice(0, 3) }, { chips: r.chips.slice(3) }] : [{ chips: r.chips }] })),
@@ -4215,7 +4218,7 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
       noSelText: isGB ? '배치표에서 호실을 누르면 타입 개요 · 공급안내 · 평면이 표시됩니다' : '배치표에서 호실을 누르면 타입 개요 · 분양가 · 확장비 · 옵션 · 프리미엄 · 납부현황이 표시됩니다', boardStaff: !isGB, showGuestNav: guestOnly && vis.length > 1,
       altType: (S.upPlan && S.upPlan.code) || (S.pp && S.pp.code) || (S.sel && D.byId[S.sel] ? D.byId[S.sel].type : '') || '',
       ...(() => { const d = new Date(); const td = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); const on = !!GS.notice && (!GS.ntFrom || td >= GS.ntFrom) && (!GS.ntTo || td <= GS.ntTo); let hid = false; try { hid = localStorage.getItem('cc-nt-hide') === td; } catch (x) {} const auto = guestOnly && on && !hid && !S.ntClosed; const vk = vis.map(v => v[0]); const setG = o => this.setState(ss => ({ guest: Object.assign({}, ss.guest, o) }));
-        return { ntShow: on && (S.ntOpen || auto), ntChip: on && gx, openNt: () => this.setState({ ntOpen: true }), ntBodyRef: el => { if (this._ntRO) { this._ntRO.disconnect(); this._ntRO = null; } if (!el) return; const fit = () => { if (window.innerWidth >= 768) { el.style.maxHeight = ''; el.style.flex = ''; return; } const s = el.querySelectorAll(':scope > section')[1]; if (!s) return; el.style.flex = '0 1 auto'; el.style.maxHeight = (s.offsetTop + s.offsetHeight + 14) + 'px'; }; fit(); if (window.ResizeObserver) { this._ntRO = new ResizeObserver(fit); this._ntRO.observe(el); } },
+        return { ntShow: on && (S.ntOpen || auto), ntChip: on && gx, openNt: () => this.setState({ ntOpen: true }), ntBodyRef: el => { if (this._ntRO) { this._ntRO.disconnect(); this._ntRO = null; } if (!el) return; const fit = () => { if (window.innerWidth >= 1100) { el.style.maxHeight = ''; el.style.flex = ''; return; } const s = el.querySelectorAll(':scope > section')[1]; if (!s) return; el.style.flex = '0 1 auto'; const px = (s.getBoundingClientRect().bottom - el.getBoundingClientRect().top + el.scrollTop + 14) + 'px'; if (el.style.maxHeight !== px) el.style.maxHeight = px; }; fit(); if (window.ResizeObserver) { this._ntRO = new ResizeObserver(fit); this._ntRO.observe(el); } },
       closeNt: () => this.setState({ ntOpen: false, ntClosed: true }),
           ntHideToday: () => { try { localStorage.setItem('cc-nt-hide', td); } catch (x) {} this.setState({ ntOpen: false, ntClosed: true }); },
           ntCanPrice: vk.includes('gprice') || vk.includes('price'), ntCanOpt: vk.includes('goption') || vk.includes('option'),
