@@ -442,9 +442,11 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
 <div data-cc-head="1" style="position:sticky;top:0;z-index:30;background:rgba(245,245,247,.94);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid #e5e5ea">
   <div data-m="hd1" style="max-width:1720px;margin:0 auto;padding:12px 20px 0;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
     <div onClick="{{ goHome }}" title="첫 화면으로" style="display:flex;align-items:center;gap:8px;cursor:pointer">
-    <img src="assets/logo_full.svg" alt="ALL NEW CHAMPIONS CITY" style="display:block;width:138px;height:auto;flex-shrink:0">
+    <sc-if value="{{ isChamps }}" hint-placeholder-val="{{ true }}"><img src="assets/logo_full.svg" alt="ALL NEW CHAMPIONS CITY" style="display:block;width:138px;height:auto;flex-shrink:0"></sc-if>
+    <sc-if value="{{ isSite }}" hint-placeholder-val="{{ false }}"><img src="{{ siteLogo }}" alt="{{ siteName }}" style="display:block;height:34px;width:auto;flex-shrink:0"></sc-if>
     <div style="display:flex;flex-direction:column;gap:2px">
-      <div data-m="ttl" style="font-size:18px;font-weight:700;letter-spacing:-.02em">올 뉴 챔피언스시티 1차</div>
+      <sc-if value="{{ isChamps }}" hint-placeholder-val="{{ true }}"><div data-m="ttl" style="font-size:18px;font-weight:700;letter-spacing:-.02em">올 뉴 챔피언스시티 1차</div></sc-if>
+      <sc-if value="{{ isSite }}" hint-placeholder-val="{{ false }}"><div data-m="ttl" style="font-size:18px;font-weight:700;letter-spacing:-.02em">{{ siteName }}</div></sc-if>
       <div style="font-size:12px;color:#6e6e73">{{ subtitle }}</div>
     </div>
     </div>
@@ -531,6 +533,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap">
       <div style="font-size:17px;font-weight:700">단지배치</div>
       <div data-m="ovhint" style="font-size:13px;color:#6e6e73">{{ overviewHint }}</div>
+      <sc-if value="{{ hasSpBlk }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:4px"><sc-for list="{{ spBlkChips }}" as="b"><button onClick="{{ b.go }}" style="border:1px solid {{ b.bd }};background:{{ b.bg }};color:{{ b.fg }};border-radius:9999px;padding:4px 12px;font-size:12.5px;font-weight:700;cursor:pointer">{{ b.label }}</button></sc-for></div></sc-if>
       <div data-m="leg" style="margin-left:auto;display:flex;gap:10px;font-size:12px;color:#6e6e73">
         <sc-for list="{{ groupLegend }}" as="g"><span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:3px;border:2px solid {{ g.color }}"></span>{{ g.label }}</span></sc-for>
       </div>
@@ -542,7 +545,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
         <button onClick="{{ openSite }}" style="height:32px;border:none;border-radius:9999px;padding:0 12px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;font-weight:700;cursor:pointer">전체화면 ⤢</button>
       </div>
       <div style="position:relative;transform:{{ spTf }};transform-origin:0 0">
-      <img src="assets/site-plan.jpg" alt="챔피언스시티 1차 단지배치도" draggable="false" style="display:block;width:100%;height:auto;user-select:none">
+      <img src="{{ sitePlanSrc }}" alt="{{ sitePlanAlt }}" draggable="false" style="display:block;width:100%;height:auto;user-select:none">
       <sc-for list="{{ commSpots }}" as="h">
         <button onClick="{{ h.go }}" title="{{ h.title }}" style="position:absolute;left:{{ h.x }}%;top:{{ h.y }}%;width:{{ h.w }}%;height:{{ h.h }}%;border:2px dashed #f5c400;background:transparent;border-radius:12px;cursor:zoom-in;padding:0" style-hover="background:rgba(245,196,0,.18)">
           <span style="position:absolute;right:-6px;top:-10px;background:#f5c400;color:#1d1d1f;border-radius:9999px;font-size:11px;font-weight:700;padding:3px 8px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25)">{{ h.badge }}</span>
@@ -579,7 +582,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     <div style="flex:0 0 auto;background:#fff;border-radius:16px;padding:9px 14px">
       <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px">
         <span style="font-size:15px;font-weight:700">타입별 세대수</span>
-        <span style="font-size:12px;color:#6e6e73">24개 타입 · 합계 3,216</span>
+        <span style="font-size:12px;color:#6e6e73">{{ typeSumText }}</span>
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px">
         <sc-for list="{{ typeList }}" as="t" hint-placeholder-count="24">
@@ -650,7 +653,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:#6e6e73;align-items:center">
       <sc-for list="{{ legend }}" as="l"><span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:{{ l.bg }};box-shadow:{{ l.ring }}"></span>{{ l.label }}</span></sc-for>
-      <span data-m="bnote" style="margin-left:auto">21F 피난층 · 101동 44F 스카이커뮤니티 · 49F 펜트하우스 병합셀<sc-if value="{{ boardStaff }}" hint-placeholder-val="{{ true }}"> · <span style="display:inline-block;background:#d2264b;color:#fff;font-size:9px;font-weight:800;border-radius:2px;padding:0 3px;line-height:13px">급</span> = 급매</sc-if></span>
+      <span data-m="bnote" style="margin-left:auto"><sc-if value="{{ isChamps }}" hint-placeholder-val="{{ true }}">21F 피난층 · 101동 44F 스카이커뮤니티 · 49F 펜트하우스 병합셀</sc-if><sc-if value="{{ boardStaff }}" hint-placeholder-val="{{ true }}"> · <span style="display:inline-block;background:#d2264b;color:#fff;font-size:9px;font-weight:800;border-radius:2px;padding:0 3px;line-height:13px">급</span> = 급매</sc-if></span>
     </div>
   </div>
 
@@ -1889,6 +1892,60 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
 </div>
 </sc-if>
 
+<sc-if value="{{ isSiteIntro }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:1720px;margin:0 auto;padding:16px 20px 40px;display:flex;flex-direction:column;gap:20px">
+  <div style="position:relative;border-radius:20px;overflow:hidden;background:#1d1d1f;min-height:360px;display:flex;align-items:flex-end">
+    <img src="{{ si.heroImg }}" alt="{{ si.heroAlt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    <div style="position:relative;width:100%;padding:28px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;display:flex;flex-direction:column;gap:6px">
+      <h1 style="margin:0;font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:-.02em;text-wrap:pretty">{{ si.title }}</h1>
+      <span style="font-size:clamp(13px,1.4vw,16px);opacity:.92;text-wrap:pretty">{{ si.sub }}</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><sc-for list="{{ si.heroDots }}" as="d"><button onClick="{{ d.go }}" style="width:10px;height:10px;border-radius:9999px;border:none;padding:0;background:{{ d.bg }};cursor:pointer"></button></sc-for></div>
+    </div>
+  </div>
+  <sc-for list="{{ si.sections }}" as="s" hint-placeholder-count="2">
+    <div style="background:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0;font-size:clamp(18px,2vw,24px);font-weight:800;letter-spacing:-.02em;color:#1d1d1f;text-wrap:pretty">{{ s.title }}</h2><div style="display:flex;gap:4px;margin-left:auto"><sc-for list="{{ s.blks }}" as="b"><button onClick="{{ b.go }}" style="border:1px solid {{ b.bd }};background:{{ b.bg }};color:{{ b.fg }};border-radius:9999px;padding:5px 12px;font-size:12.5px;font-weight:700;cursor:pointer">{{ b.label }}</button></sc-for></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px;align-items:start">
+        <sc-if value="{{ s.hasImg }}"><button onClick="{{ s.zoom }}" style="border:none;padding:0;background:#f5f5f7;border-radius:12px;overflow:hidden;cursor:zoom-in"><img src="{{ s.img }}" alt="{{ s.title }}" style="display:block;width:100%;height:auto"></button></sc-if>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ s.list }}" as="t"><li style="display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.5;color:#1d1d1f"><span style="flex:none;min-width:22px;font-size:12px;font-weight:800;color:{{ si.accent }}">{{ t.n }}</span><span style="text-wrap:pretty">{{ t.text }}</span></li></sc-for>
+        </ul>
+      </div>
+      <sc-if value="{{ s.hasThumbs }}"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(160px,45%),1fr));gap:8px"><sc-for list="{{ s.thumbs }}" as="t"><button onClick="{{ t.zoom }}" style="border:none;padding:0;background:#f5f5f7;border-radius:10px;overflow:hidden;cursor:zoom-in;aspect-ratio:4 / 3"><img src="{{ t.src }}" alt="{{ t.alt }}" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover"></button></sc-for></div></sc-if>
+    </div>
+  </sc-for>
+  <sc-if value="{{ si.hasSched }}">
+  <div style="background:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+    <h2 style="margin:0;font-size:clamp(18px,2vw,24px);font-weight:800;color:#1d1d1f">분양 일정</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:8px">
+      <sc-for list="{{ si.sched }}" as="x"><div style="background:#f5f5f7;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:700;color:#6e6e73">{{ x.k }}</span><span style="font-size:15px;font-weight:800;color:#1d1d1f">{{ x.v }}</span></div></sc-for>
+    </div>
+  </div>
+  </sc-if>
+  <sc-for list="{{ si.notices }}" as="n">
+  <div style="background:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+    <h2 style="margin:0;font-size:clamp(18px,2vw,24px);font-weight:800;color:#1d1d1f">{{ n.title }}</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px;align-items:start">
+      <sc-if value="{{ n.hasImg }}"><button onClick="{{ n.zoom }}" style="border:none;padding:0;background:#f5f5f7;border-radius:12px;overflow:hidden;cursor:zoom-in"><img src="{{ n.img }}" alt="{{ n.title }}" style="display:block;width:100%;height:auto"></button></sc-if>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.5;color:#1d1d1f"><sc-for list="{{ n.summary }}" as="t"><li>{{ t }}</li></sc-for></ul>
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ n.pdfs }}" as="p"><a href="{{ p.href }}" download="{{ p.name }}" style="display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:9999px;background:{{ si.accent }};color:#fff;font-size:13px;font-weight:700;text-decoration:none">PDF {{ p.label }}</a></sc-for></div>
+      </div>
+    </div>
+  </div>
+  </sc-for>
+  <sc-if value="{{ si.hasFaq }}">
+  <div style="background:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0">
+    <h2 style="margin:0;font-size:clamp(18px,2vw,24px);font-weight:800;color:#1d1d1f">자주 묻는 질문</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:8px">
+      <sc-for list="{{ si.faq }}" as="q"><div style="border:1px solid #ececf0;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px"><span style="font-size:14px;font-weight:800;color:#1d1d1f">Q. {{ q.q }}</span><span style="font-size:13.5px;line-height:1.5;color:#3a3a3c">{{ q.a }}</span></div></sc-for>
+    </div>
+  </div>
+  </sc-if>
+</div>
+<sc-if value="{{ si.zoomOn }}"><div onClick="{{ si.zoomClose }}" style="position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out"><img src="{{ si.zoomSrc }}" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:8px"></div></sc-if>
+</sc-if>
+
 <sc-if value="{{ isCity }}" hint-placeholder-val="{{ false }}">
 <div style="max-width:1720px;margin:0 auto;padding:16px 20px 40px;display:flex;flex-direction:column;gap:20px">
   <div data-m="hero" style="position:relative;border-radius:20px;overflow:hidden;background:#1d1d1f;min-height:420px;display:flex;align-items:flex-end">
@@ -2873,7 +2930,19 @@ class Component extends DCLogic {
 
   hash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967296; }
 
+  k(x) { const S = typeof window !== 'undefined' && window.__SITE; return S && S.site && S.site.code ? S.site.code + ':' + x : x; }
+  buildSite(S) {
+    const types = {}; Object.keys(S.types).forEach(k => { const a = S.types[k]; types[k] = { code: k, ex: a.exclusive, sup: a.supply, con: a.contract, n: a.households, color: a.color, ph: false, fam: k.replace(/[A-Z]+\d*$/, '') || k, plan: a.plan, block: a.block }; });
+    const units = [], byId = {}, bmap = {};
+    (S.units.buildings || []).forEach(B => { const tops = B.lines.map(l => l.topFloor); const b = { no: B.no, block: B.block, lines: B.lines.map(l => l.type), tops, f1: B.lines.map(l => l.floor1), min: 1, max: Math.max.apply(null, tops), sky: 0, skip: [], ph: null, units: [] }; bmap[B.no] = b;
+      for (let f = 1; f <= b.max; f++) for (let l = 1; l <= b.lines.length; l++) { if (f > tops[l - 1]) continue; if (f === 1 && b.f1[l - 1] !== '세대') continue; const ho = f * 100 + l; const u = { id: B.no + '-' + ho, b: B.no, f, l, ho, type: b.lines[l - 1] }; units.push(u); byId[u.id] = u; b.units.push(u); } });
+    const EXP = {}; Object.keys(types).forEach(k => { EXP[k] = ((S.prices.balcony || {}).byType || {})[k] / 1e6 || 0; });
+    const GROUPS = (S.site.groups || []).map(g => g.dongs); const GLABEL = (S.site.groups || []).map(g => g.label);
+    const PRICE = {}; Object.keys(types).forEach(k => { const p = (S.prices.byType || {})[k] || {}; PRICE[k] = ['1', '2', '3', '4', '기준층(5층~)'].map(x => (p[x] || 0) / 1e6); });
+    return { generic: true, S, types, PRICE: PRICE, PH: {}, PH_WHERE: {}, EXP, BANDS: ['1층', '2층', '3층', '4층', '기준층'], units, byId, bmap, GROUPS, GLABEL, GCOLOR: ['#0066cc', '#1f8a5a', '#c0591a', '#7a4fc9', '#b0306a', '#4a6b8a'], HOT: {} };
+  }
   buildData() {
+    if (typeof window !== 'undefined' && window.__SITE && window.__SITE.units) return this.buildSite(window.__SITE);
     const T = {
       '84A':[84.9730,113.1294,169.2025,313,'#c6d6a4'],'84B':[84.9479,113.8204,169.8769,313,'#cbcbcb'],'84C':[84.9819,113.4941,169.5731,536,'#f2ae96'],
       '84D':[84.9769,112.4279,168.5036,530,'#d8cde6'],'84E':[84.9809,113.6367,169.7151,306,'#d3e9f6'],'84F':[84.9849,114.4645,170.5454,536,'#adc4e4'],
@@ -2924,17 +2993,17 @@ class Component extends DCLogic {
     return { types, PRICE, PH, PH_WHERE, EXP, BANDS, units, byId, bmap, GROUPS, GCOLOR, HOT };
   }
 
-  pf(type) { const t = this.D.types[type]; if (t.ph) return type; if (type === '84A' || type === '84B') return '84AB'; if (type === '84E' || type === '84F') return '84EF'; if (t.fam === '84') return type; return type.slice(0, 4); }
-  bandIdx(f) { return f <= 4 ? 0 : Math.min(9, Math.floor((f - 5) / 5) + 1); }
-  priceOf(u) { const t = this.D.types[u.type]; if (t.ph) return this.D.PH[u.type] * 1e6; return this.D.PRICE[this.pf(u.type)][this.bandIdx(u.f)] * 1e6; }
+  pf(type) { const t = this.D.types[type]; if (this.D.generic) return type; if (t.ph) return type; if (type === '84A' || type === '84B') return '84AB'; if (type === '84E' || type === '84F') return '84EF'; if (t.fam === '84') return type; return type.slice(0, 4); }
+  bandIdx(f) { if (this.D.generic) return Math.min(4, Math.max(0, f - 1)); return f <= 4 ? 0 : Math.min(9, Math.floor((f - 5) / 5) + 1); }
+  priceOf(u) { const t = this.D.types[u.type]; if (this.D.generic) { const p = (this.D.S.prices.byType || {})[u.type] || {}; return (u.f <= 4 ? p[String(u.f)] : p['기준층(5층~)']) || 0; } if (t.ph) return this.D.PH[u.type] * 1e6; return this.D.PRICE[this.pf(u.type)][this.bandIdx(u.f)] * 1e6; }
   eok(n) { if (!n) return '0'; const neg = n < 0; n = Math.abs(Math.round(n)); const e = Math.floor(n / 1e8), m = Math.round((n % 1e8) / 1e4); return (neg ? '-' : '') + ((e ? e + '억 ' : '') + (m ? m.toLocaleString() + '만' : '')).trim(); }
   man(n) { return n ? Math.round(n / 1e4).toLocaleString() + '만' : '0'; }
   fmtPhone(v) { const d = String(v || '').replace(/\D/g, '').slice(0, 11); if (d.length < 4) return d; if (d.length < 8) return d.slice(0, 3) + '-' + d.slice(3); return d.slice(0, 3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(-4); }
   fmtTel(v) { const d = String(v || '').replace(/\D/g, '').slice(0, 11); if (/^01/.test(d)) return this.fmtPhone(d); const a = /^02/.test(d) ? 2 : 3; if (d.length <= a) return d; const r = d.slice(a); if (r.length <= 3) return d.slice(0, a) + '-' + r; const m = r.length >= 8 ? 4 : 3; return d.slice(0, a) + '-' + r.slice(0, m) + (r.length > m ? '-' + r.slice(m, m + 4) : ''); }
-  typeLabel(code) { return /^(103|112|128)/.test(code) ? code.slice(0, 4) + '1-3' : code; }
+  typeLabel(code) { if (this.D.generic) return code; return /^(103|112|128)/.test(code) ? code.slice(0, 4) + '1-3' : code; }
 
   seedU() {
-    const o = {}; const sur = '김이박최정강조윤장임한오서신권황안송류홍'; const giv = ['민준','서연','도윤','지우','하준','서윤','주원','하은','지호','수아','예준','지민','현우','채원','건우','유진'];
+    const o = {}; if (this.D.generic) return o; const sur = '김이박최정강조윤장임한오서신권황안송류홍'; const giv = ['민준','서연','도윤','지우','하준','서윤','주원','하은','지호','수아','예준','지민','현우','채원','건우','유진'];
     this.D.units.forEach(u => { const r = this.hash(u.id); if (r >= 0.2) return; const r2 = this.hash(u.id + 'x');
       const s = { status: r < 0.045 ? '매물' : '보유', owner: sur[Math.floor(r2 * sur.length)] + giv[Math.floor(this.hash(u.id + 'g') * giv.length)],
         phone: '010-' + (1000 + Math.floor(r2 * 8999)) + '-' + (1000 + Math.floor(this.hash(u.id + 'p') * 8999)), tags: [], supply: r2 < 0.3 ? '특별공급(신혼부부)' : r2 < 0.4 ? '특별공급(생애최초)' : '일반공급' };
@@ -2942,7 +3011,7 @@ class Component extends DCLogic {
       o[u.id] = s; });
     return o;
   }
-  seedCards(u) {
+  seedCards(u) { if (this.D.generic) return [];
     const sell = Object.keys(u).filter(id => u[id].status === '매물').sort().slice(0, 8);
     const texts = ['전매가능일 이후 바로 매도 희망. 요구 P 조정 어려움, 급하지 않음','확장 + 시스템에어컨 5대 계약 예정. 옵션 포함 가격으로 받고 싶어함','중도금 대출 승계 조건 문의. 계약금만 납부 후 매도 예정','고층 로얄동이라 P 5천 이상 원함. 타부동산에도 내놓았다고 함','자금 사정으로 급매 가능성 있음. 3월 전매가능일 맞춰 재통화','부부 공동명의 여부 확인 필요. 배우자 동의 후 재연락','실거주 고민 중. 시세 보고 결정하겠다고 함','냉장고패키지·식기세척기 옵션 선택 완료. 매도 시 옵션비 별도 계산 요청'];
     const staff = ['김민지','이서준','박하은','황후권'];
@@ -3202,11 +3271,11 @@ class Component extends DCLogic {
           Object.keys(p).forEach(k => { if (k === 'dbAt' || k === 'dbBy') return; const base = k.replace(/Etc$/, 'Rel'); if (!may(base) || (s[k] || '') === (p[k] || '')) delete p[k]; });
           if (Object.keys(p).length <= 2) { this.setState({ dbDraft: null }); return this.flash('변경된 내용이 없습니다'); }
           this.setUnit(su.id, p); this.setState({ dbDraft: null }); this.flash(su.b + '동 ' + su.ho + '호 저장됨'); },
-        goBoard: () => this.setState({ tab: 'board', group: Math.floor((su.b - 101) / 3), sel: su.id, focusB: null }) }; }
+        goBoard: () => this.setState({ tab: 'board', group: Math.max(0, D.GROUPS.findIndex(g => g.includes(su.b))), sel: su.id, focusB: null }) }; }
     return {
-      filled: filled.toLocaleString() + ' / 3,216', pct: Math.round(filled / 32.16) + '%', pctW: (filled / 32.16) + '%', count: list.length.toLocaleString() + '세대', isEmpty: !list.length, emptyText: inDb.length ? '조건에 맞는 세대가 없습니다' : '상담카드 또는 엑셀 업로드로 입력된 세대가 없습니다',
+      filled: filled.toLocaleString() + ' / ' + D.units.length.toLocaleString(), pct: Math.round(filled / D.units.length * 100) + '%', pctW: (filled / D.units.length * 100) + '%', count: list.length.toLocaleString() + '세대', isEmpty: !list.length, emptyText: inDb.length ? '조건에 맞는 세대가 없습니다' : '상담카드 또는 엑셀 업로드로 입력된 세대가 없습니다',
       q: S.dbQ, onQ: e => this.setState({ dbQ: e.target.value, dbPage: 0 }), qPh: canPhone ? '호실 · 이름 · 번호 검색' : '호실 · 이름 검색',
-      groupChips: [['all', '전체'], ['0', '101~103'], ['1', '104~106'], ['2', '107~109'], ['3', '110~112']].map(([k, l]) => Object.assign(this.chip(S.dbGroup === k, '#1d1d1f'), { label: l, onClick: () => this.setState({ dbGroup: k, dbPage: 0 }) })),
+      groupChips: [['all', '전체']].concat(D.GROUPS.map((g, i) => [String(i), (D.GLABEL ? D.GLABEL[i] + ' ' : '') + g[0] + '~' + g[g.length - 1]])).map(([k, l]) => Object.assign(this.chip(S.dbGroup === k, '#1d1d1f'), { label: l, onClick: () => this.setState({ dbGroup: k, dbPage: 0 }) })),
       emptyChip: Object.assign(this.chip(S.dbEmpty, '#b25000'), { label: '미입력 세대만', onClick: () => this.setState({ dbEmpty: !S.dbEmpty, dbPage: 0 }) }),
       rows, pageText: (pg + 1) + ' / ' + pages, prev: () => this.setState({ dbPage: Math.max(0, pg - 1) }), next: () => this.setState({ dbPage: Math.min(pages - 1, pg + 1) }),
       canXl, noXl: !canXl, onFile: e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) this.readImport(f); },
@@ -3240,7 +3309,7 @@ class Component extends DCLogic {
   }
   blankForm() { return { kind: 'seller', unit: '', name: '', phone: '', call: '통화', status: '미확인', ask: '', tags: [], brokers: [], text: '', wantDong: '무관', wantType: '무관', wantFloor: '무관', budget: '', pBudget: '', optPref: '', carrier: '', mgr: '', mgrOk: null, mgrUnlock: false, mgrReason: '', mgrAsk: '', mgrAskText: '', inflow: [], visitAt: '', visitBy: '', inMedia: [], inBrokers: [], inFriend: '', sellWhy: [] }; }
   loadState() {
-    let saved = null; const go = !!this.props.guestOnly; try { saved = JSON.parse(localStorage.getItem('cc-dash-v1') || 'null'); } catch (e) {} if (go && saved) saved = { modules: saved.modules, guest: saved.guest, sync: saved.sync };
+    let saved = null; const go = !!this.props.guestOnly; try { saved = JSON.parse(localStorage.getItem(this.k('cc-dash-v1')) || 'null'); } catch (e) {} if (go && saved) saved = { modules: saved.modules, guest: saved.guest, sync: saved.sync };
     const u = go ? {} : saved && saved.u ? saved.u : this.seedU();
     return {
       tab: this.props.defaultTab || 'overview', group: 0, sel: null, filter: null, colorMode: 'type', showPrice: false, focusB: null,
@@ -3266,10 +3335,13 @@ class Component extends DCLogic {
     this._mhKey = e => { const V = this.state.mhView; if (!V && this.state.sysI != null) { const n = this.SYS.length, i = this.state.sysI; if (e.key === 'Escape') this.setState({ sysI: null }); else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') this.setState({ sysI: (i + (e.key === 'ArrowLeft' ? -1 : 1) + n) % n }); else return; e.stopImmediatePropagation(); e.preventDefault(); return; } if (!V) return; const n = V.comm ? this.COMMPH[V.comm][1].length : this.MH_84A[V.code].length; if (e.key === 'Escape') this.setState({ mhView: null }); else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') this.setState({ mhView: Object.assign({}, V, { i: (V.i + (e.key === 'ArrowLeft' ? -1 : 1) + n) % n }) }); else return; e.stopImmediatePropagation(); e.preventDefault(); };
     this._lmKey = e => { if (e.key === 'Escape' && this.state.scOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ scOpen: false }); return; } if (e.key === 'Escape' && this.state.bbOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ bbOpen: false }); return; } if (e.key === 'Escape' && this.state.cpOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ cpOpen: null }); return; } if (e.key === 'Escape' && this.state.htOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ htOpen: false }); return; } if (e.key === 'Escape' && this.state.mlOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ mlOpen: false }); return; } if (e.key === 'Escape' && this.state.hdOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ hdOpen: false }); return; } if (e.key === 'Escape' && this.state.ucI != null) { e.stopPropagation(); this.setState({ ucI: null }); return; } if (e.key === 'Escape' && this.state.pvOpen) { e.stopPropagation(); this.setState({ pvOpen: false }); return; } if (this.state.pvOpen && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { e.stopPropagation(); this._pvGo && this._pvGo(e.key === 'ArrowLeft' ? -1 : 1); return; } if (e.key === 'Escape' && this.state.lmOpen && !this.state.mhView) { e.stopPropagation(); this.setState({ lmOpen: false }); } }; window.addEventListener('keydown', this._lmKey, true);
     window.addEventListener('keydown', this._mhKey, true); this._sysRz = () => { if (this.state.sysI != null) this.forceUpdate(); }; window.addEventListener('resize', this._sysRz);
-    fetch('data/subtypes.json').then(r => r.json()).then(m => { Object.keys(m).forEach(id => { const u = this.D.byId[id]; if (u && !u.ph) u.type = m[id]; }); this.setState({ subtypesOk: true }); }).catch(() => {});
+    if (!this.D.generic && window.__SITE) { this.D = this.buildData(); this.setState(this.loadState()); }
+    if (!this.D.generic) fetch('data/subtypes.json').then(r => r.json()).then(m => { Object.keys(m).forEach(id => { const u = this.D.byId[id]; if (u && !u.ph) u.type = m[id]; }); this.setState({ subtypesOk: true }); }).catch(() => {});
     this._esc = e => { if (e.key === 'Escape') { if (this.state.upPlan || this.state.upOv != null || this.state.upOvPh) return this.backUP(); this.setState({ planOpen: null, unitPop: null, commPop: null }); } }; window.addEventListener('keydown', this._esc);
-    if (this.props.guestOnly) { this._cfg = e => { if (e && e.key && e.key !== 'cc-dash-v1') return; try { const s = JSON.parse(localStorage.getItem('cc-dash-v1') || 'null'); if (s) this.setState(ss => ({ modules: Object.assign({}, ss.modules, s.modules), guest: Object.assign({}, ss.guest, s.guest) })); } catch (x) {} }; window.addEventListener('storage', this._cfg); window.addEventListener('focus', this._cfg); }
+    if (this.props.guestOnly) { this._cfg = e => { if (e && e.key && e.key !== 'cc-dash-v1') return; try { const s = JSON.parse(localStorage.getItem(this.k('cc-dash-v1')) || 'null'); if (s) this.setState(ss => ({ modules: Object.assign({}, ss.modules, s.modules), guest: Object.assign({}, ss.guest, s.guest) })); } catch (x) {} }; window.addEventListener('storage', this._cfg); window.addEventListener('focus', this._cfg); }
     if (!this.props.guestOnly) { this._inbox = e => { if (!e || !e.key || e.key === 'cc-guest-inbox') this.pullInbox(); }; window.addEventListener('storage', this._inbox); window.addEventListener('focus', this._inbox); setTimeout(() => this.pullInbox(), 300); }
+    if (this.D.generic) { const O = this.D.S.options.byType || {}; const vars = {}; Object.keys(O).forEach(t => (O[t] || []).forEach(o => { const key = o.name.split(' ')[0]; (vars[key] = vars[key] || { k: key, dims: [key], t: {} }).t[t] = { p: o.price, d: o.detail, q: (o.name.match(/\((.*)\)/) || [])[1] || '', n: o.note || '' }; }));
+      this.setState({ cat: { paid: [{ id: 'p0', cat: '시스템에어컨', name: '천장형 시스템에어컨', perUnit: false, dimNames: ['선택안'], variants: Object.values(vars) }], free: [] } }); } else
     fetch('data/options.json').then(r => r.json()).then(cat => this.setState({ cat })).catch(() => this.setState({ cat: { paid: [], free: [] } }));
     const q = () => document.querySelector('[data-cc-head]');
     const upd = () => { const el = q(); if (!el) return; const h = Math.ceil(el.getBoundingClientRect().height); if (h && h !== this.state.headH) this.setState({ headH: h }); };
@@ -3303,6 +3375,18 @@ class Component extends DCLogic {
     { label: '단지 내 특화시스템', head: '단지에 들어서는 순간 펼쳐지는 에코 라이프', sub: '앞선 생활의 여유와 랜드마크의 자부심을 누릴 수 있습니다', img: 'sys_eco', items: [['첨단 주차관제', '진입차량의 효과적인 통제 및 소유차량 세대 통보'], ['주차장 비상벨', '비상생활을 외부에 알릴 수 있는 비상벨로 안전한 단지 생활'], ['공용부문 모니터링', '어린이놀이터, 지하주차장 등 비상상황 및 안전사고에 대처'], ['확장형 주차공간', '주차공간의 30% 이상을 2.6m의 확장형 주차공간으로 제공'], ['주차장 LED 조명 적용', '경제적이고 친환경적인 에너지 절감 LED 조명'], ['신재생에너지', '지열, 태양광 발전 등을 통해 공용관리비용 절감'], ['첨단디지털시스템', '초고속정보통신 1등급 수준, 지상파 디지털방송 등 첨단 수신설비 제공'], ['내진설계 시스템', '지진으로 인한 피해를 막기 위해 내진성능을 확보한 안전한 설계'], ['맘스스테이션', '통학차량의 안전한 승·하차를 위해 설치된 대기공간'], ['무인택배시스템', '택배나 등기 등을 운송자와 만나지 않고도 발송, 수령이 가능']] },
     { label: '스마트 홈 기기', photos: [['sys_food', '음식물 쓰레기 자동이송 시스템', '층별 특별피난계단 전실에 공용 투입구가 설치되어 음식물\n쓰레기를 위생적이고 편리하게 외부로 배출할 수 있습니다.', '554 / 542'], ['sys_ai', '홈 AI 스위치', '스마트 센서로 생활 패턴을 분석하고 재실\n유무를 감지하여 조명 · 난방 · 온도 등을\n스스로 제어합니다.', '444 / 542'], ['sys_wall', '음성인식 월패드', '방문자 확인부터 공동현관 문열림,\n차량 진입 알림, 엘리베이터 호출,\n조명 · 난방 · 가스 등 원격제어가 가능합니다.', '384 / 542']] },
     { label: 'AI 로봇', photos: [['sys_robot', '청소와 운반 기능을 갖춘 ‘AI 로봇’', '자동 급배수, 충전 시스템을 탑재한 클린 로봇과 지하 주차장과\n세대 간 짐을 옮겨주는 포터 로봇으로 주거의 편의성을 높입니다.', '1400 / 730']] }];
+  siteIntroVals() { const D = this.D, S = this.state, C = D.S.content || {}, base = 'sites/' + D.S.site.code + '/', P = x => x ? base + x : ''; const zoom = src => () => this.setState({ siZoom: src });
+    const txt = t => Array.isArray(t) ? t.filter(Boolean).join(' · ') : (t && typeof t === 'object') ? [t.title || t.name, t.desc || t.text || t.sub].filter(Boolean).join(' — ') : String(t);
+    const H = C.hero || {}, HI = H.images || [], hi = (S.siHero || 0) % Math.max(1, HI.length);
+    return { title: H.title || D.S.site.name, sub: H.sub || '', heroImg: P(HI[hi]), heroAlt: D.S.site.name + ' 투시도', accent: (D.S.site.brand && D.S.site.brand.primary) || '#c56f5c',
+      heroDots: HI.length > 1 ? HI.map((_, i) => ({ bg: i === hi ? '#fff' : 'rgba(255,255,255,.45)', go: () => this.setState({ siHero: i }) })) : [],
+      sections: (C.sections || []).map(s0 => { const BK = s0.blocks ? Object.keys(s0.blocks) : []; const bk = BK.length ? ((S.siBlk || {})[s0.id] || BK[0]) : null; const bv = bk ? s0.blocks[bk] : null; const s = Object.assign({}, s0, bv ? (typeof bv === 'string' ? { image: bv } : bv) : {});
+        return { title: s0.title, blks: BK.map(k => ({ label: k, bg: k === bk ? '#1d1d1f' : '#fff', fg: k === bk ? '#fff' : '#1d1d1f', bd: k === bk ? '#1d1d1f' : '#d2d2d7', go: () => this.setState(ss => ({ siBlk: Object.assign({}, ss.siBlk, { [s0.id]: k }) })) })), img: P(s.image), hasImg: !!s.image, zoom: zoom(P(s.image)), list: (s.points || s.items || []).map((t, i) => ({ n: String(i + 1).padStart(2, '0'), text: txt(t) })),
+          hasThumbs: !!(s.images || []).length, thumbs: (s.images || []).map((x, i) => ({ src: P(x), alt: s0.title + ' ' + (i + 1), zoom: zoom(P(x)) })) }; }),
+      hasSched: !!((C.schedule || {}).items || []).length, sched: ((C.schedule || {}).items || []).map(([k, v]) => ({ k, v })),
+      notices: (C.notices || []).map(n => ({ title: n.title, img: P(n.image), hasImg: !!n.image, zoom: zoom(P(n.image)), summary: n.summary || [], pdfs: (n.pdfs || []).map((p, i) => ({ href: P(p), name: p.split('/').pop(), label: (n.pdfLabels || [])[i] || String(i + 1) })) })),
+      hasFaq: !!(C.faq || []).length, faq: (C.faq || []).map(([q, a]) => ({ q, a })),
+      zoomOn: !!S.siZoom, zoomSrc: S.siZoom || '', zoomClose: () => this.setState({ siZoom: null }) }; }
   sysVals() { const i = this.state.sysI, A = this.SYS, n = A.length; if (i == null) return { sysOpen: false, sys: {} }; const X = A[i], go = d => e => { if (e) e.stopPropagation(); this.setState({ sysI: (i + d + n) % n }); }; const nums = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫';
     return { sysOpen: true, sys: { popH: (() => { const iw = Math.min(1560, window.innerWidth - 40) - 44; return Math.round(108 + 40 + iw * 730 / 1400 + 10 + 24 + 44) + 'px'; })(), close: () => this.setState({ sysI: null }), prev: go(-1), next: go(1), tabs: A.map((t, k) => ({ label: (k + 1) + '. ' + t.label, ml: (k + 1) + '. ' + (['세대 특화', '단지 특화', '스마트홈', 'AI 로봇'][k] || t.label), go: () => this.setState({ sysI: k }), bg: k === i ? '#b5300f' : '#fff', fg: k === i ? '#fff' : '#1d1d1f', bd: k === i ? '#b5300f' : '#d2d2d7' })), hasHead: !!X.head, head: X.head || '', sub: X.sub || '', isDiagram: !!X.img, img0: X.img ? 'assets/city/' + ({ sys_smart: 'sys_smart_c', sys_eco: 'sys_eco_c2' }[X.img] || X.img) + '.jpg' : '', openImg0: () => this.setState({ mhView: { comm: 'sys_' + X.img, i: 0 } }), items: (X.items || []).map(([t, d], k) => ({ n: k + 1, t, d, full: t + ' | ' + d })), ...(() => { const inner = Math.min(1560, window.innerWidth - 40) - 44, need = X.img === 'sys_smart' ? 1440 : 1295, f = Math.min(12, 12 * inner / need * 0.96); return f >= 10 ? { cols: 'repeat(3, max-content)', fs: f.toFixed(2) + 'px' } : { cols: 'repeat(auto-fit,minmax(min(100%,420px),1fr))', fs: '12px' }; })(), isPhotos: !!X.photos, photos: (X.photos || []).map(([f, t, d, ar], k) => ({ src: 'assets/city/' + f + '.jpg', t, d: d.replace(/\n/g, ' '), ar, fit: f === 'sys_robot' ? 'contain' : 'cover', bg: f === 'sys_robot' ? '#fff' : '#f5f5f7', open: () => this.setState({ mhView: { comm: 'sysp' + i, i: k } }) })) } }; }
   COMMPH = { sc: ['초등학교', [['assets/city/sc_0.jpg', '등하교 동선'], ['assets/city/sc_1.jpg', '등굣길'], ['assets/city/sc_2.jpg', '교실']]], bb: ['야구의 거리', [['assets/city/bb_s.jpg', '챔피언스필드'], ['assets/city/bb_0.jpg', '야구의 거리'], ['assets/city/bb_1.jpg', '체험의 거리'], ['assets/city/bb_2.jpg', '축제의 거리'], ['assets/city/bb_3.jpg', '승리의 거리']]], cpxa: ['역사문화공원 1', [['assets/city/cpa_0.jpg', '미디어 폰드'], ['assets/city/cpa_1.jpg', '예술 발전소'], ['assets/city/cpa_2.jpg', '야경 명소']]], cpxb: ['역사문화공원 2', [['assets/city/cpb_0.jpg', '기록 전시 공간'], ['assets/city/cpb_1.jpg', '웰컴 센터'], ['assets/city/cpb_2.jpg', '복합 임동 스테이']]], cp: ['문화공원', [['assets/city/cp_1.jpg', '지명설계공모 당선작'], ['assets/city/cp_2.jpg', '문화공원 1'], ['assets/city/cp_3.jpg', '문화공원 2'], ['assets/city/cp_4.jpg', '역사문화공원 1'], ['assets/city/cp_6.jpg', '역사문화공원 1 상세'], ['assets/city/cp_5.jpg', '역사문화공원 2'], ['assets/city/cp_7.jpg', '역사문화공원 2 상세'], ['assets/city/cp_h.jpg', 'HERITAGE PRESERVATION AND REUSE'], ['assets/city/cp_g.jpg', 'GREEN AND BLUE URBAN NATURE']]], ht: ['특급호텔 · 업무시설', [['assets/city/ht_0.jpg', '랜드마크 타워'], ['assets/city/ht_1.jpg', '특급호텔'], ['assets/city/ht_2.jpg', '업무시설']]], ml: ['챔피언스몰', [['assets/city/ml_1.jpg', '장보기'], ['assets/city/ml_2.jpg', '쇼핑몰 내부'], ['assets/city/ml_3.jpg', '영풍문고'], ['assets/city/ml_4.jpg', '다이닝']]], hd: ['더현대 광주', [['assets/city/hd_1.jpg', '더현대 광주 투시도'], ['assets/city/hd_2.jpg', '현장사진'], ['assets/city/hd_3.jpg', '백화점 인접 프리미엄']]], uc: ['입체 보행 네트워크', [['assets/city/uc_1.jpg', '지상 보행데크'], ['assets/city/uc_2.jpg', '지하 연결통로']]], md: ['HEALTHCARE', [['assets/city/md_1.jpg', '헬스케어 서비스 협력 업무 협약식'], ['assets/city/md_phone.png', 'Homeniq 앱']]], sg: ['SIGNATURE PLAN', [['assets/city/sg_1.jpg', '3면 발코니'], ['assets/city/sg_2.jpg', '교차 테라스']]], gr: ['GREEN PLAN', [['assets/city/gr_1.jpg', 'Central Park'], ['assets/city/gr_2.jpg', 'Sky Garden'], ['assets/city/gr_3.jpg', 'Green Plaza']]], lm: ['LANDMARK PLAN', [['assets/city/lm_1.jpg', '단지 전경'], ['assets/city/lm_2.jpg', '중앙 잔디광장']]], sys_sys_smart: ['세대 내 특화시스템', [['assets/city/sys_smart.jpg', 'SMART LIFE']]], sys_sys_eco: ['단지 내 특화시스템', [['assets/city/sys_eco.jpg', 'ECO LIFE']]], sysp2: ['스마트 홈 기기', [['assets/city/sys_food.jpg', '음식물 쓰레기 자동이송 시스템'], ['assets/city/sys_ai.jpg', '홈 AI 스위치'], ['assets/city/sys_wall.jpg', '음성인식 월패드']]], sysp3: ['스마트 리빙', [['assets/city/sys_robot.jpg', 'AI 로봇']]], hl: ['HIGH-END LIFE', [['assets/city/hl1.jpg', 'LANDMARK LIFE'], ['assets/city/hl6.jpg', 'RESORT LIFE'], ['assets/city/hl2.jpg', 'PREMIUM LIFE'], ['assets/city/hl4.jpg', 'EDUCATION LIFE'], ['assets/city/hl5.jpg', 'MEDICAL LIFE'], ['assets/city/hl3.jpg', 'GREEN LIFE']]], city: ['사업지', [['assets/city/env3.jpg', '단지 배치'], ['assets/city/env4.jpg', '복합용도개발 비교']]], sky: ['101동 44F 스카이커뮤니티', [['sky1', '스카이라운지'], ['sky2', '스카이라운지(영풍문고 큐레이션)'], ['guest1', '게스트하우스'], ['guest2', '게스트하우스']]], b1f: ['B1F 커뮤니티', [['fitness', '피트니스'], ['sauna', '사우나'], ['gym', '실내체육관'], ['pool', '실내수영장']]] };
@@ -3399,7 +3483,7 @@ class Component extends DCLogic {
     this.syncDiff(ps, S);
     if (K.some(k => ps[k] !== S[k])) {
       const o = {}; K.forEach(k => o[k] = S[k]);
-      try { localStorage.setItem('cc-dash-v1', JSON.stringify(o)); } catch (e) {}
+      try { localStorage.setItem(this.k('cc-dash-v1'), JSON.stringify(o)); } catch (e) {}
     }
   }
   CMT_API = 'api/comments';
@@ -3408,9 +3492,9 @@ class Component extends DCLogic {
     .replace(/(카카오톡|카카오|카톡|kakao|katalk|오픈채팅|아이디|ID)\s*[:：]?\s*[A-Za-z0-9_.\-]{3,}/gi, '$1 ***')
     .replace(/[공영일이삼사오육칠팔구빵][\s.\-공영일이삼사오육칠팔구빵]{7,}/g, m => m.replace(/[^공영일이삼사오육칠팔구빵]/g, '').length >= 8 ? '***' : m)
     .replace(/\+?\d[\d\s.\-()]{7,}\d/g, m => { const n = m.replace(/\D/g, ''); if (n.length < 9 || n.length > 13) return m; let k = 0; return m.replace(/\d/g, d => (++k <= 3 ? d : '*')); }); }
-  cmMe() { try { return JSON.parse(localStorage.getItem('cc-me') || 'null'); } catch (e) { return null; } }
-  cmGetLocal() { try { return JSON.parse(localStorage.getItem('cc-cmt') || '{}'); } catch (e) { return {}; } }
-  cmPutLocal(uid, a) { try { const all = this.cmGetLocal(); all[uid] = a; localStorage.setItem('cc-cmt', JSON.stringify(all)); } catch (e) {} }
+  cmMe() { try { return JSON.parse(localStorage.getItem(this.k('cc-me')) || 'null'); } catch (e) { return null; } }
+  cmGetLocal() { try { return JSON.parse(localStorage.getItem(this.k('cc-cmt')) || '{}'); } catch (e) { return {}; } }
+  cmPutLocal(uid, a) { try { const all = this.cmGetLocal(); all[uid] = a; localStorage.setItem(this.k('cc-cmt'), JSON.stringify(all)); } catch (e) {} }
   cmName(n) { n = String(n || '고객'); return n.length <= 1 ? n + '*' : n[0] + '*' + n.slice(2); }
   cmLoad(uid) { const loc = this.cmGetLocal()[uid] || []; this.setState(ss => ({ cmts: Object.assign({}, ss.cmts, { [uid]: loc }) })); const me = this.cmMe();
     fetch(this.CMT_API + '?unit=' + encodeURIComponent(uid), { cache: 'no-store', headers: { 'x-tok': (me && me.tok) || '' } }).then(r => r.ok ? r.json() : null).then(a => { if (Array.isArray(a)) { this.cmPutLocal(uid, a); this.setState(ss => ({ cmts: Object.assign({}, ss.cmts, { [uid]: a }) })); } }).catch(() => {}); }
@@ -3424,8 +3508,8 @@ class Component extends DCLogic {
     const S = this.state, D = this.D; const me = this.cmMe(); const isAdm = !guestOnly; const canAll = isAdm && !!(S.perms.cmtDel || {})[role]; const list = (uid && (S.cmts || {})[uid]) || [];
     const K = k => sk + k; const txt = S[K('Text')] || '';
     const badge = isAdm ? '관리자' : me && me.kind === 'seller' && me.unit === uid ? '계약자' : '관심고객';
-    const delKey = () => { let k = ''; try { k = localStorage.getItem('cc-admin-key') || ''; if (!k) { k = window.prompt('관리자 키(ADMIN_KEY)를 입력하세요') || ''; if (k) localStorage.setItem('cc-admin-key', k); } } catch (e) {} return k; };
-    let seenAll = {}; try { seenAll = JSON.parse(localStorage.getItem('cc-cseen') || '{}'); } catch (e) {}
+    const delKey = () => { let k = ''; try { k = localStorage.getItem(this.k('cc-admin-key')) || ''; if (!k) { k = window.prompt('관리자 키(ADMIN_KEY)를 입력하세요') || ''; if (k) localStorage.setItem(this.k('cc-admin-key'), k); } } catch (e) {} return k; };
+    let seenAll = {}; try { seenAll = JSON.parse(localStorage.getItem(this.k('cc-cseen')) || '{}'); } catch (e) {}
     const seen = (uid && seenAll[(S.me || 'g') + '|' + uid]) || '';
     const seenView = S[K('Seen')] != null && S[K('SeenU')] === uid ? S[K('Seen')] : seen;
     const isMine = c => !!c.mine || !!(me && c.tok && c.tok === me.tok) || (isAdm && c.tok === 'admin' && !!c.by && c.by === S.me);
@@ -3441,7 +3525,7 @@ class Component extends DCLogic {
       canAsk: !c.del && !isAdm && !mine, ask: () => { if (!me) return this.setState({ gRegOpen: true }); const u = D.byId[uid]; this.syncPost([{ type: 'contact', unit: u ? u.b + '동 ' + u.ho + '호' : uid, id: c.id, name: me.name, at: new Date().toISOString(), alert: '[연락요청] ' + (u ? u.b + '동 ' + u.ho + '호' : uid) + ' · ' + me.name + ' → ' + (c.badge || '') + ' ' + (c.name || '') + ' 글' }]); this.flash('담당자에게 연락 요청이 전달되었습니다'); } }; };
     const tops = list.filter(c => !c.pid).sort((a, b) => String(b.ts).localeCompare(String(a.ts))).map(c => Object.assign(mkP(c), { replies: list.filter(r => r.pid === c.id).sort((a, b) => String(a.ts).localeCompare(String(b.ts))).map(mkP) }));
     const open = !!S[K('Open')]; const hasNew = list.some(c => !c.del && !isMine(c) && String(c.ts || '') > seen);
-    const markSeen = () => { try { const a = JSON.parse(localStorage.getItem('cc-cseen') || '{}'); a[(S.me || 'g') + '|' + uid] = new Date().toISOString(); localStorage.setItem('cc-cseen', JSON.stringify(a)); } catch (e) {} };
+    const markSeen = () => { try { const a = JSON.parse(localStorage.getItem(this.k('cc-cseen')) || '{}'); a[(S.me || 'g') + '|' + uid] = new Date().toISOString(); localStorage.setItem(this.k('cc-cseen'), JSON.stringify(a)); } catch (e) {} };
     return { on: !!uid, open, arrow: open ? '접기 ▴' : '펼치기 ▾', count: String(list.filter(c => !c.del).length), hasNew: hasNew && !open,
       sw: open ? '#34c759' : '#e5e5ea', knob: open ? '17px' : '3px',
       noteOpen: !!S.cmNoteOpen, noteArrow: S.cmNoteOpen ? '▼' : '▶', toggleNote: () => this.setState({ cmNoteOpen: !S.cmNoteOpen }),
@@ -3452,12 +3536,12 @@ class Component extends DCLogic {
   }
   staffItem() { const S = this.state; return { type: 'staff', by: S.me || '', rows: Object.keys(S.roles || {}).map(n => ({ 이름: n, 권한: S.roles[n], 연락처: (S.tels || {})[n] || '', 구글메일: (S.mails || {})[n] || '', PIN: (S.pins || {})[n] ? '등록' : '미등록' })) }; }
   syncPost(items) {
-    const url = ((this.state.sync || {}).url || this.props.syncUrl || '').trim(); let q = []; try { q = JSON.parse(localStorage.getItem('cc-sync-q') || '[]'); } catch (e) {} q = q.concat(items || []);
-    const keep = a => { try { localStorage.setItem('cc-sync-q', JSON.stringify(a.slice(-500))); } catch (e) {} };
+    const url = ((this.state.sync || {}).url || this.props.syncUrl || '').trim(); let q = []; try { q = JSON.parse(localStorage.getItem(this.k('cc-sync-q')) || '[]'); } catch (e) {} q = q.concat(items || []);
+    const keep = a => { try { localStorage.setItem(this.k('cc-sync-q'), JSON.stringify(a.slice(-500))); } catch (e) {} };
     if (!url || !q.length) { keep(q); return; } keep([]);
     fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ type: 'batch', items: q }) })
       .then(() => this.setState({ syncLast: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }), syncFailN: 0 }))
-      .catch(() => { let r = []; try { r = JSON.parse(localStorage.getItem('cc-sync-q') || '[]'); } catch (e) {} keep(q.concat(r)); this.setState({ syncFailN: q.length }); });
+      .catch(() => { let r = []; try { r = JSON.parse(localStorage.getItem(this.k('cc-sync-q')) || '[]'); } catch (e) {} keep(q.concat(r)); this.setState({ syncFailN: q.length }); });
   }
   cardWrites(c, quiet) {
     const u = c.unit ? this.D.byId[c.unit] : null, guest = !!c.guest, visit = !!c.visit, kn = this.kindName(c.kind), w = c.want || {};
@@ -3539,7 +3623,7 @@ class Component extends DCLogic {
   }
   parseUnit(str) { const m = String(str || '').match(/(1[01]\d)\D+(\d{3,4})/); if (!m) return null; const id = m[1] + '-' + m[2]; return this.D.byId[id] ? id : null; }
   gBlank(kind, unit) { return { kind: kind || 'seller', unit: unit || '', interest: '', name: '', phone: '', text: '', agree: false, wantDongs: [], wantTypes: [], wantFloors: [], budget: '', pBudget: '', optPref: '', err: '' }; }
-  pullInbox() { if (this.props.guestOnly) return; let a = []; try { a = JSON.parse(localStorage.getItem('cc-guest-inbox') || '[]'); } catch (e) {} if (!a.length) return; localStorage.removeItem('cc-guest-inbox');
+  pullInbox() { if (this.props.guestOnly) return; let a = []; try { a = JSON.parse(localStorage.getItem(this.k('cc-guest-inbox')) || '[]'); } catch (e) {} if (!a.length) return; localStorage.removeItem(this.k('cc-guest-inbox'));
     this.setState(ss => { const ids = {}; ss.cards.forEach(c => ids[c.id] = 1); const add = a.filter(c => !ids[c.id]); return add.length ? { cards: add.concat(ss.cards) } : null; }); this.flash('게스트 관심등록 ' + a.length + '건이 상담카드에 추가되었습니다'); }
   gRegVals(RV, isGB) {
     const S = this.state, D = this.D; if (!isGB) return {}; const r = S.gReg || this.gBlank(); const set = p => this.setState(ss => ({ gReg: Object.assign({}, ss.gReg || this.gBlank(), p, { err: '' }) }));
@@ -3561,7 +3645,7 @@ class Component extends DCLogic {
       const gs = uid ? ((S.gu || {})[uid] || {}) : {}; const gsb = {}; if (isPre) ['expand', 'sel', 'loanMode', 'loan', 'paid', 'payBy'].forEach(k => { if (gs[k] !== undefined) gsb[k] = gs[k]; });
       const card = { id: 'g' + Date.now(), kind, at, unit: seller ? uid : '', interest: seller ? '' : r.interest.trim(), name: r.name.trim(), phone: r.phone, birth: r.birth || '', ask: isPre ? (r.ask || '') : undefined, adj: isPre ? (r.adj || '') : undefined, trades: isTr && wants.length ? wants.reduce((o, m) => (o[m] = tr[m] || {}, o), {}) : undefined, wants: isTr ? wants : undefined, text: (visit ? '[홍보관 방문예약] ' + r.vDate + ' ' + r.vTime + (r.text.trim() ? '\n' : '') : '') + r.text.trim(), visit: visit ? r.vDate + ' ' + r.vTime : undefined, writer: visit ? '게스트 방문예약' : '게스트 등록', guest: true, agree: true, tags: visit ? ['상담', '방문예약'] : ['상담'],
         want: seller ? null : { dongs: r.wantDongs, types: r.wantTypes, floors: r.wantFloors, dong: r.wantDongs.join(', ') || '무관', type: r.wantTypes.join(', ') || '무관', floor: r.wantFloors.join(', ') || '무관', budget: r.budget, pBudget: r.pBudget, opt: r.optPref }, gsb: isPre && Object.keys(gsb).length ? gsb : undefined };
-      if (this.props.guestOnly) { card.synced = true; try { const pm = this.cmMe() || {}; localStorage.setItem('cc-me', JSON.stringify({ name: card.name, kind: seller ? 'seller' : 'buyer', unit: card.unit || '', ask: card.ask || '', tok: pm.tok || ('t' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10)) })); } catch (e) {} this.syncPost([this.cardWrites(card)]); try { const a = JSON.parse(localStorage.getItem('cc-guest-inbox') || '[]'); a.push(card); localStorage.setItem('cc-guest-inbox', JSON.stringify(a)); } catch (e) {} this.setState({ gReg: null, gRegOpen: false, gDone: true }); }
+      if (this.props.guestOnly) { card.synced = true; try { const pm = this.cmMe() || {}; localStorage.setItem(this.k('cc-me'), JSON.stringify({ name: card.name, kind: seller ? 'seller' : 'buyer', unit: card.unit || '', ask: card.ask || '', tok: pm.tok || ('t' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10)) })); } catch (e) {} this.syncPost([this.cardWrites(card)]); try { const a = JSON.parse(localStorage.getItem(this.k('cc-guest-inbox')) || '[]'); a.push(card); localStorage.setItem(this.k('cc-guest-inbox'), JSON.stringify(a)); } catch (e) {} this.setState({ gReg: null, gRegOpen: false, gDone: true }); }
       else this.setState(ss => ({ cards: [card].concat(ss.cards), gReg: null, gRegOpen: false, gDone: true })); };
     const _um = String(r.unit || '').match(/(1[01]\d)\D*(\d{3,4})?/); const gD = r.gDong != null ? r.gDong : (_um ? _um[1] : ''), gH = r.gHo != null ? r.gHo : (_um && _um[2] ? _um[2] : '');
     const mkU = (d, h) => d && h ? d + '동 ' + h + '호' : '';
@@ -3596,22 +3680,22 @@ class Component extends DCLogic {
   setFilter(f) { this.setState(st => ({ filter: st.filter && f && st.filter.k === f.k && st.filter.v === f.v ? null : f, tab: 'board', focusB: null })); }
 
   pinHash(n, p) { let h = 2166136261; const s = 'cc1|' + n + '|' + p; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(36); }
-  sess() { try { const s = JSON.parse(localStorage.getItem('cc-session') || 'null'); return s && s.exp > Date.now() ? s : null; } catch (e) { return null; } }
+  sess() { try { const s = JSON.parse(localStorage.getItem(this.k('cc-session')) || 'null'); return s && s.exp > Date.now() ? s : null; } catch (e) { return null; } }
   loginVals(RV) {
     const S = this.state; const need = !!this.props.requireLogin && !this.props.guestOnly; const ss = need ? this.sess() : null;
     RV.meLocked = need && !!ss; RV.meFree = !need;
-    RV.logout = () => { try { localStorage.removeItem('cc-session'); } catch (e) {} this.setState({ lgPin: '', lgErr: '' }); };
+    RV.logout = () => { try { localStorage.removeItem(this.k('cc-session')); } catch (e) {} this.setState({ lgPin: '', lgErr: '' }); };
     if (!need || (ss && S.roles[ss.name])) { if (ss && S.me !== ss.name) setTimeout(() => this.setState({ me: ss.name }), 0); RV.lg = { show: false }; return; }
     const pins = S.pins || {}; const admins = Object.keys(S.roles).filter(n => S.roles[n] === '관리자'); const setup = !admins.some(n => pins[n]);
     const names = (setup ? admins : Object.keys(S.roles)); const name = names.includes(S.lgName) ? S.lgName : names[0] || '';
-    let lock = null; try { lock = JSON.parse(localStorage.getItem('cc-lock') || 'null'); } catch (e) {}
+    let lock = null; try { lock = JSON.parse(localStorage.getItem(this.k('cc-lock')) || 'null'); } catch (e) {}
     const locked = lock && lock.until > Date.now();
     const submit = () => { const p = String(S.lgPin || ''); if (locked) return; if (!/^\d{4}$/.test(p)) return this.setState({ lgErr: 'PIN은 숫자 4자리입니다' });
-      const ok = () => { try { localStorage.setItem('cc-session', JSON.stringify({ name, exp: Date.now() + 12 * 3600e3 })); localStorage.removeItem('cc-lock'); } catch (e) {} this.setState({ me: name, lgPin: '', lgErr: '' }); };
+      const ok = () => { try { localStorage.setItem(this.k('cc-session'), JSON.stringify({ name, exp: Date.now() + 12 * 3600e3 })); localStorage.removeItem(this.k('cc-lock')); } catch (e) {} this.setState({ me: name, lgPin: '', lgErr: '' }); };
       if (setup) { this.setState(ss2 => ({ pins: Object.assign({}, ss2.pins, { [name]: this.pinHash(name, p) }) })); return ok(); }
       if (!pins[name]) return this.setState({ lgErr: '아직 PIN이 등록되지 않았습니다. 관리자에게 요청하세요', lgPin: '' });
       if (pins[name] === this.pinHash(name, p)) return ok();
-      const n = ((lock && lock.n) || 0) + 1; const nl = n >= 5 ? { n: 0, until: Date.now() + 600e3 } : { n, until: 0 }; try { localStorage.setItem('cc-lock', JSON.stringify(nl)); } catch (e) {}
+      const n = ((lock && lock.n) || 0) + 1; const nl = n >= 5 ? { n: 0, until: Date.now() + 600e3 } : { n, until: 0 }; try { localStorage.setItem(this.k('cc-lock'), JSON.stringify(nl)); } catch (e) {}
       this.setState({ lgPin: '', lgErr: n >= 5 ? '5회 틀려 10분간 잠깁니다' : 'PIN이 맞지 않습니다 (' + n + '/5)' }); };
     const err = locked ? '잠김 · ' + Math.ceil((lock.until - Date.now()) / 60000) + '분 뒤 다시 시도하세요' : (S.lgErr || '');
     RV.lg = { show: true, title: setup ? '관리자 PIN 만들기' : '직원 로그인', sub: setup ? '처음 한 번만 관리자 PIN을 정합니다' : '챔피언스시티1차 직원 대시보드', pinLabel: setup ? '새 PIN (숫자 4자리)' : 'PIN', btn: setup ? 'PIN 저장하고 시작' : '로그인',
@@ -3623,9 +3707,9 @@ class Component extends DCLogic {
     const TABS = [['overview','단지배치'],['board','동호배치표'],['option','옵션계산기'],['card','상담카드'],['log','상담이력대장'],['price','분양가표']];
     const guestOnly = !!this.props.guestOnly; const GS = S.guest;
     const role = S.roles[S.me] || '열람'; const can = k => !!(S.perms[k] || {})[role];
-    TABS.push(['db', '계약자DB'], ['city', '챔피언스시티']); const TAB0 = TABS.map(t => t[0]); { const MO = S.menuOrder || []; const ix = k => { const j = MO.indexOf(k); return j >= 0 ? j : 100 + TAB0.indexOf(k); }; TABS.sort((a, b) => ix(a[0]) - ix(b[0])); }
+    TABS.push(['db', '계약자DB'], ['city', D.generic ? (D.S.site.short || D.S.site.name) : '챔피언스시티']); const TAB0 = TABS.map(t => t[0]); { const MO = S.menuOrder || []; const ix = k => { const j = MO.indexOf(k); return j >= 0 ? j : 100 + TAB0.indexOf(k); }; TABS.sort((a, b) => ix(a[0]) - ix(b[0])); }
     const gbOn = !GS.noBoard, goOn = !GS.noOption, gpOn = !GS.noPrice;
-    const gTabs = (lab) => (!GS.noCity ? [['gcity', guestOnly ? '챔피언스시티' : '게스트 챔피언스시티']] : []).concat([['guest', lab]]).concat(gbOn ? [['gboard', guestOnly ? '동호배치표' : '게스트 배치표']] : []).concat(goOn ? [['goption', guestOnly ? '옵션계산기' : '게스트 옵션']] : []).concat(gpOn ? [['gprice', guestOnly ? '분양가표' : '게스트 분양가표']] : []);
+    const gTabs = (lab) => (!GS.noCity ? [['gcity', (guestOnly ? '' : '게스트 ') + (D.generic ? (D.S.site.short || D.S.site.name) : '챔피언스시티')]] : []).concat([['guest', lab]]).concat(gbOn ? [['gboard', guestOnly ? '동호배치표' : '게스트 배치표']] : []).concat(goOn ? [['goption', guestOnly ? '옵션계산기' : '게스트 옵션']] : []).concat(gpOn ? [['gprice', guestOnly ? '분양가표' : '게스트 분양가표']] : []);
     const vis = guestOnly ? gTabs('단지배치') : TABS.filter(([k]) => menus[k] !== false && (k !== 'option' || mods.option) && (k !== 'db' || can('view'))).concat(GS.enabled && !GS.hideStaff ? gTabs('게스트') : []);
     let tab = S.tab; if (!vis.find(v => v[0] === tab)) tab = vis.length ? vis[0][0] : '';
     const tabs = vis.map(([k, l]) => ({ label: l, go: () => this.setState({ tab: k }), bg: tab === k ? '#c8381e' : 'transparent', fg: tab === k ? '#fff' : '#1d1d1f' }));
@@ -3640,7 +3724,7 @@ class Component extends DCLogic {
         toggle: () => pSet(p.id, { on: !p.on }), onTitle: fv('title'), onDesc: fv('desc'), onFrom: fv('from'), onTo: fv('to'), onBody: fv('body'), onLink: fv('link'),
         del: () => { if (!popAdmin) return; if (!window.confirm('이 팝업을 삭제할까요?')) return; this.setState(ss => ({ popups: (ss.popups || []).filter(x => x.id !== p.id) })); } }; };
     const pAdd = aud => () => { if (!popAdmin) return this.flash('관리자만 변경할 수 있습니다'); this.setState(ss => ({ popups: (ss.popups || []).concat({ id: 'p' + Date.now(), aud, title: '새 팝업', desc: '', body: '', link: '', from: pTd, to: '', on: false }) })); };
-    let pHid = {}; try { pHid = JSON.parse(localStorage.getItem('cc-pop-hide') || '{}'); } catch (x) {}
+    let pHid = {}; try { pHid = JSON.parse(localStorage.getItem(this.k('cc-pop-hide')) || '{}'); } catch (x) {}
     const pAud = guestOnly ? 'guest' : (S.me ? 'staff' : null); const pCur = pAud ? (S.popups || []).filter(p => p.aud === pAud && pAct(p) && pHid[p.id] !== pTd && !(S.popSeen || {})[p.id])[0] : null; this._gm = gx; const UU = this._gm ? (S.gu || {}) : S.u;
     const F = gx ? null : S.filter;
     const st = id => UU[id] || { status: '미확인' };
@@ -3654,20 +3738,20 @@ class Component extends DCLogic {
     const buyers = S.cards.filter(c => c.kind === 'buyer').length;
     const isF = (k, v) => !!F && F.k === k && F.v === v;
     const kp = (label, value, sub, dot, f, go) => ({ w: '108px', ai: 'flex-start', label, value: Number(value).toLocaleString(), sub, dot, bg: '#fff', fg: '#1d1d1f', labelColor: '#6e6e73', ring: f && isF(f.k, f.v) ? '0 0 0 2px #0066cc' : 'none', onClick: go || (() => this.setFilter(f)) });
-    const kpis = [Object.assign(kp('총세대', 3216, '확인 ' + known.toLocaleString() + ' · 미확인 ' + (3216 - known).toLocaleString(), '#1d1d1f', null, () => this.setState({ filter: null, tab: 'board' })), { w: '138px', ai: 'center' })];
+    const kpis = [Object.assign(kp('총세대', D.units.length, '확인 ' + known.toLocaleString() + ' · 미확인 ' + (D.units.length - known).toLocaleString(), '#1d1d1f', null, () => this.setState({ filter: null, tab: 'board' })), { w: '138px', ai: 'center' })];
     if (mods.presale) kpis.push(kp('분양권 매물', cnt['매물'] || 0, '급매 ' + urgent, '#157a3f', { k: 'status', v: '매물' }), kp('가계약', cnt['가계약'] || 0, '분양권매매', '#b25000', { k: 'status', v: '가계약' }), kp('계약', cnt['계약'] || 0, '실거래신고 대기', '#0066cc', { k: 'status', v: '계약' }), kp('명의변경완료', cnt['명의변경완료'] || 0, '거래완료', '#6e6e73', { k: 'status', v: '명의변경완료' }), kp('보유', cnt['보유'] || 0, '매물없음', '#c7c7cc', { k: 'status', v: '보유' }));
     if (mods.sale) kpis.push(kp('매매', hasSale, '신규 ' + hasNew, '#8e2c6e', { k: 'trade', v: '매매' }));
     if (mods.jeonse) kpis.push(kp('전세', hasJ, '전세 매물', '#3a5aa0', { k: 'trade', v: '전세' }));
     if (mods.wolse) kpis.push(kp('월세', hasW, '월세·단기', '#b25000', { k: 'trade', v: '월세' }));
     kpis.push(kp('매수대기', buyers, '신규방문 카드', '#d2264b', null, () => this.setState({ tab: 'log', logKind: 'buyer' })), kp('상담카드', S.cards.length, '전체 이력', '#0066cc', null, () => this.setState({ tab: 'log', logKind: 'all' })));
-    const famChips = [['84','84㎡'],['103','103㎡'],['112','112㎡'],['128','128㎡'],['PH','펜트']].map(([k, l]) => { const c = this.chip(isF('fam', k)); return Object.assign(c, { label: l + ' : ' + (famCnt[k] || 0).toLocaleString(), onClick: () => this.setFilter({ k: 'fam', v: k }) }); });
+    const famChips = (D.generic ? [...new Set(Object.keys(D.types).map(k => D.types[k].fam))].sort((x, y) => parseFloat(x) - parseFloat(y)).map(f => [f, f + '㎡']) : [['84','84㎡'],['103','103㎡'],['112','112㎡'],['128','128㎡'],['PH','펜트']]).map(([k, l]) => { const c = this.chip(isF('fam', k)); return Object.assign(c, { label: l + ' : ' + (famCnt[k] || 0).toLocaleString(), onClick: () => this.setFilter({ k: 'fam', v: k }) }); });
 
     // overview
     if (gx) {
       kpis.length = 1; Object.assign(kpis[0], { sub: '12개동 · 24개 타입', onClick: null, ring: 'none' });
       famChips.forEach(c => Object.assign(c, { onClick: null, bg: '#fff', fg: '#1d1d1f', bd: '#d2d2d7' }));
     }
-    const typeBoard = [['84', '84㎡'], ['103', '103㎡'], ['112', '112㎡'], ['128', '128㎡'], ['PH', '펜트']].map(([fam, l]) => ({ label: l, n: (famCnt[fam] || 0).toLocaleString(),
+    const typeBoard = (D.generic ? [...new Set(Object.keys(D.types).map(k => D.types[k].fam))].sort((x, y) => parseFloat(x) - parseFloat(y)).map(f => [f, f + '㎡']) : [['84', '84㎡'], ['103', '103㎡'], ['112', '112㎡'], ['128', '128㎡'], ['PH', '펜트']]).map(([fam, l]) => ({ label: l, n: (famCnt[fam] || 0).toLocaleString(),
       chips: Object.keys(D.types).filter(k => D.types[k].fam === fam).map(k => { const t = D.types[k]; return { label: k, bg: t.ph ? '#fff' : t.color, ring: t.ph ? 'inset 0 0 0 1.5px ' + t.color : 'none', title: k + ' · ' + t.n + '세대 · 평면도 보기', onClick: () => this.setState({ commPop: 'plan:' + k, zoom: 1 }) }; }) }));
     let commV = {}; this._mhNav = !!(gx && S.commPop && S.commPop.indexOf('plan:') === 0);
     if (S.commPop === 'sky') commV = { title: '101동 44F 스카이커뮤니티', sub: '게스트하우스 6실 · 스카이라운지', src: 'assets/community-44f.jpg', ar: 1.1667, b1f: true, mg: '0', bpos: 'left top', hasPhotos: true, photos: this.commPhotos('sky') };
@@ -3718,9 +3802,9 @@ class Component extends DCLogic {
     let groupChips = [], colorModes = [], priceChip = {}, filterChips = [], axis = [], bldgs = [], legend = [];
     if (tab === 'board' || isGB) {
     const g = D.GROUPS[Math.min(S.group || 0, D.GROUPS.length - 1)]; const bl = g.map(no => D.bmap[no]);
-    const top = Math.max.apply(null, bl.map(b => b.ph ? 49 : b.max)); const bottom = 1;
+    const top = Math.max.apply(null, bl.map(b => b.ph ? 49 : b.max)); const bottom = 1; void 0;
     const floors = []; for (let f = top; f >= bottom; f--) floors.push(f);
-    axis = floors.map(f => ({ label: f === 21 ? '피난' : f + 'F', fg: f === 21 ? '#c7c7cc' : '#8e8e93' }));
+    axis = floors.map(f => ({ label: f === 21 && !D.generic ? '피난' : f + 'F', fg: f === 21 ? '#c7c7cc' : '#8e8e93' }));
     const cm = isGB ? 'type' : S.colorMode;
     const cellOf = (u, span) => { const s = st(u.id); const t = D.types[u.type]; const on = match(u); const sc = STATUS[s.status] || STATUS['미확인'];
       let bg, fg = '#1d1d1f', rings = [];
@@ -3735,6 +3819,7 @@ class Component extends DCLogic {
     const xs = () => blank(1, xcell, '', 'inset 0 0 0 1px #d2d2d7');
     bldgs = bl.map(b => {
       const rows = floors.map(f => {
+        if (D.generic) { const n = b.lines.length; const cells = []; for (let l = 1; l <= n; l++) { const u = D.byId[b.no + '-' + (f * 100 + l)]; if (u) cells.push(cellOf(u, 1)); else if (f > b.tops[l - 1]) cells.push(blank(1)); else if (f === 1 && b.f1[l - 1] !== '빈칸') cells.push(blank(1, '#fff', b.f1[l - 1], 'inset 0 0 0 1px #d2d2d7')); else cells.push(xs()); } return { cells }; }
         if (f === 21) return { cells: [blank(6)] };
         if (b.sky === f) return { cells: [blank(6, '#fff', '스카이 커뮤니티', 'inset 0 0 0 1px #d2d2d7')] };
         if (f === 49 && b.ph) return { cells: b.ph.map(([ho, , span]) => cellOf(D.byId[b.no + '-' + ho], span)) };
@@ -3742,15 +3827,15 @@ class Component extends DCLogic {
         if (f > b.max) return { cells: [blank(6)] };
         const cells = []; for (let l = 1; l <= 6; l++) { const u = D.byId[b.no + '-' + (f * 100 + l)]; cells.push(u ? cellOf(u, 1) : xs()); }
         return { cells }; });
-      const lineTypes = b.lines.map((c, i) => { const k = /^(103|112|128)/.test(c) ? c + '1' : c; return { label: this.typeLabel(k), bg: D.types[k].color, go: () => { if (window.innerWidth < 1100) this.setState({ upPlan: { b: b.no, i, code: k }, ppZoom: 1 }); } }; });
+      const lineTypes = b.lines.map((c, i) => { const k = !D.generic && /^(103|112|128)/.test(c) ? c + '1' : c; return { label: this.typeLabel(k), bg: D.types[k].color, go: () => { if (window.innerWidth < 1100) this.setState({ upPlan: { b: b.no, i, code: k }, ppZoom: 1 }); } }; });
       return { name: b.no + '동', stat: isGB ? b.units.length + '세대' : (F ? '해당 ' + (bMatch[b.no] || 0) : '매물 ' + (bSale[b.no] || 0)) + ' / ' + b.units.length, lineTypes, rows, ring: S.focusB === b.no ? '0 0 0 2px #0066cc' : 'none' };
     });
     groupChips = D.GROUPS.map((gg, i) => { const c = this.chip(S.group === i, D.GCOLOR[i]); const n = gg.reduce((a, no) => a + (F ? (bMatch[no] || 0) : (bSale[no] || 0)), 0);
-      return Object.assign(c, { label: (i + 1) + '그룹 ' + gg[0] + '~' + gg[gg.length - 1], gname: (i + 1) + '그룹', grange: gg[0] + '~' + gg[gg.length - 1], count: isGB ? '' : (F ? '해당 ' : '매물 ') + n, onClick: () => this.setState({ group: i, focusB: null }) }); });
+      return Object.assign(c, { label: (D.GLABEL ? D.GLABEL[i] + ' ' : (i + 1) + '그룹 ') + gg[0] + '~' + gg[gg.length - 1], gname: D.GLABEL ? D.GLABEL[i] : (i + 1) + '그룹', grange: gg[0] + '~' + gg[gg.length - 1], count: isGB ? '' : (F ? '해당 ' : '매물 ') + n, onClick: () => this.setState({ group: i, focusB: null }) }); });
     colorModes = [['type','타입'],['status','매물상태']].map(([k, l]) => Object.assign(this.chip(cm === k), { label: l, onClick: () => this.setState({ colorMode: k }) }));
     priceChip = this.chip(S.showPrice, '#0066cc');
     const fc = (label, f) => Object.assign(this.chip(f ? isF(f.k, f.v) : !F, '#0066cc'), { label, onClick: () => f ? this.setFilter(f) : this.setState({ filter: null }) });
-    filterChips = [fc('전체 3,216', null)];
+    filterChips = [fc('전체 ' + D.units.length.toLocaleString(), null)];
     if (mods.presale) ['미확인','보유','매물','가계약','계약','명의변경완료'].forEach(v => filterChips.push(fc(v + ' ' + (cnt[v] || 0).toLocaleString(), { k: 'status', v })));
     ['상담','급매','부재','광고중','광고중(타부동산)'].forEach(v => filterChips.push(fc('#' + v, { k: 'tag', v })));
     if (mods.sale) filterChips.push(fc('매매 ' + hasSale, { k: 'trade', v: '매매' }));
@@ -3811,7 +3896,7 @@ class Component extends DCLogic {
     }
 
     // option tab
-    const pickB = S.pickB || 101; const ou = su && su.b === pickB ? su : null;
+    const pickB = D.bmap[S.pickB] ? S.pickB : +Object.keys(D.bmap)[0]; const ou = su && su.b === pickB ? su : null;
     const o = { pickB: String(pickB), onPickB: e => this.setState({ pickB: +e.target.value, sel: null, optDraft: null }),
       dongOpts: Object.keys(D.bmap).map(no => ({ v: no, l: no + '동' })), pickHo: ou ? ou.id : '',
       hoOpts: [{ v: '', l: '호 선택' }].concat(D.bmap[pickB].units.slice().sort((a, b) => b.ho - a.ho).map(u => ({ v: u.id, l: u.ho + '호 · ' + u.type }))),
@@ -4142,12 +4227,12 @@ class Component extends DCLogic {
     const logChips = [['all','전체 ' + S.cards.length]].concat(['seller', 'buyer', 'owner', 'client'].filter(k => kc(k) || (k === 'seller' || k === 'buyer' ? mods.presale : trMods.length)).map(k => [k, this.KIND[k][0] + ' ' + kc(k)])).map(([k, l]) => Object.assign(this.chip(S.logKind === k, '#0066cc'), { label: l, onClick: () => this.setState({ logKind: k }) }));
 
     // price tab
-    const PF = [['84AB','84A·84B','84A'],['84C','84C','84C'],['84D','84D','84D'],['84EF','84E·84F','84E'],['103A','103A1~A3','103A1'],['103B','103B1~B3','103B1'],['112A','112A1~A3','112A1'],['128A','128A1~A3','128A1']];
+    const PF = D.generic ? Object.keys(D.types).map(k => [k, k, k]) : [['84AB','84A·84B','84A'],['84C','84C','84C'],['84D','84D','84D'],['84EF','84E·84F','84E'],['103A','103A1~A3','103A1'],['103B','103B1~B3','103B1'],['112A','112A1~A3','112A1'],['128A','128A1~A3','128A1']];
     const priceHead = [{ label: '층구간', bg: 'transparent' }].concat(PF.map(x => ({ label: x[1], bg: D.types[x[2]].color })));
     const priceCells = []; if (tab === 'price' || isGP) D.BANDS.forEach((b, i) => { priceCells.push({ v: b, fw: 700, fg: '#1d1d1f' }); PF.forEach(x => priceCells.push({ v: this.eok(D.PRICE[x[0]][i] * 1e6), fw: 500, fg: i === 9 && D.PRICE[x[0]][9] === D.PRICE[x[0]][8] ? '#6e6e73' : '#1d1d1f' })); });
     const phRows = Object.keys(D.PH).map(k => ({ code: k, color: D.types[k].color, where: D.PH_WHERE[k], ex: D.types[k].ex.toFixed(2), price: this.eok(D.PH[k] * 1e6) }));
     const expRows = Object.keys(D.types).filter(k => !D.types[k].ph).map(k => ({ code: k, bg: D.types[k].color, v: this.eok(D.EXP[k] * 1e6) })).concat([{ code: '펜트 6타입', bg: '#fff', v: '공급금액 포함' }]);
-    const payRows = [['계약금 5%','1차 1,000만원 계약시 · 잔여 계약 후 30일 이내'],['중도금 1차 10%','2027.07.12'],['중도금 2차 10%','2028.01.10'],['중도금 3차 10%','2028.07.10'],['중도금 4차 10%','2029.01.10'],['중도금 5차 10%','2029.08.10'],['중도금 6차 10%','2030.03.11'],['잔금 35%','입주지정일']].map(([k, v]) => ({ k, v }));
+    const payRows = D.generic ? (() => { const P = D.S.prices.payment || {}; const ks = Object.keys(P); const k0 = ks[Math.max(0, Math.min(ks.length - 1, S.group || 0))]; return (P[k0] || []).map(x => ({ k: x.name + ' ' + x.rate + (ks.length > 1 ? ' (' + k0 + ')' : ''), v: x.date })); })() : [['계약금 5%','1차 1,000만원 계약시 · 잔여 계약 후 30일 이내'],['중도금 1차 10%','2027.07.12'],['중도금 2차 10%','2028.01.10'],['중도금 3차 10%','2028.07.10'],['중도금 4차 10%','2029.01.10'],['중도금 5차 10%','2029.08.10'],['중도금 6차 10%','2030.03.11'],['잔금 35%','입주지정일']].map(([k, v]) => ({ k, v }));
 
     // settings
     const MOD = [['presale','분양권 · 분양권매매','지금','#157a3f','분양가·확장비·프리미엄·납부현황·전매·명의변경 / 매물·가계약·계약·명의변경완료 집계'],['option','옵션계산기','지금','#157a3f','옵션 탭 + 당해호실 옵션 합계'],['sale','매매','입주 후','#8e8e93','매매 희망가 · 매매 집계칸 · 필터칩'],['jeonse','전세','입주 후','#8e8e93','보증금 · 계약종료일 (퇴거예정 3/6개월 알림은 연동 단계)'],['wolse','월세','입주 후','#8e8e93','보증금/월세 · 계약종료일']];
@@ -4165,12 +4250,14 @@ class Component extends DCLogic {
 
     const RV = {
       stickyTop: ((S.headH || 172) + 12) + 'px', stickyMax: 'calc(100vh - ' + ((S.headH || 172) + 28) + 'px)',
-      commSpots: [{ k: 'b1f', x: 44.3, y: 53.6, w: 12.8, h: 17.6, badge: 'B1F 커뮤니티', title: 'B1F 커뮤니티 평면 보기' }, { k: 'sky', x: 37.4, y: 69.6, w: 11.8, h: 6.4, badge: '44F 스카이', title: '101동 44F 스카이커뮤니티 평면 보기' }]
+      sitePlanSrc: D.generic ? 'sites/' + D.S.site.code + '/assets/siteplan_' + String((D.S.site.groups[S.spBlk || 0] || D.S.site.groups[0]).id).toLowerCase().replace(/bl$/, '').replace(/^a/, 'a') + '.jpg' : 'assets/site-plan.jpg', sitePlanAlt: D.generic ? D.S.site.name + ' 단지배치도' : '챔피언스시티 1차 단지배치도',
+      hasSpBlk: !!D.generic && D.S.site.groups.length > 1, spBlkChips: D.generic ? D.S.site.groups.map((g, i) => { const on = (S.spBlk || 0) === i; return { label: g.id, bg: on ? '#1d1d1f' : '#fff', fg: on ? '#fff' : '#1d1d1f', bd: on ? '#1d1d1f' : '#d2d2d7', go: () => this.setState({ spBlk: i, spZ: 1, spX: 0, spY: 0 }) }; }) : [],
+      commSpots: D.generic ? [] : [{ k: 'b1f', x: 44.3, y: 53.6, w: 12.8, h: 17.6, badge: 'B1F 커뮤니티', title: 'B1F 커뮤니티 평면 보기' }, { k: 'sky', x: 37.4, y: 69.6, w: 11.8, h: 6.4, badge: '44F 스카이', title: '101동 44F 스카이커뮤니티 평면 보기' }]
         .map(c => Object.assign(c, { go: () => this.setState({ commPop: c.k, zoom: 1 }) })),
       commOpen: !!S.commPop, comm: Object.assign({ hdWrap: 'wrap', subShrink: '0' }, commV, commV.hasNav ? { subShrink: '1' } : {}),
       closeComm: () => this.setState({ commPop: null }),
       zoomPct: Math.round((S.zoom || 1) * 100) + '%', zoomW: commV.b1f ? (window.innerWidth < 1100 ? ((S.zoom || 1) * 100) + '%' : 'calc((100vh - 132px) * ' + (S.zoom || 1) + ' * ' + commV.ar + ')') : commV.mhOn ? ((S.zoom || 1) * 100) + '%' : 'min(' + ((S.zoom || 1) * 100) + '%, calc((100vh - 170px) * ' + (S.zoom || 1) + ' * ' + (commV.ar || 1.1667) + '))', zoomAR: String(commV.ar || 1.1667),
-      showTypeBoard: gx, showFamChips: !gx, typeBoardCells: [typeBoard[0], typeBoard[1], typeBoard[4], typeBoard[2], typeBoard[3]].map((r, i) => Object.assign({}, r, { bl: i === 0 || i === 3 ? 'none' : '1px solid #f0f0f2', rs: i === 2 ? 'span 2' : 'auto',
+      showTypeBoard: gx, showFamChips: !gx, typeBoardCells: (D.generic ? typeBoard : [typeBoard[0], typeBoard[1], typeBoard[4], typeBoard[2], typeBoard[3]]).map((r, i) => Object.assign({}, r, { bl: i === 0 || i === 3 ? 'none' : '1px solid #f0f0f2', rs: i === 2 ? 'span 2' : 'auto',
         dir: i === 2 ? 'column' : 'row', ai: i === 2 ? 'center' : 'center', gap: i === 2 ? '1px' : '5px', lw: i === 2 ? 'auto' : '38px', nw: i === 2 ? '0' : '42px', cw: i === 2 ? '48px' : '0',
         chipRows: i === 2 ? [{ chips: r.chips.slice(0, 3) }, { chips: r.chips.slice(3) }] : [{ chips: r.chips }] })),
       zoomCursor: 'grab',
@@ -4208,26 +4295,27 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
       closeSettings: () => this.setState({ settingsOpen: false, setOpenM: {}, setSec: 'mod', permOpen: false, gTip: null }), stop: e => e.stopPropagation(), settingsOpen: S.settingsOpen,
       kpis, famChips,
       showStaffUI: !guestOnly, guestClosed: guestOnly && (this.props.isPublic === false), guestOpen: !(guestOnly && this.props.isPublic === false),
-      subtitle: '12개동 3,216세대 · 입주 2030.11 예정',
+      subtitle: D.generic ? Object.keys(D.S.site.blocks || {}).map(k => k + ' ' + (D.S.site.blocks[k].scale || '').split('·').pop().trim() + ' · 입주 ' + (D.S.site.blocks[k].moveIn || '')).join('  |  ') : '12개동 3,216세대 · 입주 2030.11 예정',
+      typeSumText: Object.keys(D.types).length + '개 타입 · 합계 ' + D.units.length.toLocaleString(), isChamps: !D.generic, isSite: !!D.generic, siteName: D.generic ? D.S.site.name : '', siteLogo: D.generic ? 'sites/' + D.S.site.code + '/' + D.S.site.logo : '',
       overviewHint: isGuest ? '동을 누르면 유니트 배치가 확대됩니다' : '동을 누르면 유니트 배치가 확대되고, 팝업에서 그룹 배치표로 이동합니다',
       guestRows: [['enabled', '게스트 탭 활성화', '켜면 직원 대시보드 상단에 게스트 탭이 생겨 외부 화면을 미리 볼 수 있습니다'], ['public', '아무나 보기 (공개 링크)', '홈페이지에 링크하는 게스트 전용 파일의 공개 여부 · 파일 속성 isPublic과 함께 맞춰 주세요'], ['hideStaff', '직원에게 숨기기', '켜면 직원 대시보드 상단 탭에서 게스트 탭을 뺍니다 (공개 링크에는 영향 없음)'], ['visit', '홍보관 방문예약 버튼 표시', '켜면 게스트 상단에 홍보관 방문예약 버튼이 보입니다'], ['noBoard', '동호배치표 탭 숨기기', '켜면 게스트 화면에서 동호배치표 탭을 빼고 종합뷰만 보여줍니다'], ['noOption', '옵션계산기 탭 숨기기', '켜면 게스트 화면에서 옵션계산기 탭을 빼니다 · 게스트 선택은 저장되지 않습니다'], ['noPrice', '분양가표 탭 숨기기', '켜면 게스트 화면에서 분양가표 탭을 빼니다'], ['noCity', '챔피언스시티 탭 숨기기', '켜면 게스트 화면에서 챔피언스시티 소개 탭을 빼니다']]
         .concat([['noCmt', '호실 이야기(댓글) 숨기기', '켜면 동호배치표 호실내역 아래 댓글란을 숨깁니다']]).map(([k, l, desc]) => ({ label: l, desc, bg: GS[k] ? '#34c759' : '#e5e5ea', knob: GS[k] ? '21px' : '3px', infoOn: S.gTip === k, infoFg: S.gTip === k ? '#0066cc' : '#8e8e93', info: e => { if (e) { e.stopPropagation(); e.preventDefault(); } this.setState({ gTip: S.gTip === k ? null : k }); }, onClick: e => { if (e && e.target && e.target.closest && e.target.closest('[data-mo=ginfo]')) return; this.setState(ss => ({ guest: Object.assign({}, ss.guest, { [k]: !ss.guest[k] }) })); } })),
-      isOverview: tab === 'overview' || isGuest, isBoard: tab === 'board' || isGB, isOption: tab === 'option' || isGO, isCard: tab === 'card', isLog: tab === 'log', isPrice: tab === 'price' || isGP, isCity: tab === 'city' || isGC, city: this.cityVals(),
+      isOverview: tab === 'overview' || isGuest, isBoard: tab === 'board' || isGB, isOption: tab === 'option' || isGO, isCard: tab === 'card', isLog: tab === 'log', isPrice: tab === 'price' || isGP, isCity: !D.generic && (tab === 'city' || isGC), city: D.generic ? {} : this.cityVals(), isSiteIntro: !!D.generic && (tab === 'city' || isGC), si: D.generic && (tab === 'city' || isGC) ? this.siteIntroVals() : {},
       hotspots, groupLegend, groupCards, typeList,
       groupChips, colorModes, togglePrice: () => this.setState({ showPrice: !S.showPrice }), priceChip, filterChips, axis, bldgs, legend,
       noSelText: isGB ? '배치표에서 호실을 누르면 타입 개요 · 공급안내 · 평면이 표시됩니다' : '배치표에서 호실을 누르면 타입 개요 · 분양가 · 확장비 · 옵션 · 프리미엄 · 납부현황이 표시됩니다', boardStaff: !isGB, showGuestNav: guestOnly && vis.length > 1,
       altType: (S.upPlan && S.upPlan.code) || (S.pp && S.pp.code) || (S.sel && D.byId[S.sel] ? D.byId[S.sel].type : '') || '',
-      ...(() => { const d = new Date(); const td = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); const on = !!GS.notice && (!GS.ntFrom || td >= GS.ntFrom) && (!GS.ntTo || td <= GS.ntTo); let hid = false; try { hid = localStorage.getItem('cc-nt-hide') === td; } catch (x) {} const auto = guestOnly && on && !hid && !S.ntClosed; const vk = vis.map(v => v[0]); const setG = o => this.setState(ss => ({ guest: Object.assign({}, ss.guest, o) }));
+      ...(() => { const d = new Date(); const td = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); const on = !D.generic && !!GS.notice && (!GS.ntFrom || td >= GS.ntFrom) && (!GS.ntTo || td <= GS.ntTo); let hid = false; try { hid = localStorage.getItem(this.k('cc-nt-hide')) === td; } catch (x) {} const auto = guestOnly && on && !hid && !S.ntClosed; const vk = vis.map(v => v[0]); const setG = o => this.setState(ss => ({ guest: Object.assign({}, ss.guest, o) }));
         return { ntShow: on && (S.ntOpen || auto), ntChip: on && gx, openNt: () => this.setState({ ntOpen: true }), ntBodyRef: el => { if (this._ntRO) { this._ntRO.disconnect(); this._ntRO = null; } if (!el) return; const fit = () => { if (window.innerWidth >= 1100) { el.style.maxHeight = ''; el.style.flex = ''; return; } const s = el.querySelectorAll(':scope > section')[1]; if (!s) return; el.style.flex = '0 1 auto'; const px = (s.getBoundingClientRect().bottom - el.getBoundingClientRect().top + el.scrollTop + 14) + 'px'; if (el.style.maxHeight !== px) el.style.maxHeight = px; }; fit(); if (window.ResizeObserver) { this._ntRO = new ResizeObserver(fit); this._ntRO.observe(el); } },
       closeNt: () => this.setState({ ntOpen: false, ntClosed: true }),
-          ntHideToday: () => { try { localStorage.setItem('cc-nt-hide', td); } catch (x) {} this.setState({ ntOpen: false, ntClosed: true }); },
+          ntHideToday: () => { try { localStorage.setItem(this.k('cc-nt-hide'), td); } catch (x) {} this.setState({ ntOpen: false, ntClosed: true }); },
           ntCanPrice: vk.includes('gprice') || vk.includes('price'), ntCanOpt: vk.includes('goption') || vk.includes('option'),
           ntGoPrice: () => this.setState({ ntOpen: false, ntClosed: true, tab: vk.includes('gprice') ? 'gprice' : 'price' }), ntGoOpt: () => this.setState({ ntOpen: false, ntClosed: true, tab: vk.includes('goption') ? 'goption' : 'option' }),
           ntFrom: GS.ntFrom || '', ntTo: GS.ntTo || '', onNtFrom: e => setG({ ntFrom: e.target.value }), onNtTo: e => setG({ ntTo: e.target.value }),
           ntState: !GS.notice ? '팝업 꺼짐' : on ? '오늘 표시 중' : '기간 밖 (표시 안 함)' }; })(),
       popAdmin, popRowsG: pAll.filter(p => p.aud === 'guest').map(pRow), popRowsS: pAll.filter(p => p.aud === 'staff').map(pRow), popNoneS: !pAll.some(p => p.aud === 'staff'), popAddG: pAdd('guest'), popAddS: pAdd('staff'),
       cpShow: !!pCur && !(S.ntOpen || (guestOnly && pAct(pNt) && !S.ntClosed)), cpTitle: pCur ? pCur.title : '', cpBody: pCur ? pCur.body : '', cpLink: pCur ? pCur.link : '', cpHasLink: !!(pCur && pCur.link), cpBadge: pAud === 'staff' ? '직원 공지' : '안내', cpBadgeBg: pAud === 'staff' ? '#1d1d1f' : '#c8381e',
-      cpClose: () => pCur && this.setState(ss => ({ popSeen: Object.assign({}, ss.popSeen, { [pCur.id]: true }) })), cpHide: () => { if (!pCur) return; try { const o = JSON.parse(localStorage.getItem('cc-pop-hide') || '{}'); o[pCur.id] = pTd; localStorage.setItem('cc-pop-hide', JSON.stringify(o)); } catch (x) {} this.setState(ss => ({ popSeen: Object.assign({}, ss.popSeen, { [pCur.id]: true }) })); },
+      cpClose: () => pCur && this.setState(ss => ({ popSeen: Object.assign({}, ss.popSeen, { [pCur.id]: true }) })), cpHide: () => { if (!pCur) return; try { const o = JSON.parse(localStorage.getItem(this.k('cc-pop-hide')) || '{}'); o[pCur.id] = pTd; localStorage.setItem(this.k('cc-pop-hide'), JSON.stringify(o)); } catch (x) {} this.setState(ss => ({ popSeen: Object.assign({}, ss.popSeen, { [pCur.id]: true }) })); },
       goHome: () => { if (vis.length) this.setState({ tab: vis[0][0], sel: null }); try { window.scrollTo(0, 0); } catch (x) {} },
       noSel: !p, hasSel: !!p, p: p || {}, presaleOn: !!mods.presale, optionOn: !!mods.option, tradeOn: !!(mods.sale || mods.jeonse || mods.wolse),
       supplyOpts: ['미확인','일반공급','특별공급(신혼부부)','특별공급(생애최초)','특별공급(다자녀)','특별공급(노부모)','특별공급(기관추천)','무순위'],
@@ -4254,7 +4342,7 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
     RV.mlOpen = !!S.mlOpen; RV.ml = { close: () => this.setState({ mlOpen: false }), photos: this.COMMPH.ml[1].map(([src, n], i) => ({ src, n, open: e => { if (e) e.stopPropagation(); this.setState({ mhView: { comm: 'ml', i } }); } })) };
     RV.hdOpen = !!S.hdOpen; RV.hd = { close: () => this.setState({ hdOpen: false }), open1: e => { if (e) e.stopPropagation(); this.setState({ mhView: { comm: 'hd', i: 0 } }); }, open2: e => { if (e) e.stopPropagation(); this.setState({ mhView: { comm: 'hd', i: 1 } }); }, open3: e => { if (e) e.stopPropagation(); this.setState({ mhView: { comm: 'hd', i: 2 } }); } };
     RV.lmOpen = !!S.lmOpen; const LK = S.lmOpen === 'gr' ? 'gr' : S.lmOpen === 'sg' ? 'sg' : 'lm', LP = { sg: { t1: '채광과 조망, 공간의 개방감을 극대화한 ', t2: 'SIGNATURE PLAN', sub: '주거의 여유를 넓히는 다양한 특화 공간 · 3면 발코니 특화 설계로 더 넓은 실사용 면적을 확보하고 3면 파노라마 뷰와 프라이빗 테라스로 탁 트인 개방감을 선사합니다.', hd: '', ph: [['sg_1', 1082, '3면 발코니', '파노라마 뷰 조망, 채광, 서비스 면적을 최대로 확보한 3면 발코니형 특화 평면(일부 제외)'], ['sg_2', 695, '교차 테라스', '휴식, 소통, 힐링, 프라이빗 라이프를 위한 최적의 설계로 품격 있는 테라스 공간 특화']] }, lm: { t1: '광주의 거대한 자부심을 설계하는 ', t2: 'LANDMARK PLAN', sub: '3,216세대 대단지 스케일에 대규모 조경 공간과 평면 특화 등 수준 높은 설계와 디자인으로 랜드마크를 완성합니다', hd: '광주 어디서 바라봐도 하늘 높이 빛나는 랜드마크', ph: [['lm_1', 580, '단지 전경'], ['lm_2', 843, '중앙 잔디광장']] }, gr: { t1: '도시 어디를 가더라도 힐링 스팟 ', t2: 'GREEN PLAN', sub: '', hd: '광활한 자연을 담은 거대한 커뮤니티 숲 단지', ph: [['gr_1', 388, 'Central Park'], ['gr_2', 388, 'Sky Garden'], ['gr_3', 614, 'Green Plaza']] } }[LK]; const LW = LP.ph.reduce((a, p) => a + p[1], 0); RV.lm = { hasTabs: LK !== 'gr', tabs: [['lm', '1. 랜드마크 플랜'], ['sg', '2. 특화설계']].map(([k, l]) => ({ label: l, go: () => this.setState({ lmOpen: k }), bg: k === LK ? '#b5300f' : '#fff', fg: k === LK ? '#fff' : '#1d1d1f', bd: k === LK ? '#b5300f' : '#d2d2d7' })), popH: LK === 'gr' ? 'auto' : (S.lmH ? S.lmH + 'px' : 'auto'), popOp: LK === 'gr' || S.lmH ? 1 : 0, hasFeats: LK !== 'sg', hasHd: !!LP.hd, hasCaps: LK === 'sg', isSg: LK === 'sg', caps: LP.ph.map(p => ({ flex: p[1] + ' 1 0', t: p[2], d: p[3] || '' })), t1: LP.t1, t2: LP.t2, sub: LP.sub, hasSub: !!LP.sub, hd: LP.hd, photoH: 'min(calc((100vw - 92px) * ' + (635 / LW).toFixed(4) + '), calc(100vh - 430px), ' + Math.round(1148 * 635 / LW) + 'px)', photos: LP.ph.map(([f, w, n], k) => ({ flex: w + ' 1 0', bg: '#e5e5ea url(assets/city/' + f + '.jpg) center / cover no-repeat', n, open: () => this.setState({ mhView: { comm: LK, i: k } }) })), close: () => this.setState({ lmOpen: false }), feats: (LK === 'gr' ? [['약 32,000㎡ 규모의 조경', '', '센트럴파크, 포켓가든, 공개공지 등 다양한 조경 공간을 갖추고 있습니다.'], ['하늘정원', '', '상업시설과 연계된 옥상 조경 공간으로 일상 속에서 자연을 즐깁니다.'], ['약 300m 길이의 센트럴파크', '', '단지 중앙에 길게 뻗은 자연 공간으로, 쾌적한 산책길을 선사합니다.'], ['그린프라자', '(공개공지)', '문화공원과 연계되어 휴식 및 다양한 문화를 접할 수 있는 공간입니다.']] : [['광주 최고층 49층 스카이라인', '', '도시 어디서나 시선을 사로잡는 압도적인 높이와 존재감으로 광주의 새로운 스카이라인을 완성합니다.'], ['랜드마크 입면 디자인', '', '정면, 측면, 후면 어느 방향에서 바라봐도 완성도 높은 디자인으로 360도 파노라마 경관을 형성합니다.'], ['야간 경관 디자인', '', '라이팅박스, 라인조명, 프레임조명 등 다양한 조명으로 도시를 대표하는 상징적인 야경을 선사합니다.'], ['웰컴 게이트', '(메인문주 & 보행문주)', '메인문주에서부터 보행문주를 거쳐 동출입구까지 연결되는 디자인으로 귀가의 품격을 완성합니다.']]).map(([t, s, d]) => ({ t, s, d })) }; RV.gOpen = gx && !!S.gRegOpen; RV.showGuestCta = gx; RV.openGReg = () => this.setState(ss => ({ gRegOpen: true, gReg: ss.gReg || this.gBlank('seller', '') })); RV.gPrivOpen = !!S.gPriv; RV.gDoneOpen = !!S.gDone; RV.closeGPriv = () => this.setState({ gPriv: false }); RV.closeGDone = () => this.setState({ gDone: false });
-    { const SY = S.sync || {}; const setSy = p => this.setState(ss => ({ sync: Object.assign({}, ss.sync, p) })); let qn = 0; try { qn = JSON.parse(localStorage.getItem('cc-sync-q') || '[]').length; } catch (e) {}
+    { const SY = S.sync || {}; const setSy = p => this.setState(ss => ({ sync: Object.assign({}, ss.sync, p) })); let qn = 0; try { qn = JSON.parse(localStorage.getItem(this.k('cc-sync-q')) || '[]').length; } catch (e) {}
       RV.syncUrl = SY.url || ''; RV.onSyncUrl = e => setSy({ url: e.target.value.trim() });
       RV.syncRows = [['notifyStaff', '직원 상담 알림', '직원이 상담카드를 저장하거나 계약자를 바꾸면 알림을 보냅니다'], ['notifyGuest', '게스트 등록 알림', '게스트 관심등록 · 홍보관 방문예약이 들어오면 알림을 보냅니다']].map(([k, l, desc]) => ({ label: l, desc, bg: SY[k] !== false ? '#34c759' : '#e5e5ea', knob: SY[k] !== false ? '21px' : '3px', onClick: () => setSy({ [k]: SY[k] === false }) }));
       RV.syncTest = () => { if (!SY.url) return this.flash('웹앱 URL을 먼저 입력하세요'); this.syncPost([{ type: 'test', memo: '연결 테스트 · ' + (S.me || ''), alert: '[연결 테스트] 챔피언스시티1차 대시보드 연동 확인 · ' + (S.me || '') }]); this.flash('테스트를 보냈습니다. 시트 \'연결테스트\' 탭과 텔레그램을 확인하세요'); };
