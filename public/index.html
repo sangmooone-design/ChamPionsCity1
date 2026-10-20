@@ -85,6 +85,7 @@
   ]
 }
 </script>
+<script src="./config.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -131,7 +132,7 @@ a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}
 </footer>
 <script type="text/x-dc" data-dc-script data-props="{&quot;isPublic&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;공개&quot;},&quot;syncUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;구글시트 연동&quot;}}">
 class Component extends DCLogic {
-  renderVals() { return { isPublic: this.props.isPublic !== false, syncUrl: this.props.syncUrl || '' }; }
+  renderVals() { return { isPublic: this.props.isPublic !== false, syncUrl: this.props.syncUrl || window.CC_SYNC_URL || '' }; }
 }
 </script>
 </body>
