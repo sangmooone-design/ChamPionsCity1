@@ -1,8 +1,8 @@
-챔피언스시티 업로드 (챔피언스시티 전용 · 호반써밋 파일 없음)
+챔피언스시티 업로드 (챔피언스시티 전용)
 
 [올리는 파일]
 public/index.html          게스트 첫 화면 (네이버 웹사이트정보용 구조화 데이터 추가)
-public/dashboard.dc.html   화면 본체 (광고 연결 주소로 바로 열기 기능 추가)
+public/dashboard.dc.html   화면 본체 (광고 연결 주소 바로 열기 · 개인정보 동의 3항목 · 전체 동의)
 
 [방법 · GitHub Desktop]
 1) 압축을 풀고 public 안의 두 파일을 ChamPionsCity1 저장소 public 폴더에 덮어씁니다.
