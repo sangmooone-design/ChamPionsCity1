@@ -3558,7 +3558,7 @@ class Component extends DCLogic {
   }
   staffItem() { const S = this.state; return { type: 'staff', by: S.me || '', rows: Object.keys(S.roles || {}).map(n => ({ 이름: n, 권한: S.roles[n], 연락처: (S.tels || {})[n] || '', 구글메일: (S.mails || {})[n] || '', PIN: (S.pins || {})[n] ? '등록' : '미등록' })) }; }
   syncPost(items) {
-    const url = ((this.state.sync || {}).url || this.props.syncUrl || '').trim(); let q = []; try { q = JSON.parse(localStorage.getItem(this.k('cc-sync-q')) || '[]'); } catch (e) {} q = q.concat(items || []);
+    const url = ((this.props.guestOnly ? (this.props.syncUrl || (this.state.sync || {}).url) : ((this.state.sync || {}).url || this.props.syncUrl)) || '').trim(); let q = []; try { q = JSON.parse(localStorage.getItem(this.k('cc-sync-q')) || '[]'); } catch (e) {} q = q.concat(items || []);
     const keep = a => { try { localStorage.setItem(this.k('cc-sync-q'), JSON.stringify(a.slice(-500))); } catch (e) {} };
     if (!url || !q.length) { keep(q); return; } keep([]);
     fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ type: 'batch', items: q }) })
