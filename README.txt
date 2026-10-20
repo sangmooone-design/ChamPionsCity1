@@ -1,24 +1,26 @@
-챔피언스시티 업로드 (챔피언스시티 전용 )
+챔피언스시티 업로드 (직원 화면 🔔 게스트 등록 알림)
 
 [올리는 파일]
-public/index.html          게스트 첫 화면 (네이버 웹사이트정보용 구조화 데이터 추가)
-public/dashboard.dc.html   화면 본체 (광고 연결 주소 바로 열기 · 개인정보 동의 3항목 · 전체 동의)
+public/dashboard.dc.html   화면 본체 (🔔 알림 · 알림음 · PC/휴대폰 알림 · 조회 키 설정)
+gas/Code.gs                구글 Apps Script 코드 (GitHub에 올리지 않습니다)
 
-[방법 · GitHub Desktop]
-1) 압축을 풀고 public 안의 두 파일을 ChamPionsCity1 저장소 public 폴더에 덮어씁니다.
-2)  Summary '파워링크 구조화데이터' → Commit to main → Push origin
-3) 2~3분 뒤 시크릿 탭으로 확인
+[1. 구글 Apps Script 수정]
+1) script.google.com → 챔피언스시티 프로젝트 → Code.gs 내용을 통째로 새 Code.gs로 바꾸고 저장
+2) 프로젝트 설정(톱니) → 스크립트 속성 → [속성 추가]
+   속성: STAFF_KEY   값: 아무 문자 (예: champs-2026-7240)  → 저장
+3) 함수 선택에서 setup → [실행]  ('게스트수신' 탭이 생깁니다)
+4) 배포 → 배포 관리 → 연필 → 버전: 새 버전 → 배포 (웹앱 주소는 그대로)
 
-[광고 연결 주소]
-첫 화면          https://championscity1.sangmooone.workers.dev/?ad=1
-타입별 평면      https://championscity1.sangmooone.workers.dev/?tab=plan
-84A 평면 바로    https://championscity1.sangmooone.workers.dev/?type=84A   (84B, 103A1, 128A2, 214A ... 동일)
-분양가표         https://championscity1.sangmooone.workers.dev/?tab=price
-동호배치표       https://championscity1.sangmooone.workers.dev/?tab=board
-옵션계산기       https://championscity1.sangmooone.workers.dev/?tab=option
-홍보관 방문예약  https://championscity1.sangmooone.workers.dev/?visit=1
-* 위 주소로 들어오면 무순위 공고 팝업은 자동으로 뜨지 않습니다.
+[2. GitHub 올리기]
+1) public/dashboard.dc.html 을 ChamPionsCity1 저장소 public 폴더에 덮어씁니다.
+2) Summary '직원 알림' → Commit to main → Push origin
 
-[네이버 등록]
-1) 서치어드바이저 → 웹마스터 도구 → 검증 → 구조화된 데이터 → 첫 화면 주소 검사
-2) 광고 관리 → 광고그룹 → +새 확장 소재 → 웹사이트정보 → 동의함 → 저장 후 닫기
+[3. 직원 기기마다 1회]
+1) https://championscity1.sangmooone.workers.dev/staff/ 로그인
+2) 설정 · 모듈 → 구글시트 · 알림 연동
+   - 웹앱 URL 확인
+   - 직원 조회 키: 위 STAFF_KEY 와 같은 값 입력
+   - 'PC · 휴대폰 알림' 켜기 → 브라우저 알림 허용
+3) 게스트 화면에서 관심등록을 하나 해 보고 1분 안에 🔔 숫자가 뜨는지 확인
+
+* 조회 키가 없으면 게스트 개인정보를 읽을 수 없게 막혀 있습니다. 키는 직원에게만 알려 주세요.
