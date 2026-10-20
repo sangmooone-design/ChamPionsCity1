@@ -1,4 +1,4 @@
-챔피언스시티 업로드 (챔피언스시티 전용 · 호반써밋 파일 없음)
+챔피언스시티 업로드 (챔피언스시티 전용 )
 
 [올리는 파일]
 public/index.html          게스트 첫 화면 (네이버 웹사이트정보용 구조화 데이터 추가)
@@ -6,11 +6,8 @@ public/dashboard.dc.html   화면 본체 (광고 연결 주소 바로 열기 · 
 
 [방법 · GitHub Desktop]
 1) 압축을 풀고 public 안의 두 파일을 ChamPionsCity1 저장소 public 폴더에 덮어씁니다.
-2) 만약 예전에 호반써밋 파일을 올렸다면 아래 두 폴더를 지웁니다.
-   - public/hobansummit
-   - public/sites/hobansummit
-3) Summary '파워링크 구조화데이터' → Commit to main → Push origin
-4) 2~3분 뒤 시크릿 탭으로 확인
+2)  Summary '파워링크 구조화데이터' → Commit to main → Push origin
+3) 2~3분 뒤 시크릿 탭으로 확인
 
 [광고 연결 주소]
 첫 화면          https://championscity1.sangmooone.workers.dev/?ad=1
