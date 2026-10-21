@@ -3338,7 +3338,7 @@ class Component extends DCLogic {
       guest: Object.assign({ enabled: false, public: true, hideStaff: false, visit: true, notice: true, ntFrom: '2026-10-15', ntTo: '2026-10-28' }, saved && saved.guest),
       modules: Object.assign({ presale: true, sale: false, jeonse: false, wolse: false, option: true }, saved && saved.modules),
       menus: Object.assign({ overview: true, board: true, option: true, card: true, log: true, price: true }, saved && saved.menus),
-      roles: Object.assign({ 황후권: '관리자', 김민지: '직원', 이서준: '직원', 박하은: '직원' }, saved && saved.roles),
+      roles: saved && saved.roles && Object.keys(saved.roles).length ? Object.assign({}, saved.roles) : { 황후권: '관리자' },
       perms: Object.assign({ mgr: { 관리자: true, 직원: false, 열람: false }, memo: { 관리자: true, 직원: false, 열람: false }, inflow: { 관리자: true, 직원: false, 열람: false }, cmtDel: { 관리자: true, 직원: false, 열람: false }, media: { 관리자: true, 직원: false, 열람: false }, view: { 관리자: true, 직원: true, 열람: true }, create: { 관리자: true, 직원: true, 열람: false }, edit: { 관리자: true, 직원: false, 열람: false }, logEdit: { 관리자: true, 직원: false, 열람: false }, custView: { 관리자: true, 직원: false, 열람: false }, broker: { 관리자: true, 직원: false, 열람: false }, excel: { 관리자: true, 직원: false, 열람: false }, phone: { 관리자: true, 직원: false, 열람: false } }, saved && saved.perms),
       media: (saved && saved.media) || ['이실장', '블로그', '인스타', '당근'],
       carriers: (saved && saved.carriers) || ['SK', '알뜰SK', 'KT', '알뜰KT', 'LGU', '알뜰LGU'], inflow: (saved && saved.inflow) || ['네이버광고', '당근', '인스타', '블로그'],
