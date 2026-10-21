@@ -470,6 +470,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
       </sc-for>
     </nav>
     <div data-m="staffr" style="margin-left:auto;display:flex;gap:8px;align-items:center">
+      <sc-if value="{{ srvOn }}" hint-placeholder-val="{{ false }}"><span title="{{ srvTip }}" style="font-size:11.5px;font-weight:700;color:{{ srvFg }};white-space:nowrap">{{ srvLabel }}</span></sc-if>
       <span style="font-size:12px;color:#6e6e73">담당</span>
       <sc-if value="{{ meFree }}" hint-placeholder-val="{{ true }}"><select value="{{ me }}" onChange="{{ onMe }}" style="height:34px;border:1px solid #d2d2d7;border-radius:9999px;padding:0 12px;background:#fff;font-size:13px">
         <sc-for list="{{ staff }}" as="s"><option value="{{ s }}">{{ s }}</option></sc-for>
@@ -2838,6 +2839,17 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
 <sc-if value="{{ hasToast }}">
 <div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:60;background:#1d1d1f;color:#fff;padding:10px 18px;border-radius:9999px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:12px">{{ toast }}<sc-if value="{{ hasToastAct }}"><button onClick="{{ toastActFn }}" style="border:none;background:#0a84ff;color:#fff;border-radius:9999px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer">{{ toastActLabel }}</button></sc-if></div>
 </sc-if>
+<sc-if value="{{ oc.show }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:1000;background:#f5f5f7;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div style="width:100%;max-width:380px;background:#fff;border-radius:22px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 40px rgba(0,0,0,.08)">
+    <img src="assets/logo_full.svg" alt="올 뉴 챔피언스시티" style="height:40px;align-self:flex-start">
+    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:20px;font-weight:800;letter-spacing:-.02em">사무실 코드 입력</span><span style="font-size:13px;color:#6e6e73;line-height:1.5">이 기기에서 처음 한 번만 입력합니다. 관리자에게 받은 코드를 넣어 주세요.</span></div>
+    <input type="password" autocomplete="off" value="{{ oc.v }}" onChange="{{ oc.on }}" onKeyDown="{{ oc.key }}" placeholder="사무실 코드" style="height:48px;border:1px solid #d2d2d7;border-radius:12px;padding:0 14px;font-size:16px;color:#1d1d1f">
+    <sc-if value="{{ oc.hasErr }}"><div style="font-size:13px;color:#d2264b;font-weight:600">{{ oc.err }}</div></sc-if>
+    <button onClick="{{ oc.go }}" style="height:48px;border:none;border-radius:12px;background:#c8381e;color:#fff;font-size:16px;font-weight:800;cursor:pointer">확인</button>
+  </div>
+</div>
+</sc-if>
 <sc-if value="{{ lg.show }}" hint-placeholder-val="{{ false }}">
 <div style="position:fixed;inset:0;z-index:999;background:#f5f5f7;display:flex;align-items:center;justify-content:center;padding:20px">
   <div style="width:100%;max-width:380px;background:#fff;border-radius:22px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 40px rgba(0,0,0,.08)">
@@ -3360,7 +3372,7 @@ class Component extends DCLogic {
     if (!this.D.generic) fetch('data/subtypes.json').then(r => r.json()).then(m => { Object.keys(m).forEach(id => { const u = this.D.byId[id]; if (u && !u.ph) u.type = m[id]; }); this.setState({ subtypesOk: true }); }).catch(() => {});
     this._esc = e => { if (e.key === 'Escape') { if (this.state.upPlan || this.state.upOv != null || this.state.upOvPh) return this.backUP(); this.setState({ planOpen: null, unitPop: null, commPop: null }); } }; window.addEventListener('keydown', this._esc);
     if (this.props.guestOnly) { this._cfg = e => { if (e && e.key && e.key !== 'cc-dash-v1') return; try { const s = JSON.parse(localStorage.getItem(this.k('cc-dash-v1')) || 'null'); if (s) this.setState(ss => ({ modules: Object.assign({}, ss.modules, s.modules), guest: Object.assign({}, ss.guest, s.guest) })); } catch (x) {} }; window.addEventListener('storage', this._cfg); window.addEventListener('focus', this._cfg); }
-    if (!this.props.guestOnly) { this._inbox = e => { if (!e || !e.key || e.key === 'cc-guest-inbox') this.pullInbox(); }; window.addEventListener('storage', this._inbox); window.addEventListener('focus', this._inbox); setTimeout(() => this.pullInbox(), 300); setTimeout(() => this.pullRemote(), 2000); this._feedT = setInterval(() => this.pullRemote(), 60000); this._t0 = document.title; }
+    if (!this.props.guestOnly) { this._inbox = e => { if (!e || !e.key || e.key === 'cc-guest-inbox') this.pullInbox(); }; window.addEventListener('storage', this._inbox); window.addEventListener('focus', this._inbox); setTimeout(() => this.pullInbox(), 300); setTimeout(() => this.pullRemote(), 2000); this._feedT = setInterval(() => this.pullRemote(), 60000); this._t0 = document.title; if (this.props.requireLogin) this.srvInit(); }
     if (this.D.generic) { const O = this.D.S.options.byType || {}; const vars = {}; Object.keys(O).forEach(t => (O[t] || []).forEach(o => { const key = o.name.split(' ')[0]; (vars[key] = vars[key] || { k: key, dims: [key], t: {} }).t[t] = { p: o.price, d: o.detail, q: (o.name.match(/\((.*)\)/) || [])[1] || '', n: o.note || '' }; }));
       this.setState({ cat: { paid: [{ id: 'p0', cat: '시스템에어컨', name: '천장형 시스템에어컨', perUnit: false, dimNames: ['선택안'], variants: Object.values(vars) }], free: [] } }); } else
     fetch('data/options.json').then(r => r.json()).then(cat => this.setState({ cat })).catch(() => this.setState({ cat: { paid: [], free: [] } }));
@@ -3502,12 +3514,57 @@ class Component extends DCLogic {
     this._prev = {}; K.forEach(k => this._prev[k] = S[k]);
     if (this.props.guestOnly) return;
     if (this._t0) { const me = S.me || '-', n = (S.gNotes || []).filter(x => !((S.gRead || {})[x.id] || {})[me]).length; const t = (n ? '(' + n + ') ' : '') + this._t0; if (document.title !== t) document.title = t; }
-    this.syncDiff(ps, S);
+    this.syncDiff(ps, S); this.srvDiff(ps, S);
     if (K.some(k => ps[k] !== S[k])) {
       const o = {}; K.forEach(k => o[k] = S[k]);
       try { localStorage.setItem(this.k('cc-dash-v1'), JSON.stringify(o)); } catch (e) {}
     }
   }
+  SRV_CFG = ['modules', 'menus', 'guest', 'roles', 'perms', 'impLog', 'brokers', 'media', 'carriers', 'inflow', 'sync', 'pins', 'mails', 'popups', 'menuOrder', 'tels', 'listResetAt'];
+  cid(c) { return c.id || ('x' + (c.at || '') + (c.unit || '') + (c.name || '') + (c.phone || '')); }
+  srvKey() { try { return localStorage.getItem(this.k('cc-office')) || ''; } catch (e) { return ''; } }
+  async srvInit() {
+    this._srv = { cfg: {}, u: {}, c: {} }; this._srvReady = false; this._srvSv = 0; try { this._srvQ = JSON.parse(localStorage.getItem(this.k('cc-srvq')) || '[]'); } catch (e) { this._srvQ = []; }
+    const ping = async () => { try { const r = await fetch('/api/ping', { headers: { 'x-key': this.srvKey() }, cache: 'no-store' }); const j = await r.json(); if (!j.ok) throw 0; if (!j.auth) { this.setState({ srvSt: this.srvKey() ? 'badkey' : 'nokey' }); return false; } this.srvPull(true); return true; } catch (e) { this.setState({ srvSt: 'off' }); return false; } };
+    this._srvPing = ping; await ping();
+    clearInterval(this._srvT); this._srvT = setInterval(() => { const st = this.state.srvSt; if (this._srvReady) this.srvPull(false); else if (st === 'off' && (this._srvTick = (this._srvTick || 0) + 1) % 6 === 0) ping(); }, 5000);
+    window.addEventListener('focus', () => { if (this._srvReady) this.srvPull(false); });
+  }
+  async srvFetch(path, opt) { const key = this.srvKey(); if (!key) { this.setState({ srvSt: 'nokey' }); throw new Error('nokey'); }
+    const r = await fetch('/api/' + path, Object.assign({ cache: 'no-store' }, opt, { headers: { 'x-key': key, 'content-type': 'application/json' } }));
+    if (r.status === 401) { this._srvReady = false; this.setState({ srvSt: 'badkey' }); throw new Error('auth'); } if (!r.ok) throw new Error('http'); return r.json(); }
+  async srvPull(first) {
+    if (this._pulling) return; this._pulling = true;
+    try { let since = first ? 0 : Math.max(0, this._srvSv - 10e6), rows = [], more = true, g = 0;
+      while (more && g++ < 30) { const j = await this.srvFetch('pull?since=' + since); rows = rows.concat(j.rows || []); more = !!j.more; if (j.now) since = j.now; }
+      this._srvSv = Math.max(this._srvSv, since);
+      if (first) { this._srv = { cfg: {}, u: {}, c: {} }; if (rows.length) this.srvApply(rows, true); this._srvReady = true; if (!rows.length) this.srvDiff({}, this.state); }
+      else if (rows.length) this.srvApply(rows, false);
+      this.setState({ srvSt: 'ok', srvAt: Date.now() }); this.srvFlush();
+    } catch (e) { if (e.message !== 'nokey' && e.message !== 'auth') this.setState({ srvSt: 'off' }); }
+    this._pulling = false; }
+  srvApply(rows, replace) {
+    const S = this.state, o = {}, cm = {}; let u = replace ? {} : null;
+    rows.forEach(r => { let v = null; try { v = JSON.parse(r.v); } catch (e) { return; }
+      if (r.s === 'cfg') { this._srv.cfg[r.k] = r.v; if (v != null) o[r.k] = v; }
+      else if (r.s === 'u') { this._srv.u[r.k] = r.v; if (!u) u = Object.assign({}, S.u); if (v == null) delete u[r.k]; else u[r.k] = v; }
+      else if (r.s === 'c') { this._srv.c[r.k] = r.v; cm[r.k] = v; } });
+    if (replace || Object.keys(cm).length) { const arr = replace ? [] : (S.cards || []).slice(); const idx = {}; arr.forEach((c, i) => { idx[this.cid(c)] = i; });
+      Object.keys(cm).forEach(k => { if (cm[k] == null) { if (idx[k] != null) arr[idx[k]] = null; } else if (idx[k] != null) arr[idx[k]] = cm[k]; else { idx[k] = arr.length; arr.push(cm[k]); } });
+      o.cards = arr.filter(Boolean).sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')) || String(b.id || '').localeCompare(String(a.id || ''))); }
+    if (u) o.u = u; this.setState(o); }
+  srvDiff(ps, S) {
+    if (!this._srvReady || !this._srv) return; const by = S.me || '', at = Date.now(), out = [];
+    this.SRV_CFG.forEach(k => { if (ps[k] !== S[k] && S[k] !== undefined) { const v = JSON.stringify(S[k]); if (this._srv.cfg[k] !== v) { this._srv.cfg[k] = v; out.push({ s: 'cfg', k, v, at, by }); } } });
+    const map = (sc, a, b) => { new Set(Object.keys(a).concat(Object.keys(b))).forEach(id => { if (a[id] === b[id]) return; const v = b[id] === undefined ? 'null' : JSON.stringify(b[id]); const cur = this._srv[sc][id]; if (cur === v || (v === 'null' && cur === undefined)) return; this._srv[sc][id] = v; out.push({ s: sc, k: id, v, at, by }); }); };
+    if (ps.u !== S.u) map('u', ps.u || {}, S.u || {});
+    if (ps.cards !== S.cards) { const a = {}, b = {}; (ps.cards || []).forEach(c => { a[this.cid(c)] = c; }); (S.cards || []).forEach(c => { b[this.cid(c)] = c; }); map('c', a, b); }
+    if (out.length) { const m = {}; (this._srvQ || []).concat(out).forEach(x => { m[x.s + '|' + x.k] = x; }); this._srvQ = Object.values(m); try { localStorage.setItem(this.k('cc-srvq'), JSON.stringify(this._srvQ)); } catch (e) {} clearTimeout(this._srvFT); this._srvFT = setTimeout(() => this.srvFlush(), 600); this.setState({ srvN: this._srvQ.length }); } }
+  async srvFlush() {
+    if (this._flushing || !this._srvReady || !(this._srvQ || []).length) return; this._flushing = true;
+    try { while (this._srvQ.length) { const part = this._srvQ.slice(0, 400); await this.srvFetch('push', { method: 'POST', body: JSON.stringify({ rows: part }) }); const done = new Set(part.map(x => x.s + '|' + x.k + '|' + x.at)); this._srvQ = this._srvQ.filter(x => !done.has(x.s + '|' + x.k + '|' + x.at)); try { localStorage.setItem(this.k('cc-srvq'), JSON.stringify(this._srvQ)); } catch (e) {} }
+      this.setState({ srvSt: 'ok', srvAt: Date.now(), srvN: 0 }); } catch (e) { if (e.message !== 'auth') this.setState({ srvSt: 'off', srvN: this._srvQ.length }); }
+    this._flushing = false; }
   CMT_API = 'api/comments';
   cmMask(t) { return String(t || '')
     .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '***@***')
@@ -4323,6 +4380,12 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
           empty: !N.length, emptyText: !SY.url ? '설정 > 구글시트 · 알림 연동에서 웹앱 URL과 조회 키를 넣으면 게스트 등록이 1분마다 들어옵니다' : !SY.feedKey ? '설정 > 구글시트 · 알림 연동에서 조회 키를 넣어 주세요' : (S.feedErr ? '알림 확인 실패: ' + S.feedErr : '아직 게스트 등록이 없습니다'),
           readAll: () => this.setState(ss => { const o = Object.assign({}, ss.gRead); (ss.gNotes || []).forEach(x => { o[x.id] = Object.assign({}, o[x.id], { [ss.me || '-']: (o[x.id] && o[x.id][ss.me || '-']) || new Date().toISOString() }); }); return { gRead: o }; }),
           list: N.slice(0, 60).map(x => { const r = RD[x.id] || {}, mine = !!r[me], who = Object.keys(r).filter(k => k !== '-'); return { kind: x.kind, kc: x.kind === '방문예약' ? '#c8381e' : x.kind === '관심등록 매도' ? '#0066cc' : '#157a3f', name: x.name, at: String(x.at).slice(5, 16).replace('T', ' ').replace('-', '.'), line: [x.where, x.visit ? '방문 ' + x.visit : ''].filter(Boolean).join(' · ') || '-', bg: mine ? '#fff' : '#fff8e1', hasRead: who.length > 0, read: '확인 ' + who.map(k => k + ' ' + String(r[k]).slice(5, 16).replace('T', ' ').replace('-', '.')).join(', '), go: () => this.openNote(x.id) }; }) }; })(),
+      srvOn: !!this.props.requireLogin && !!S.srvSt, srvFg: ({ ok: '#157a3f', off: '#b25000', nokey: '#d2264b', badkey: '#d2264b' })[S.srvSt] || '#6e6e73',
+      srvLabel: S.srvSt === 'ok' ? (S.srvN ? '저장 중… ' + S.srvN + '건' : '● 공유 저장됨 ' + (S.srvAt ? new Date(S.srvAt).toTimeString().slice(0, 5) : '')) : S.srvSt === 'off' ? (this._srvReady ? '⚠ 연결 끊김' + (S.srvN ? ' · ' + S.srvN + '건 대기' : '') : '○ 이 기기에만 저장') : S.srvSt === 'busy' ? '연결 중…' : '⚠ 공유 꺼짐',
+      srvTip: S.srvSt === 'ok' ? '모든 직원 · 기기와 공유 중입니다' : S.srvSt === 'off' ? '서버에 연결되지 않아 이 기기에 먼저 저장합니다. 연결되면 자동으로 올라갑니다' : '사무실 코드가 필요합니다',
+      oc: { show: !!this.props.requireLogin && !guestOnly && (S.srvSt === 'nokey' || S.srvSt === 'badkey'), v: S.ocV || '', on: e => this.setState({ ocV: e.target.value }), hasErr: S.srvSt === 'badkey', err: '코드가 맞지 않습니다. 관리자에게 확인해 주세요',
+        go: () => { const v = (S.ocV || '').trim(); if (!v) return; try { localStorage.setItem(this.k('cc-office'), v); } catch (e) {} this.setState({ srvSt: 'busy', ocV: '' }); this._srvReady = false; this._srvSv = 0; this._srvPing && this._srvPing(); },
+        key: e => { if (e.key === 'Enter') { const v = (S.ocV || '').trim(); if (!v) return; try { localStorage.setItem(this.k('cc-office'), v); } catch (x) {} this.setState({ srvSt: 'busy', ocV: '' }); this._srvReady = false; this._srvSv = 0; this._srvPing && this._srvPing(); } } },
       isAdmin: role === '관리자', openSettings: () => { if (role !== '관리자') return this.flash('설정은 관리자만 열 수 있습니다'); this.setState({ settingsOpen: true }); }, setRef: el => { this._setEl = el; }, setNav: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, () => { this.setState(ss => ({ setSec: k, setOpenM: { [k]: true } }), () => setTimeout(() => { const c = this._setEl; const t = c && c.querySelector('[data-sec="' + k + '"]'); if (!c || !t) return; const hd = c.firstElementChild; const off = hd ? hd.offsetHeight : 0; c.scrollTop = t.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - off - 8; }, 30)); }])),
       setOpen: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setOpenM || {})[k] ? '1' : '0'])),
       setArr: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setOpenM || {})[k] ? '▲' : '▼'])),
@@ -4365,7 +4428,7 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
       moduleRows, menuRows, menuReset,
       selFlag: S.sel ? 'y' : 'n', closeSel: () => this.setState({ sel: null }),
       resetSample: () => { const u = this.seedU(); this.setState({ u, cards: this.seedCards(u), sel: null, filter: null }); this.flash('샘플 데이터로 초기화'); },
-      clearAll: () => { if (!window.confirm('이 기기의 호실 · 상담카드 · 알림 기록을 모두 비웁니다. 구글시트에 기록된 내용은 지워지지 않습니다. 진행할까요?')) return; this.setState({ u: {}, cards: [], gNotes: [], gRead: {}, sel: null, filter: null }); this.flash('모든 호실·카드 데이터를 비웠습니다'); },
+      clearAll: () => { if (!window.confirm('호실 · 상담카드 · 알림 기록을 모두 비웁니다. 공유 중이면 모든 직원 · 기기에 반영됩니다. 구글시트에 기록된 내용은 지워지지 않습니다. 진행할까요?')) return; this.setState({ u: {}, cards: [], gNotes: [], gRead: {}, sel: null, filter: null }); this.flash('모든 호실·카드 데이터를 비웠습니다'); },
       hasToast: !!S.toast, toast: S.toast, hasToastAct: !!S.toastAct, toastActLabel: S.toastAct ? S.toastAct.label : '', toastActFn: S.toastAct ? S.toastAct.fn : null
     };
     RV.g = this.gRegVals(RV, gx); Object.assign(RV, this.sysVals()); { const z = S.spZ || 1, x = S.spX || 0, y = S.spY || 0; this._spZ = (n, cx, cy) => { const el = this._spEl; if (!el) return; const W = el.clientWidth, H = el.clientHeight, oz = this.state.spZ || 1, ox = this.state.spX || 0, oy = this.state.spY || 0; n = Math.max(1, Math.min(4, n)); if (n === 1) return this.setState({ spZ: 1, spX: 0, spY: 0 }); if (cx == null) { cx = W / 2; cy = H / 2; } let nx = cx - (cx - ox) * n / oz, ny = cy - (cy - oy) * n / oz; nx = Math.min(0, Math.max(W - W * n, nx)); ny = Math.min(0, Math.max(H - H * n, ny)); this.setState({ spZ: n, spX: nx, spY: ny }); }; Object.assign(RV, { spRef: this.spRef, spTf: 'translate(' + x + 'px,' + y + 'px) scale(' + z + ')', spPct: Math.round(z * 100) + '%', spCur: z > 1 ? 'grab' : 'default', spIn: e => { e.stopPropagation(); this._spZ(z * 1.25); }, spOut: e => { e.stopPropagation(); this._spZ(z / 1.25); }, spReset: e => { e.stopPropagation(); this._spZ(1); } }); }
