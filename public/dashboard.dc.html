@@ -3330,10 +3330,10 @@ class Component extends DCLogic {
   blankForm() { return { kind: 'seller', unit: '', name: '', phone: '', call: '통화', status: '미확인', ask: '', tags: [], brokers: [], text: '', wantDong: '무관', wantType: '무관', wantFloor: '무관', budget: '', pBudget: '', optPref: '', carrier: '', mgr: '', mgrOk: null, mgrUnlock: false, mgrReason: '', mgrAsk: '', mgrAskText: '', inflow: [], visitAt: '', visitBy: '', inMedia: [], inBrokers: [], inFriend: '', sellWhy: [] }; }
   loadState() {
     let saved = null; const go = !!this.props.guestOnly; try { saved = JSON.parse(localStorage.getItem(this.k('cc-dash-v1')) || 'null'); } catch (e) {} if (go && saved) saved = { modules: saved.modules, guest: saved.guest, sync: saved.sync };
-    const u = go ? {} : saved && saved.u ? saved.u : this.seedU();
+    const u = go ? {} : saved && saved.u ? saved.u : {};
     return {
       tab: this.props.defaultTab || 'overview', group: 0, sel: null, filter: null, colorMode: 'type', showPrice: false, focusB: null,
-      u, cards: go ? [] : saved && saved.cards ? saved.cards : this.seedCards(u),
+      u, cards: go ? [] : saved && saved.cards ? saved.cards : [],
       sync: Object.assign({ url: '', notifyStaff: true, notifyGuest: true }, saved && saved.sync), pins: (saved && saved.pins) || {}, gNotes: (saved && saved.gNotes) || [], gSince: (saved && saved.gSince) || '', gRead: (saved && saved.gRead) || {}, menuOrder: (saved && saved.menuOrder) || [], tels: (saved && saved.tels) || {}, listResetAt: (saved && saved.listResetAt) || {}, popups: (saved && saved.popups) || [], mails: Object.fromEntries(Object.entries((saved && saved.mails) || {}).filter(([k]) => !saved || !saved.roles || saved.roles[k])), newMail: '',
       guest: Object.assign({ enabled: false, public: true, hideStaff: false, visit: true, notice: true, ntFrom: '2026-10-15', ntTo: '2026-10-28' }, saved && saved.guest),
       modules: Object.assign({ presale: true, sale: false, jeonse: false, wolse: false, option: true }, saved && saved.modules),
@@ -4365,7 +4365,7 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
       moduleRows, menuRows, menuReset,
       selFlag: S.sel ? 'y' : 'n', closeSel: () => this.setState({ sel: null }),
       resetSample: () => { const u = this.seedU(); this.setState({ u, cards: this.seedCards(u), sel: null, filter: null }); this.flash('샘플 데이터로 초기화'); },
-      clearAll: () => { this.setState({ u: {}, cards: [], sel: null, filter: null }); this.flash('모든 호실·카드 데이터를 비웠습니다'); },
+      clearAll: () => { if (!window.confirm('이 기기의 호실 · 상담카드 · 알림 기록을 모두 비웁니다. 구글시트에 기록된 내용은 지워지지 않습니다. 진행할까요?')) return; this.setState({ u: {}, cards: [], gNotes: [], gRead: {}, sel: null, filter: null }); this.flash('모든 호실·카드 데이터를 비웠습니다'); },
       hasToast: !!S.toast, toast: S.toast, hasToastAct: !!S.toastAct, toastActLabel: S.toastAct ? S.toastAct.label : '', toastActFn: S.toastAct ? S.toastAct.fn : null
     };
     RV.g = this.gRegVals(RV, gx); Object.assign(RV, this.sysVals()); { const z = S.spZ || 1, x = S.spX || 0, y = S.spY || 0; this._spZ = (n, cx, cy) => { const el = this._spEl; if (!el) return; const W = el.clientWidth, H = el.clientHeight, oz = this.state.spZ || 1, ox = this.state.spX || 0, oy = this.state.spY || 0; n = Math.max(1, Math.min(4, n)); if (n === 1) return this.setState({ spZ: 1, spX: 0, spY: 0 }); if (cx == null) { cx = W / 2; cy = H / 2; } let nx = cx - (cx - ox) * n / oz, ny = cy - (cy - oy) * n / oz; nx = Math.min(0, Math.max(W - W * n, nx)); ny = Math.min(0, Math.max(H - H * n, ny)); this.setState({ spZ: n, spX: nx, spY: ny }); }; Object.assign(RV, { spRef: this.spRef, spTf: 'translate(' + x + 'px,' + y + 'px) scale(' + z + ')', spPct: Math.round(z * 100) + '%', spCur: z > 1 ? 'grab' : 'default', spIn: e => { e.stopPropagation(); this._spZ(z * 1.25); }, spOut: e => { e.stopPropagation(); this._spZ(z / 1.25); }, spReset: e => { e.stopPropagation(); this._spZ(1); } }); }
