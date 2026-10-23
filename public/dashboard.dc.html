@@ -2311,7 +2311,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
       <div><b style="color:#1d1d1f">자료</b> 동호배치표·면적: 공급안내 · 분양가·확장비·옵션: 입주자모집공고문. 103A·103B·112A·128A 1/2/3 세부타입은 공급안내 동호배치표 색상 기준으로 호실별 적용 · 평면도는 공급안내 UNIT PLAN</div>
     </div>
         <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onClick="{{ resetSample }}" style="border:1px solid #d2d2d7;background:#fff;border-radius:9999px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer">샘플 데이터로 초기화</button>
+      <button onClick="{{ srvForce }}" title="이 기기에 보이는 설정 · 직원 · 호실 · 상담카드를 서버에 다시 올립니다" style="border:1px solid #0066cc;color:#0066cc;background:#fff;border-radius:9999px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer">이 기기 자료를 서버로 올리기</button>
       <button onClick="{{ clearAll }}" style="border:1px solid #d2264b;color:#d2264b;background:#fff;border-radius:9999px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer">전체 비우기</button>
     </div>
       </div>
@@ -2844,7 +2844,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
   <div style="width:100%;max-width:380px;background:#fff;border-radius:22px;padding:28px 26px;display:flex;flex-direction:column;gap:14px;box-shadow:0 10px 40px rgba(0,0,0,.08)">
     <img src="assets/logo_full.svg" alt="올 뉴 챔피언스시티" style="height:40px;align-self:flex-start">
     <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:20px;font-weight:800;letter-spacing:-.02em">사무실 코드 입력</span><span style="font-size:13px;color:#6e6e73;line-height:1.5">이 기기에서 처음 한 번만 입력합니다. 관리자에게 받은 코드를 넣어 주세요.</span></div>
-    <input type="password" autocomplete="off" value="{{ oc.v }}" onChange="{{ oc.on }}" onKeyDown="{{ oc.key }}" placeholder="사무실 코드" style="height:48px;border:1px solid #d2d2d7;border-radius:12px;padding:0 14px;font-size:16px;color:#1d1d1f">
+    <input type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" value="{{ oc.v }}" onChange="{{ oc.on }}" onKeyDown="{{ oc.key }}" placeholder="사무실 코드" style="height:48px;border:1px solid #d2d2d7;border-radius:12px;padding:0 14px;font-size:16px;color:#1d1d1f">
     <sc-if value="{{ oc.hasErr }}"><div style="font-size:13px;color:#d2264b;font-weight:600">{{ oc.err }}</div></sc-if>
     <button onClick="{{ oc.go }}" style="height:48px;border:none;border-radius:12px;background:#c8381e;color:#fff;font-size:16px;font-weight:800;cursor:pointer">확인</button>
   </div>
@@ -2858,6 +2858,7 @@ div:has(>ul[data-hl=RESORT])>div button,div:has(>ul[data-hl=PREMIUM])>div button
     <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6e6e73">이름<select value="{{ lg.name }}" onChange="{{ lg.onName }}" style="height:44px;border:1px solid #d2d2d7;border-radius:12px;padding:0 10px;font-size:15px;background:#fff;color:#1d1d1f"><sc-for list="{{ lg.names }}" as="o"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
     <label style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6e6e73">{{ lg.pinLabel }}<input type="password" inputmode="numeric" autocomplete="off" maxlength="4" value="{{ lg.pin }}" onChange="{{ lg.onPin }}" onKeyDown="{{ lg.onKey }}" placeholder="●●●●" style="height:48px;border:1px solid #d2d2d7;border-radius:12px;padding:0 14px;font-size:22px;letter-spacing:.5em;text-align:center;color:#1d1d1f"></label>
     <sc-if value="{{ lg.hasErr }}"><div style="font-size:13px;color:#d2264b;font-weight:600">{{ lg.err }}</div></sc-if>
+    <sc-if value="{{ lg.hasSrv }}"><div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:{{ lg.srvFg }}"><span style="flex:1;min-width:0">{{ lg.srvText }}</span><button onClick="{{ lg.reload }}" style="flex:none;height:28px;border:1px solid #d2d2d7;background:#fff;color:#1d1d1f;border-radius:9999px;padding:0 10px;font-size:12px;font-weight:600;cursor:pointer">서버에서 다시 받기</button></div></sc-if>
     <button onClick="{{ lg.submit }}" style="height:48px;border:none;border-radius:12px;background:#c8381e;color:#fff;font-size:16px;font-weight:800;cursor:pointer">{{ lg.btn }}</button>
     <div style="font-size:11px;color:#8e8e93;line-height:1.5">로그인은 12시간 유지됩니다. 공용 PC에서는 사용 후 로그아웃해 주세요. PIN을 잊으면 관리자에게 문의하세요.</div>
   </div>
@@ -3524,7 +3525,8 @@ class Component extends DCLogic {
   cid(c) { return c.id || ('x' + (c.at || '') + (c.unit || '') + (c.name || '') + (c.phone || '')); }
   srvKey() { try { return localStorage.getItem(this.k('cc-office')) || ''; } catch (e) { return ''; } }
   async srvInit() {
-    this._srv = { cfg: {}, u: {}, c: {} }; this._srvReady = false; this._srvSv = 0; try { this._srvQ = JSON.parse(localStorage.getItem(this.k('cc-srvq')) || '[]'); } catch (e) { this._srvQ = []; }
+    this._srv = { cfg: {}, u: {}, c: {} }; this._srvReady = false; this._srvSv = 0; this.setState({ srvSt: 'busy' });
+    try { this._srvFirstEver = !localStorage.getItem(this.k('cc-srv-synced')); this._fresh = !localStorage.getItem(this.k('cc-dash-v1')); } catch (e) { this._srvFirstEver = false; this._fresh = false; } try { this._srvQ = JSON.parse(localStorage.getItem(this.k('cc-srvq')) || '[]'); } catch (e) { this._srvQ = []; }
     const ping = async () => { try { const r = await fetch('/api/ping', { headers: { 'x-key': this.srvKey() }, cache: 'no-store' }); const j = await r.json(); if (!j.ok) throw 0; if (!j.auth) { this.setState({ srvSt: this.srvKey() ? 'badkey' : 'nokey' }); return false; } this.srvPull(true); return true; } catch (e) { this.setState({ srvSt: 'off' }); return false; } };
     this._srvPing = ping; await ping();
     clearInterval(this._srvT); this._srvT = setInterval(() => { const st = this.state.srvSt; if (this._srvReady) this.srvPull(false); else if (st === 'off' && (this._srvTick = (this._srvTick || 0) + 1) % 6 === 0) ping(); }, 5000);
@@ -3538,24 +3540,24 @@ class Component extends DCLogic {
     try { let since = first ? 0 : Math.max(0, this._srvSv - 10e6), rows = [], more = true, g = 0;
       while (more && g++ < 30) { const j = await this.srvFetch('pull?since=' + since); rows = rows.concat(j.rows || []); more = !!j.more; if (j.now) since = j.now; }
       this._srvSv = Math.max(this._srvSv, since);
-      if (first) { this._srv = { cfg: {}, u: {}, c: {} }; if (rows.length) this.srvApply(rows, true); this._srvReady = true; if (!rows.length) this.srvDiff({}, this.state); }
+      if (first) { this._srv = { cfg: {}, u: {}, c: {} }; const done = () => { this._srvReady = true; this.srvDiff({}, this.state, this._fresh); this._fresh = false; this._srvFirstEver = false; try { localStorage.setItem(this.k('cc-srv-synced'), '1'); } catch (e) {} this.srvFlush(); }; if (rows.length) this.srvApply(rows, false, done, this._srvFirstEver && !this._fresh); else done(); }
       else if (rows.length) this.srvApply(rows, false);
       this.setState({ srvSt: 'ok', srvAt: Date.now() }); this.srvFlush();
     } catch (e) { if (e.message !== 'nokey' && e.message !== 'auth') this.setState({ srvSt: 'off' }); }
     this._pulling = false; }
-  srvApply(rows, replace) {
+  srvApply(rows, replace, cb, mergeCfg) {
     const S = this.state, o = {}, cm = {}; let u = replace ? {} : null;
     rows.forEach(r => { let v = null; try { v = JSON.parse(r.v); } catch (e) { return; }
-      if (r.s === 'cfg') { this._srv.cfg[r.k] = r.v; if (v != null) o[r.k] = v; }
+      if (r.s === 'cfg') { this._srv.cfg[r.k] = r.v; const lv = S[r.k]; if (v != null) o[r.k] = mergeCfg && ['roles', 'pins', 'mails', 'tels', 'perms'].includes(r.k) && lv && typeof lv === 'object' && !Array.isArray(lv) && typeof v === 'object' && !Array.isArray(v) ? Object.assign({}, lv, v) : v; }
       else if (r.s === 'u') { this._srv.u[r.k] = r.v; if (!u) u = Object.assign({}, S.u); if (v == null) delete u[r.k]; else u[r.k] = v; }
       else if (r.s === 'c') { this._srv.c[r.k] = r.v; cm[r.k] = v; } });
     if (replace || Object.keys(cm).length) { const arr = replace ? [] : (S.cards || []).slice(); const idx = {}; arr.forEach((c, i) => { idx[this.cid(c)] = i; });
       Object.keys(cm).forEach(k => { if (cm[k] == null) { if (idx[k] != null) arr[idx[k]] = null; } else if (idx[k] != null) arr[idx[k]] = cm[k]; else { idx[k] = arr.length; arr.push(cm[k]); } });
       o.cards = arr.filter(Boolean).sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')) || String(b.id || '').localeCompare(String(a.id || ''))); }
-    if (u) o.u = u; this.setState(o); }
-  srvDiff(ps, S) {
+    if (u) o.u = u; this.setState(o, cb); }
+  srvDiff(ps, S, skipCfg) {
     if (!this._srvReady || !this._srv) return; const by = S.me || '', at = Date.now(), out = [];
-    this.SRV_CFG.forEach(k => { if (ps[k] !== S[k] && S[k] !== undefined) { const v = JSON.stringify(S[k]); if (this._srv.cfg[k] !== v) { this._srv.cfg[k] = v; out.push({ s: 'cfg', k, v, at, by }); } } });
+    if (!skipCfg) this.SRV_CFG.forEach(k => { if (ps[k] !== S[k] && S[k] !== undefined) { const v = JSON.stringify(S[k]); if (this._srv.cfg[k] !== v) { this._srv.cfg[k] = v; out.push({ s: 'cfg', k, v, at, by }); } } });
     const map = (sc, a, b) => { new Set(Object.keys(a).concat(Object.keys(b))).forEach(id => { if (a[id] === b[id]) return; const v = b[id] === undefined ? 'null' : JSON.stringify(b[id]); const cur = this._srv[sc][id]; if (cur === v || (v === 'null' && cur === undefined)) return; this._srv[sc][id] = v; out.push({ s: sc, k: id, v, at, by }); }); };
     if (ps.u !== S.u) map('u', ps.u || {}, S.u || {});
     if (ps.cards !== S.cards) { const a = {}, b = {}; (ps.cards || []).forEach(c => { a[this.cid(c)] = c; }); (S.cards || []).forEach(c => { b[this.cid(c)] = c; }); map('c', a, b); }
@@ -3774,11 +3776,12 @@ class Component extends DCLogic {
     RV.meLocked = need && !!ss; RV.meFree = !need;
     RV.logout = () => { try { localStorage.removeItem(this.k('cc-session')); } catch (e) {} this.setState({ lgPin: '', lgErr: '' }); };
     if (!need || (ss && S.roles[ss.name])) { if (ss && S.me !== ss.name) setTimeout(() => this.setState({ me: ss.name }), 0); RV.lg = { show: false }; return; }
-    const pins = S.pins || {}; const admins = Object.keys(S.roles).filter(n => S.roles[n] === '관리자'); const setup = !admins.some(n => pins[n]);
+    const srvWait = !!this.props.requireLogin && (S.srvSt === 'busy' || S.srvSt == null);
+    const pins = S.pins || {}; const admins = Object.keys(S.roles).filter(n => S.roles[n] === '관리자'); const setup = !srvWait && !admins.some(n => pins[n]);
     const names = (setup ? admins : Object.keys(S.roles)); const name = names.includes(S.lgName) ? S.lgName : names[0] || '';
     let lock = null; try { lock = JSON.parse(localStorage.getItem(this.k('cc-lock')) || 'null'); } catch (e) {}
     const locked = lock && lock.until > Date.now();
-    const submit = () => { const p = String(S.lgPin || ''); if (locked) return; if (!/^\d{4}$/.test(p)) return this.setState({ lgErr: 'PIN은 숫자 4자리입니다' });
+    const submit = () => { const p = String(S.lgPin || ''); if (locked) return; if (srvWait) return this.setState({ lgErr: '서버 자료를 불러오는 중입니다. 잠시 후 다시 눌러 주세요' }); if (!/^\d{4}$/.test(p)) return this.setState({ lgErr: 'PIN은 숫자 4자리입니다' });
       const ok = () => { try { localStorage.setItem(this.k('cc-session'), JSON.stringify({ name, exp: Date.now() + 12 * 3600e3 })); localStorage.removeItem(this.k('cc-lock')); } catch (e) {} this.setState({ me: name, lgPin: '', lgErr: '' }); };
       if (setup) { this.setState(ss2 => ({ pins: Object.assign({}, ss2.pins, { [name]: this.pinHash(name, p) }) })); return ok(); }
       if (!pins[name]) return this.setState({ lgErr: '아직 PIN이 등록되지 않았습니다. 관리자에게 요청하세요', lgPin: '' });
@@ -3786,7 +3789,10 @@ class Component extends DCLogic {
       const n = ((lock && lock.n) || 0) + 1; const nl = n >= 5 ? { n: 0, until: Date.now() + 600e3 } : { n, until: 0 }; try { localStorage.setItem(this.k('cc-lock'), JSON.stringify(nl)); } catch (e) {}
       this.setState({ lgPin: '', lgErr: n >= 5 ? '5회 틀려 10분간 잠깁니다' : 'PIN이 맞지 않습니다 (' + n + '/5)' }); };
     const err = locked ? '잠김 · ' + Math.ceil((lock.until - Date.now()) / 60000) + '분 뒤 다시 시도하세요' : (S.lgErr || '');
-    RV.lg = { show: true, title: setup ? '관리자 PIN 만들기' : '직원 로그인', sub: setup ? '처음 한 번만 관리자 PIN을 정합니다' : '챔피언스시티1차 직원 대시보드', pinLabel: setup ? '새 PIN (숫자 4자리)' : 'PIN', btn: setup ? 'PIN 저장하고 시작' : '로그인',
+    const rn = Object.keys(S.roles).length;
+    RV.lg = { hasSrv: !!this.props.requireLogin, srvText: srvWait ? '서버 자료 불러오는 중…' : S.srvSt === 'ok' ? '● 서버 연결됨 · 직원 ' + rn + '명' : S.srvSt === 'off' ? '○ 서버 연결 안 됨 · 이 기기 자료로 표시 중' : '⚠ 사무실 코드 필요', srvFg: S.srvSt === 'ok' ? '#157a3f' : srvWait ? '#6e6e73' : '#b25000',
+      reload: () => { this._srvReady = false; this._srvSv = 0; this.setState({ srvSt: 'busy', lgErr: '' }); this._srvPing && this._srvPing(); },
+      show: true, title: srvWait ? '자료 불러오는 중…' : setup ? '관리자 PIN 만들기' : '직원 로그인', sub: setup ? '처음 한 번만 관리자 PIN을 정합니다' : '챔피언스시티1차 직원 대시보드', pinLabel: setup ? '새 PIN (숫자 4자리)' : 'PIN', btn: setup ? 'PIN 저장하고 시작' : '로그인',
       names: names.map(v => ({ v, l: v + ' · ' + S.roles[v] })), name, onName: e => this.setState({ lgName: e.target.value, lgErr: '' }), pin: S.lgPin || '', onPin: e => this.setState({ lgPin: e.target.value.replace(/\D/g, '').slice(0, 4), lgErr: '' }), onKey: e => { if (e.key === 'Enter') submit(); }, submit, hasErr: !!err, err };
   }
   renderVals() {
@@ -4386,6 +4392,7 @@ cmh: (() => { const code = S.commPop && S.commPop.indexOf('plan:') === 0 ? S.com
       oc: { show: !!this.props.requireLogin && !guestOnly && (S.srvSt === 'nokey' || S.srvSt === 'badkey'), v: S.ocV || '', on: e => this.setState({ ocV: e.target.value }), hasErr: S.srvSt === 'badkey', err: '코드가 맞지 않습니다. 관리자에게 확인해 주세요',
         go: () => { const v = (S.ocV || '').trim(); if (!v) return; try { localStorage.setItem(this.k('cc-office'), v); } catch (e) {} this.setState({ srvSt: 'busy', ocV: '' }); this._srvReady = false; this._srvSv = 0; this._srvPing && this._srvPing(); },
         key: e => { if (e.key === 'Enter') { const v = (S.ocV || '').trim(); if (!v) return; try { localStorage.setItem(this.k('cc-office'), v); } catch (x) {} this.setState({ srvSt: 'busy', ocV: '' }); this._srvReady = false; this._srvSv = 0; this._srvPing && this._srvPing(); } } },
+      srvForce: () => { if (role !== '관리자') return this.flash('관리자만 할 수 있습니다'); if (!this._srvReady) return this.flash('서버에 연결된 뒤 다시 눌러 주세요'); if (!window.confirm('이 기기에 보이는 설정 · 직원 · PIN · 호실 · 상담카드를 서버에 다시 올립니다. 다른 기기도 이 내용으로 바뀝니다. 진행할까요?')) return; this._srv = { cfg: {}, u: {}, c: {} }; this.srvDiff({}, this.state); this.flash('서버로 올리는 중입니다'); },
       isAdmin: role === '관리자', openSettings: () => { if (role !== '관리자') return this.flash('설정은 관리자만 열 수 있습니다'); this.setState({ settingsOpen: true }); }, setRef: el => { this._setEl = el; }, setNav: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, () => { this.setState(ss => ({ setSec: k, setOpenM: { [k]: true } }), () => setTimeout(() => { const c = this._setEl; const t = c && c.querySelector('[data-sec="' + k + '"]'); if (!c || !t) return; const hd = c.firstElementChild; const off = hd ? hd.offsetHeight : 0; c.scrollTop = t.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - off - 8; }, 30)); }])),
       setOpen: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setOpenM || {})[k] ? '1' : '0'])),
       setArr: Object.fromEntries(['mod','menu','role','bk','media','car','inflow','guest','popg','pops','gas'].map(k => [k, (S.setOpenM || {})[k] ? '▲' : '▼'])),
