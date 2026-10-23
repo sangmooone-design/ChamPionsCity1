@@ -22,6 +22,18 @@ export default {
     const key = req.headers.get('x-key') || '';
     const auth = !!env.STAFF_KEY && key === env.STAFF_KEY;
     if (url.pathname === '/api/ping') return J({ ok: true, auth, hasKey: !!env.STAFF_KEY });
+    // 게스트 관심등록 · 방문예약: 키 없이 '새 카드 추가'만 허용 (기존 기록은 덮어쓰지 않음)
+    if (url.pathname === '/api/guest' && req.method === 'POST') {
+      let b; try { b = await req.json(); } catch (e) { return J({ ok: false }, 400); }
+      const c = b && b.card; const v = JSON.stringify(c || {});
+      if (!c || !/^g\d{10,}$/.test(String(c.id || '')) || v.length > 30000) return J({ ok: false }, 400);
+      c.guest = true; c.synced = true; const at = Date.now(), sv = at * 1000 + Math.floor(Math.random() * 999);
+      await env.DB.batch([
+        env.DB.prepare('INSERT INTO kv (s, k, v, at, by, sv) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (s, k) DO NOTHING').bind('c', c.id, JSON.stringify(c), at, '게스트', sv),
+        env.DB.prepare('INSERT INTO hist (s, k, v, at, by, sv) VALUES (?, ?, ?, ?, ?, ?)').bind('c', c.id, JSON.stringify(c), at, '게스트', sv)
+      ]);
+      return J({ ok: true });
+    }
     if (!auth) return J({ ok: false, err: 'auth' }, 401);
 
     if (url.pathname === '/api/pull' && req.method === 'GET') {
